@@ -1,0 +1,306 @@
+#############
+### INPUT ###
+
+name = raw_input("What is your name?")
+
+###################
+### ARITHMETICS ###
+
+12 % 3 is 0
+10 % 3 is 1
+
+##########################
+### BITWISE OPERATIONS ###
+
+print 5 >> 4  # Right Shift
+print 5 << 1  # Left Shift. Also useful to write long binaries e.g. 0b1 << 9 reurns 1 followed by 9 zeroes
+print 8 & 5   # Bitwise AND
+print 9 | 4   # Bitwise OR. Useful to turn on the bits: 0b110 | 0b1 returns 0b111
+print 12 ^ 42 # Bitwise XOR. Useful for flipping bits: 0b110 ^ 0b111 returns 0b1
+print ~88     # Bitwise NOT
+
+bin(0b1110 & 0b101)	## returns 0b100
+bin(0b1110 | 0b101)	## returns 0b1111
+bin((0b1110 | 0b101)	## returns 0b1011
+...
+
+print 0b1,    #1
+print 0b10,   #2
+print 0b11,   #3
+print 0b100,  #4
+
+bin(integer)	## returns integer in binary
+oct(integer)
+hex(integer)
+
+shifted_right = binary >> 2	## it's "binary / 2" rounded 
+shifted_left = binary << 2	## it's "binary * 2"
+
+###############
+### STRINGS ###
+
+## == is used to compare strings too
+len(my_string)					## returns a count 1-based
+str(my_var)
+my_string.upper()
+my_string.lower()
+my_string.isalpha()				## returns False if the string contains non-letter characters
+my_string[1:len(my_string)] (or) my_string[1:]	## returns my_string without the first character
+my_string[4:8]
+my_string += other_string			## concatenates strings
+my_string.join(my_list) 			## returns the items in my list joined togheter through my_string
+my_string.rstrip("\n")				## removes "\n" from the string if present
+my_list = my_string.split(separator) 		## separator is whitespace by default
+
+## From AllegraVia
+s.strip()               ## removes \n \s from the extremes of s
+s.replace("a","b")
+s.find(pattern)         ## returns the index corresponding to the first character of the found pattern
+
+################
+### COMMENTS ###
+
+single-line: #
+multi-line: """ """
+
+##################
+### % OPERATOR ###
+
+name = 'Alessandro'
+age = 999
+bill = 6.89
+print 'My name is %s and I\'m %s years old' % (name, str(age))
+print 'The bill is %f' % bill
+
+
+########################
+### DATETIME LIBRARY ###
+
+from datetime import datetime
+
+now = datetime.now()
+now.year	now.hour
+now.month	now.minute
+now.day		now.second
+
+#################
+### IF SYNTAX ###
+
+if my_bool == True:
+	## do something
+elif:
+	## do something
+else:
+	## do something
+
+#################
+### FUNCTIONS ###
+
+def square(parameter):
+  """Returns the square of a number."""
+  squared = n ** 2
+  print "%d squared is %d." % (n, squared)
+  return squared
+
+square(argument) ## calls square. The parameter is a variable name for the passed argument
+
+####################
+### MATH LIBRARY ###
+
+import math
+print math.sqrt(25)
+
+######################
+### IMPORT MODULES ###
+
+import module
+from module import function
+from module import *		## you can omit "module." before a function. Dangerous.
+print dir(module)		## print all function names from the module
+
+###############
+### NUMBERS ###
+
+max()
+min()
+abs()
+
+#################
+### DATA TYPE ###
+
+type(data) ## returns int, float, str... Not "int","float","str"...
+
+#############
+### LISTS ###
+
+my_list = [item_1, item_2]
+my_list[0] 			## returns item_1
+my_list.append(item_3) 		## adds an item to the tail of my_list
+[a] + my_list			## add [a] at the beginning of my_list
+len(list) 			## returns the number of items in my_list (one-based)
+my_list[0:2] 			## returns the first two elements of my list
+my_list[2:5] 			## returns the third and the fourth elements of my_list
+my_list[2:] 			## (until the last element)
+my_list[0:10:2]			## list slicing syntax [start,end,stride]
+my_list[::2]			## omission will put default values: [0,len(my_list),2]
+backwards = my_list[::-1]	## reverses my_list
+
+my_list.index(item) 		## returns item's index
+my_list.insert(index, item) 	## insert item at the given index
+my_list.sort()
+my_list.remove(item)		## removes item from my_list
+my_list.pop(index)		## removes my_list[index] from my_list and returns it
+my_list.remove(item)		## removes item from my_list if it actually finds it
+del(my_list[index])		## like pop but it dooesn't return it
+
+my_list = [0] * 5		## my_list is [0,0,0,0,0]
+
+##########################
+### LIST COMPREHENSION ###
+
+evens_to_50 = [i for i in range(51) if i % 2 == 0]
+doubles_by_3 = [x * 2 for x in range(1, 6) if (x * 2) % 3 == 0]
+
+#################
+### FOR CYCLE ###
+
+for item in my_list:
+	## do something
+	## item is the list element, not the key
+	break ## breaks the cycle
+else:
+	## do something
+	## note: if the cycle breaks, else statement won't be executed
+
+for key in my_dict:
+	## do something
+	## note: key is the key in the dictionary
+	## my_dict[key] is the value associated to the key
+
+for index in enumerate(my_list):
+	## do something
+
+for a, b in zip(list_a, list_b):
+	## do something
+	## note: number of iterations will be == len(shorter_list)
+####################
+### WHILE CYCLES ###
+
+while [condition]:
+	## do something
+else:
+	## do something
+
+####################
+### DICTIONARIES ###
+
+d = {'key1' : 1, 'key2' : 2, 'key3' : 3}
+d['key1'] returns 1
+del d[key] 				## removes the item specified by the key_name
+
+my_dict = {
+  "fish": ["c", "a", "r", "p"],
+  "cash": -4483,
+  "luck": "good"
+}
+print my_dict["fish"][0]		## returns "c"
+
+my_dict.keys()				## returns the list of keys
+my_dict.values()			## returns the list of values
+my_dict.items()				## returns a tuple with [(key1,value1),(key2,value2)...] (not sorted!)
+
+########################
+### USEFUL FUNCTIONS ###
+
+range(1, 100, 2) 		## returns a list of integers; range(start,stop+1,step)
+print "a"			## prints a\n
+print "a",			## prints a\s
+print a,b			## prints a\sb
+enumerate(my_list)		## returns a list with indeces of my_list
+sorted(my_list)			## returns the list sorted (numbers)
+open(my_path)			## opens a filehandle
+filter(my_filter,my_list)	## my_filter and my_list are lists or strings
+
+######################
+### RANDOM LIBRARY ###
+
+from random import randint
+randint(min,max)
+
+###################
+### SYS LIBRARY ###
+
+import sys
+sys.argv[1]			## returns the first argument imported by command line
+
+##############################
+### FUNCTIONAL PROGRAMMING ###
+
+## Anonymous Functions (lambda). E.g.:
+my_list = range(16)
+print filter(lambda x: x % 3 == 0, my_list)
+
+###############
+### CLASSES ###
+
+## e.g. 
+class Point3D(object):
+  def __init__(self,x,y,z):
+    self.x = x
+    self.y = y
+    self.z = z
+  def __repr__(self):
+    return "(%d, %d, %d)" % (self.x, self.y, self.z)
+  
+my_point = Point3D(1,2,3)
+print my_point
+## e.g.
+class Car(object):
+  condition = "new"
+  def __init__(self, model, color, mpg):
+    self.model = model
+    self.color = color
+    self.mpg   = mpg
+  def display_car(self):
+    return "This is a %s %s with %s MPG." % (self.color,self.model,str(self.mpg))
+  def drive_car(self):
+    self.condition = "used"
+
+class ElectricCar(Car):
+  def __init__(self, model, color, mpg, battery_type):
+    self.battery_type = battery_type
+    self.model = model
+    self.color = color
+    self.mpg   = mpg
+  def drive_car(self):
+    self.condition = "like new"
+
+my_car = ElectricCar("DeLorean", "silver", 88, "molten salt")
+
+print my_car.condition
+my_car.drive_car()
+print my_car.condition
+
+################
+### FILE I/O ###
+
+my_file = open("output.txt","r")	## open in read-only mode
+my_file = open("output.txt", "w")	## open in write mode
+my_file = open("output.txt","r+")	## open in read and write mode
+my_file = open("output.txt","a")	## opne in append new line mode
+
+for i in my_list:
+  my_file.write(str(i) + "\n")		## the write method takes a string as argument
+my_file.close()				## always close files
+
+my_file = open("output.txt","r")
+print my_file.read()			## reads the whole file
+my_file.close()
+
+my_file.readline()			## reads line by line
+my_file.readlines()         ## returns a list containing all the lines as elements
+
+with open("text.txt", "w") as textfile:	## with ... as ... automatically invoke the method __exit__()
+  textfile.write("Success!")		## i.e. automatically closes the file, like textfile.close()
+
+my_file.closed				## returns True or False. Useful to check if my_file is closed
