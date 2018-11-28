@@ -220,6 +220,7 @@ enumerate(my_list)		## returns a list with indeces of my_list
 sorted(my_list)			## returns the list sorted (numbers)
 open(my_path)			## opens a filehandle
 filter(my_filter,my_list)	## my_filter and my_list are lists or strings
+dir(module_name)    ## returns namespace
 
 ######################
 ### RANDOM LIBRARY ###
