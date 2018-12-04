@@ -21,9 +21,9 @@ class alignment(object):
 
 def print_help_page():
     ## TODO make this shit readable with some smart lib
-    print("Needleman-Wunsch Algorithm\n\nSYNOPSIS:\
+    print("\n=== Needleman-Wunsch Algorithm ===\n\nSYNOPSIS:\
             \n\npython3 NW <TYPE> <SCORE_MATRIX> <SEQUENCE1> <SEQUENCE2> <GAP>\
-            \n\ntype                   \"NT\" or \"AA\" \
+            \n\ntype                    \"NT\" or \"AA\" \
             \nscore_matrix            symmetrical matrix, order of col and rows is A,C,T,G\
             \nsequence1               fasta file\
             \nsequence2               fasta file\
