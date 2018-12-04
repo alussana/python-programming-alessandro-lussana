@@ -56,6 +56,7 @@ my_list = my_string.split(separator) 		## separator is whitespace by default
 s.strip()               ## removes \n \s from the extremes of s
 s.replace("a","b")
 s.find(pattern)         ## returns the index corresponding to the first character of the found pattern
+x1, y1 = P1             ## pattern matching; P1 == [x1, y1]
 
 ################
 ### COMMENTS ###
@@ -143,6 +144,7 @@ my_list[2:5] 			## returns the third and the fourth elements of my_list
 my_list[2:] 			## (until the last element)
 my_list[0:10:2]			## list slicing syntax [start,end,stride]
 my_list[::2]			## omission will put default values: [0,len(my_list),2]
+                        ## extended slices notation
 backwards = my_list[::-1]	## reverses my_list
 
 my_list.index(item) 		## returns item's index

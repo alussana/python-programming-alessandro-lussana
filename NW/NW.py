@@ -2,6 +2,8 @@ import numpy as np
 import sys
 import math
 
+## TODO take fasta in input
+
 class NW_matrix(object):
     def __init__(self, A, A_path):
         self.A = A
@@ -19,12 +21,10 @@ class alignment(object):
 
 def print_help_page():
     ## TODO make this shit readable with some smart lib
-    print("SYNOPSIS:\
+    print("Needleman-Wunsch Algorithm\n\nSYNOPSIS:\
             \n\npython3 NW <TYPE> <SCORE_MATRIX> <SEQUENCE1> <SEQUENCE2> <GAP>\
-            \n\n \
-            type                   \"NT\" or \"AA\" \
-            \nscore_matrix            symmetrical matrix, order of col and rows is \
-                                   A,C,T,G\
+            \n\ntype                   \"NT\" or \"AA\" \
+            \nscore_matrix            symmetrical matrix, order of col and rows is A,C,T,G\
             \nsequence1               fasta file\
             \nsequence2               fasta file\
             \ngap                     gap linear score\n\n")
