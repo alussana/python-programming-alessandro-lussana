@@ -7,17 +7,27 @@ class NW_matrix(object):
         self.A = A
         self.path = A_path
 
+class alignment(object):
+    def __init__(self, seqA, seqB, score):
+        self.seqA = seqA
+        self.seqB = seqB
+        self.score = score
+    def display(self):
+        print("Score: %f" %(self.score))
+        print("A: %s" %(self.seqA))
+        print("B: %s" %(self.seqB))
+
 def print_help_page():
     ## TODO make this shit readable with some smart lib
     print("SYNOPSIS:\
             \n\npython3 NW <TYPE> <SCORE_MATRIX> <SEQUENCE1> <SEQUENCE2> <GAP>\
             \n\n \
-            type\t\t\"NT\" or \"AA\" \
-            \nscore_matrix\t\tsymmetrical matrix, order of col and rows is \
-            A,C,T,G\
-            \nsequence1\t\tfasta file\
-            \nsequence2\t\tfasta file\
-            \ngap\t\tgap linear score\n\n")
+            type                   \"NT\" or \"AA\" \
+            \nscore_matrix            symmetrical matrix, order of col and rows is \
+                                   A,C,T,G\
+            \nsequence1               fasta file\
+            \nsequence2               fasta file\
+            \ngap                     gap linear score\n\n")
 
 def match_score(symbol1, symbol2):
     if symbol1 == symbol2 == "0":
@@ -28,10 +38,7 @@ def match_score(symbol1, symbol2):
 
 def compute_matrix(seq1,seq2,score_matrix,d):
     
-    ######################
-    ### Initialization ###
-
-    ##initialize A and A_path
+    ## initialize A and A_path
     n_seq1 = len(seq1)
     n_seq2 = len(seq2)
 
@@ -41,9 +48,7 @@ def compute_matrix(seq1,seq2,score_matrix,d):
     ## initialize pointer
     pointer = [-1,-1]
 
-    #################
     ### Iteration ###
-
     for symbol1 in seq1:
         pointer[0] = pointer[0] + 1
         pointer[1] = -1
@@ -86,6 +91,41 @@ def compute_matrix(seq1,seq2,score_matrix,d):
                 A_path[pointer[0]][pointer[1]] = path_notation
 
     return(NW_matrix(A, A_path))
+
+def backtrace(seq1, seq2, NW_matrix):
+    ## memo
+    ## seq1 must refer to the rows of NW_matrix.A
+    ## seq2 must refer to the cols of NW_matrix.A
+
+    pointer = [len(NW_matrix.A) - 1, len(NW_matrix.A[0]) - 1]
+    score = NW_matrix.A[pointer[0]][pointer[1]]
+
+    seqA = ""
+    seqB = ""
+
+    while pointer[0] > 0 and pointer[1] > 0:
+        directions = NW_matrix.path[pointer[0]][pointer[1]]
+        
+        ## TODO: store also equivalent alignments
+        directions = int(str(directions)[0])
+
+        if directions == 1:
+            seqA = seqA + seq1[pointer[0]]
+            seqB = seqB + seq2[pointer[1]]
+            pointer[0] = pointer[0] - 1
+            pointer[1] = pointer[1] - 1
+        
+        elif directions == 2:
+            pointer[0] = pointer[0] - 1
+            seqA = seqA + seq1[pointer[0]]
+            seqB = seqB + "-"
+
+        elif directions == 3:
+            seqA = seqA + "-"
+            seqB = seqB + seq2[pointer[1]]
+            pointer[1] = pointer[1] - 1
+
+    return(alignment(seqA[::-1], seqB[::-1], score))
 
 #############################
 ### setup and input check ###
@@ -132,7 +172,12 @@ score_matrix = np.loadtxt(sys.argv[2])
 d = int(sys.argv[5])
 ## TODO check the gap penalty for being a positive int
 
-## tmp test:
+################
+### tmp test ###
+
 my_NW = compute_matrix(seq1,seq2,score_matrix,d)
 print(my_NW.A)
 print(my_NW.path)
+
+my_backtrace = backtrace(seq1, seq2, my_NW)
+my_backtrace.display()
