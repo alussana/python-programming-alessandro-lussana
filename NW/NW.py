@@ -12,14 +12,16 @@ class NW_matrix(object):
         self.seq2 = seq2
 
 class alignment(object):
-    def __init__(self, seqA, seqB, score):
+    def __init__(self, seqA_header, seqB_header, seqA, seqB, score):
+        self.seqA_header = seqA_header
+        self.seqB_header = seqB_header
         self.seqA = seqA
         self.seqB = seqB
         self.score = score
     def display(self):
         print("Score: %f" %(self.score))
-        print("A: %s" %(self.seqA))
-        print("B: %s" %(self.seqB))
+        print("%s\n%s" %(self.seqA_header, self.seqA))
+        print("%s\n%s" %(self.seqB_header, self.seqB))
 
 def print_help_page():
     ## TODO make this shit readable with some smart lib
@@ -87,7 +89,7 @@ def compute_matrix(seq1, seq2, score_matrix, d, symbol_dict):
 
     return(NW_matrix(A, A_path, seq1, seq2))
 
-def backtrace(NW_matrix):
+def backtrace(NW_matrix, seqA_header, seqB_header):
     ## memo
     ## seq1 must refer to the rows of NW_matrix.A
     ## seq2 must refer to the cols of NW_matrix.A
@@ -120,7 +122,7 @@ def backtrace(NW_matrix):
             seqB = seqB + NW_matrix.seq2[pointer[1]]
             pointer[1] = pointer[1] - 1
 
-    return(alignment(seqA[::-1], seqB[::-1], score))
+    return(alignment(seqA_header, seqB_header, seqA[::-1], seqB[::-1], score))
 
 def NW_setup(type_of_alignment, score_matrix_name, seq1_name, seq2_name, d): 
 
@@ -132,10 +134,14 @@ def NW_setup(type_of_alignment, score_matrix_name, seq1_name, seq2_name, d):
     file_seq1 = open(seq1_name)
     file_seq2 = open(seq2_name)
 
+    seq1_header = file_seq1.readline()
+    seq1_header = seq1_header.strip()
     seq1 = file_seq1.read()
     seq1 = seq1.replace("\n","")
     seq1 = "0" + seq1
 
+    seq2_header = file_seq2.readline()
+    seq2_header = seq2_header.strip()
     seq2 = file_seq2.read()
     seq2 = seq2.replace("\n","")
     seq2 = "0" + seq2
@@ -146,43 +152,45 @@ def NW_setup(type_of_alignment, score_matrix_name, seq1_name, seq2_name, d):
     ## set the symbol_dictionary between indeces and symbols
     if type_of_alignment == "NT":
         symbol_dict = {"A": 0, "C": 1, "T": 2, "G": 3}
-    
     ## TODO add AA symbol_dict
 
     ## read and check score_matrix
     score_matrix = np.loadtxt(score_matrix_name)
-
     ## TODO check the score_matrix
 
     ## read and check the gap penalty
     d = int(d)
     ## TODO check the gap penalty for being a positive int
     
-    return([seq1,seq2,score_matrix,d,symbol_dict])
+    return([seq1,seq2,score_matrix,d,symbol_dict,seq1_header,seq2_header])
 
-################
-### tmp test ###
+def start(args):
+    
+    ## check number of arguments
+    if len(sys.argv) != 6 and len(sys.argv) != 1:
+        print_help_page()
+        sys.exit("E: wrong number of arguments\n\n")
+    
+    elif len(sys.argv) == 1:
+        print_help_page()
+        sys.exit()
 
-## check number of arguments
-if len(sys.argv) != 6 and len(sys.argv) != 1:
-    sys.exit(
-            "E: wrong number of arguments\n\n")
-elif len(sys.argv) == 1:
-    print_help_page()
-    sys.exit()
+    type_of_alignment = sys.argv[1]
+    score_matrix_name = sys.argv[2]
+    seq1_name = sys.argv[3] 
+    seq2_name = sys.argv[4]
+    d = sys.argv[5]
 
-type_of_alignment = sys.argv[1]
-score_matrix_name = sys.argv[2]
-seq1_name = sys.argv[3] 
-seq2_name = sys.argv[4]
-d = sys.argv[5]
+    ## execute 
+    NW_input = NW_setup(type_of_alignment,score_matrix_name,seq1_name,seq2_name,d)
+    my_NW = compute_matrix(NW_input[0],NW_input[1],NW_input[2],NW_input[3],NW_input[4])
+    print(my_NW.A)
+    print(my_NW.path)
 
-NW_input = NW_setup(type_of_alignment,score_matrix_name,seq1_name,seq2_name,d)
-## test
-#print(NW_input)
-my_NW = compute_matrix(NW_input[0],NW_input[1],NW_input[2],NW_input[3],NW_input[4])
-print(my_NW.A)
-print(my_NW.path)
+    my_backtrace = backtrace(my_NW, NW_input[5], NW_input[6])
+    my_backtrace.display()
 
-my_backtrace = backtrace(my_NW)
-my_backtrace.display()
+#################
+### Test that ###
+
+start(sys.argv)
