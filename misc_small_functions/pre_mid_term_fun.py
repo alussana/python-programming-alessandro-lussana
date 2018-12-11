@@ -1,3 +1,21 @@
+def store_seq(fasta_file):
+    with open(fasta_file) as fasta:
+        heads = []
+        seqs = []
+        seq = ""
+        for line in fasta:
+            if line[0] == ">":
+                seq_name = line.split("|")
+                heads.append(seq_name[0][1:len(seq_name[0])])
+                seqs.append(seq)
+                seq = ""
+            else:
+                line = line.strip()
+                seq = seq + line
+        seqs.append(seq)
+        seqs.pop(0)
+    return([heads, seqs])
+
 def compute_avg(numbers):
     summation = 0
     for i in numbers:
@@ -127,5 +145,10 @@ def pairwise_substitution_log_odd(alignment_file_name):
 
 # ===================================== #
 # === pairwise_substitution_log_odd === #
-file = input("alignment file: ")
-print(pairwise_substitution_log_odd(file))
+#file = input("alignment file: ")
+#print(pairwise_substitution_log_odd(file))
+
+# ================= #
+# === store_seq === #
+#fasta_file = input("fasta_file: ")
+#print(store_seq(fasta_file))
