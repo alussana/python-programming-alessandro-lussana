@@ -150,9 +150,26 @@ ENSG00000162804.9_241988079_241988183    1.367311
 dtype: float64
 '''
 
+## Computing the difference between quantiles
+expr_quant_10 = selected_data.quantile(q=0.1, axis=1)
+expr_quant_90 = selected_data.quantile(q=0.9, axis=1)
+expr_quant_range = expr_quant_90 - expr_quant_10
+
+'''
+>>> expr_quant_range.head()
+HG00096    195.997076
+HG00097    190.084365
+HG00099    145.578205
+HG00100    189.320729
+HG00101    173.758388
+dtype: float64
+'''
+
 ## ====================
 ## Plotting the results
 
-import matplotlib.pyplot as plt     ## plt is needed since pd.plot is a wrapper of plt functions
-std_plot = expr_std.plot.density()  ## create the object needed to plot the density
-plt.show()                          ## show the graph
+## having scipy installed is also needed for this
+import matplotlib.pyplot as plt             ## plt is needed since pd.plot is a wrapper of plt functions
+std_plot = expr_std.plot.density()          ## create the object needed to plot the density
+hist_plot = expr_quant_range.plot.hist()    ## create the object needed to plot the histogram
+plt.show()                                  ## show the graph
