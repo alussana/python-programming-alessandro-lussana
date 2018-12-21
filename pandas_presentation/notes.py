@@ -129,7 +129,8 @@ merged_data.to_csv("merged_data.csv")
 ## Boolean Indexing
 
 ## this filters records that refer to chr2 and with genomic coordinate > 100000000
-selected_data = data[data.chr == 2][data.Coord > 100000000] 
+selected_data = data[data.chr == 2]
+selected_data = selected_data[data.Coord > 100000000] 
 
 ## =========================
 ## Example of dummy analysis
