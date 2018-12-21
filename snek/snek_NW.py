@@ -142,8 +142,8 @@ def snek_backtrace(snek_matrix, seqA_header, seqB_header):
     while all_path_resolved == 0:
         
         aligned = store_alignment(snek_matrix)
-        stored_seqA.append(aligned[0])
-        stored_seqB.append(aligned[1])
+        stored_seqA.append(aligned[0][::-1])
+        stored_seqB.append(aligned[1][::-1])
         all_path_resolved = aligned[2]
 
     ## TODO reverse the aligned sequences in seqA and seqB lists
@@ -191,9 +191,9 @@ def snek_setup(type_of_alignment, score_matrix_file, seq1_file, seq2_file, d):
 
 def start_snek(type_of_alignment,score_matrix_file,seq1_file,seq2_file,d):
     snek_input = snek_setup(type_of_alignment,score_matrix_file,seq1_file,seq2_file,d)
-    my_NW = compute_matrix(snek_input[0],snek_input[1],snek_input[2],snek_input[3],snek_input[4])
-    my_backtrace = snek_backtrace(my_NW, snek_input[5], snek_input[6])
-    return(my_backtrace)
+    matrix = compute_matrix(snek_input[0],snek_input[1],snek_input[2],snek_input[3],snek_input[4])
+    backtrace = snek_backtrace(matrix, snek_input[5], snek_input[6])
+    return(backtrace)
 
 def initiate_snek(args):
     
@@ -221,6 +221,14 @@ type = "NT"
 score_matrix = "scores.txt"
 sequence1 = "tardigradum.aquaporin10.fa"
 sequence2 = "tardigradum.aquaporin4.fa"
+gap = 2
+alignment = snek.start_snek(type, score_matrix, sequence1, sequence2, gap)
+
+import snek
+type = "NT"
+score_matrix = "scores.txt"
+sequence1 = "seqA.fa"
+sequence2 = "seqB.fa"
 gap = 2
 alignment = snek.start_snek(type, score_matrix, sequence1, sequence2, gap)
 '''
