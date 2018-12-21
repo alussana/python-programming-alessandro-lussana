@@ -15,7 +15,7 @@ class alignment(object):
         self.seqB_header = seqB_header
         self.seqA = seqA
         self.seqB = seqB
-        self.score = scoreù
+        self.score = score
     ## TODO def a method to display every optimal alignment
     #def print_alignment(self):
     #    print("%s\n%s" %(self.seqA_header, self.seqA))
