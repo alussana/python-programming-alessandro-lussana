@@ -2,8 +2,6 @@ import numpy as np
 import sys
 import math
 
-## TODO take fasta in input
-
 class NW_matrix(object):
     def __init__(self, A, A_path, seq1, seq2):
         self.A = A
@@ -17,11 +15,13 @@ class alignment(object):
         self.seqB_header = seqB_header
         self.seqA = seqA
         self.seqB = seqB
-        self.score = score
-    def display(self):
-        print("Score: %f" %(self.score))
-        print("%s\n%s" %(self.seqA_header, self.seqA))
-        print("%s\n%s" %(self.seqB_header, self.seqB))
+        self.score = scoreù
+    ## TODO def a method to display every optimal alignment
+    #def print_alignment(self):
+    #    print("%s\n%s" %(self.seqA_header, self.seqA))
+    #    print("%s\n%s" %(self.seqB_header, self.seqB))
+    def score(self):
+        return(self.score)
 
 def print_help_page():
     ## TODO make this shit readable with some smart lib
@@ -89,50 +89,75 @@ def compute_matrix(seq1, seq2, score_matrix, d, symbol_dict):
 
     return(NW_matrix(A, A_path, seq1, seq2))
 
+def store_alignment(NW_matrix):
+
+    seqA = ""
+    seqB = ""
+    
+    all_paths_resolved = 1
+    pointer = [len(NW_matrix.path) - 1, len(NW_matrix.path[0]) - 1]
+
+    while pointer[0] > 0 and pointer[1] > 0:
+        
+        directions = list(str(int(NW_matrix.path[pointer[0]][pointer[1]])))
+        
+        ## pop the first direction if there are multiple equivalent directions
+        if len(directions) > 1:
+            direction = int(directions.pop(0))
+            NW_matrix.path[pointer[0]][pointer[1]] = float("".join(directions))
+            all_paths_resolved = 0
+        else:
+            direction = int("".join(directions))
+
+        if direction == 1:
+            seqA = seqA + NW_matrix.seq1[pointer[0]]
+            seqB = seqB + NW_matrix.seq2[pointer[1]]
+            pointer[0] = pointer[0] - 1
+            pointer[1] = pointer[1] - 1
+        
+        elif direction == 2:
+            pointer[0] = pointer[0] - 1
+            seqA = seqA + NW_matrix.seq1[pointer[0]]
+            seqB = seqB + "-"
+
+        elif direction == 3:
+            seqA = seqA + "-"
+            seqB = seqB + NW_matrix.seq2[pointer[1]]
+            pointer[1] = pointer[1] - 1
+
+    return([seqA, seqB, all_paths_resolved])
+
 def backtrace(NW_matrix, seqA_header, seqB_header):
     ## memo
     ## seq1 must refer to the rows of NW_matrix.A
     ## seq2 must refer to the cols of NW_matrix.A
 
-    pointer = [len(NW_matrix.A) - 1, len(NW_matrix.A[0]) - 1]
-    score = NW_matrix.A[pointer[0]][pointer[1]]
+    score = NW_matrix.A[len(NW_matrix.A) - 1][len(NW_matrix.A[0]) - 1]
 
-    seqA = ""
-    seqB = ""
+    stored_seqA = []
+    stored_seqB = []
+    
+    all_path_resolved = 0
 
-    while pointer[0] > 0 and pointer[1] > 0:
-        directions = NW_matrix.path[pointer[0]][pointer[1]]
+    while all_path_resolved == 0:
         
-        ## TODO: store also equivalent alignments
-        directions = int(str(directions)[0])
+        aligned = store_alignment(NW_matrix)
+        stored_seqA.append(aligned[0])
+        stored_seqB.append(aligned[1])
+        all_path_resolved = aligned[2]
 
-        if directions == 1:
-            seqA = seqA + NW_matrix.seq1[pointer[0]]
-            seqB = seqB + NW_matrix.seq2[pointer[1]]
-            pointer[0] = pointer[0] - 1
-            pointer[1] = pointer[1] - 1
-        
-        elif directions == 2:
-            pointer[0] = pointer[0] - 1
-            seqA = seqA + NW_matrix.seq1[pointer[0]]
-            seqB = seqB + "-"
+    ## TODO reverse the aligned sequences in seqA and seqB lists
+    return(alignment(seqA_header, seqB_header, stored_seqA, stored_seqB, score))
 
-        elif directions == 3:
-            seqA = seqA + "-"
-            seqB = seqB + NW_matrix.seq2[pointer[1]]
-            pointer[1] = pointer[1] - 1
-
-    return(alignment(seqA_header, seqB_header, seqA[::-1], seqB[::-1], score))
-
-def NW_setup(type_of_alignment, score_matrix_name, seq1_name, seq2_name, d): 
+def NW_setup(type_of_alignment, score_matrix_file, seq1_file, seq2_file, d): 
 
     ## check type of alignment
     if type_of_alignment != "AA" and type_of_alignment != "NT":
         sys.exit("Type of alignment must be \"NT\" or \"AA\"\n\n")
 
     ## read, check and pre-process sequences
-    file_seq1 = open(seq1_name)
-    file_seq2 = open(seq2_name)
+    file_seq1 = open(seq1_file)
+    file_seq2 = open(seq2_file)
 
     seq1_header = file_seq1.readline()
     seq1_header = seq1_header.strip()
@@ -155,7 +180,7 @@ def NW_setup(type_of_alignment, score_matrix_name, seq1_name, seq2_name, d):
     ## TODO add AA symbol_dict
 
     ## read and check score_matrix
-    score_matrix = np.loadtxt(score_matrix_name)
+    score_matrix = np.loadtxt(score_matrix_file)
     ## TODO check the score_matrix
 
     ## read and check the gap penalty
@@ -164,7 +189,13 @@ def NW_setup(type_of_alignment, score_matrix_name, seq1_name, seq2_name, d):
     
     return([seq1,seq2,score_matrix,d,symbol_dict,seq1_header,seq2_header])
 
-def start(args):
+def execute(type_of_alignment,score_matrix_file,seq1_file,seq2_file,d):
+    NW_input = NW_setup(type_of_alignment,score_matrix_file,seq1_file,seq2_file,d)
+    my_NW = compute_matrix(NW_input[0],NW_input[1],NW_input[2],NW_input[3],NW_input[4])
+    my_backtrace = backtrace(my_NW, NW_input[5], NW_input[6])
+    return(my_backtrace)
+
+def start_NW(args):
     
     ## check number of arguments
     if len(sys.argv) != 6 and len(sys.argv) != 1:
@@ -176,21 +207,7 @@ def start(args):
         sys.exit()
 
     type_of_alignment = sys.argv[1]
-    score_matrix_name = sys.argv[2]
-    seq1_name = sys.argv[3] 
-    seq2_name = sys.argv[4]
-    d = sys.argv[5]
+    score_matrix_file = sys.argv[2]
 
-    ## execute 
-    NW_input = NW_setup(type_of_alignment,score_matrix_name,seq1_name,seq2_name,d)
-    my_NW = compute_matrix(NW_input[0],NW_input[1],NW_input[2],NW_input[3],NW_input[4])
-    print(my_NW.A)
-    print(my_NW.path)
-
-    my_backtrace = backtrace(my_NW, NW_input[5], NW_input[6])
-    my_backtrace.display()
-
-#################
-### Test that ###
-
-start(sys.argv)
+#alignment = start_NW(sys.argv)
+#alignment.print_alignment()
