@@ -2,7 +2,7 @@ import numpy as np
 import sys
 import math
 
-class NW_matrix(object):
+class snek_matrix(object):
     def __init__(self, A, A_path, seq1, seq2):
         self.A = A
         self.path = A_path
@@ -87,52 +87,52 @@ def compute_matrix(seq1, seq2, score_matrix, d, symbol_dict):
 
                 A_path[pointer[0]][pointer[1]] = path_notation
 
-    return(NW_matrix(A, A_path, seq1, seq2))
+    return(snek_matrix(A, A_path, seq1, seq2))
 
-def store_alignment(NW_matrix):
+def store_alignment(snek_matrix):
 
     seqA = ""
     seqB = ""
     
     all_paths_resolved = 1
-    pointer = [len(NW_matrix.path) - 1, len(NW_matrix.path[0]) - 1]
+    pointer = [len(snek_matrix.path) - 1, len(snek_matrix.path[0]) - 1]
 
     while pointer[0] > 0 and pointer[1] > 0:
         
-        directions = list(str(int(NW_matrix.path[pointer[0]][pointer[1]])))
+        directions = list(str(int(snek_matrix.path[pointer[0]][pointer[1]])))
         
         ## pop the first direction if there are multiple equivalent directions
         if len(directions) > 1:
             direction = int(directions.pop(0))
-            NW_matrix.path[pointer[0]][pointer[1]] = float("".join(directions))
+            snek_matrix.path[pointer[0]][pointer[1]] = float("".join(directions))
             all_paths_resolved = 0
         else:
             direction = int("".join(directions))
 
         if direction == 1:
-            seqA = seqA + NW_matrix.seq1[pointer[0]]
-            seqB = seqB + NW_matrix.seq2[pointer[1]]
+            seqA = seqA + snek_matrix.seq1[pointer[0]]
+            seqB = seqB + snek_matrix.seq2[pointer[1]]
             pointer[0] = pointer[0] - 1
             pointer[1] = pointer[1] - 1
         
         elif direction == 2:
             pointer[0] = pointer[0] - 1
-            seqA = seqA + NW_matrix.seq1[pointer[0]]
+            seqA = seqA + snek_matrix.seq1[pointer[0]]
             seqB = seqB + "-"
 
         elif direction == 3:
             seqA = seqA + "-"
-            seqB = seqB + NW_matrix.seq2[pointer[1]]
+            seqB = seqB + snek_matrix.seq2[pointer[1]]
             pointer[1] = pointer[1] - 1
 
     return([seqA, seqB, all_paths_resolved])
 
-def backtrace(NW_matrix, seqA_header, seqB_header):
+def snek_backtrace(snek_matrix, seqA_header, seqB_header):
     ## memo
-    ## seq1 must refer to the rows of NW_matrix.A
-    ## seq2 must refer to the cols of NW_matrix.A
+    ## seq1 must refer to the rows of snek_matrix.A
+    ## seq2 must refer to the cols of snek_matrix.A
 
-    score = NW_matrix.A[len(NW_matrix.A) - 1][len(NW_matrix.A[0]) - 1]
+    score = snek_matrix.A[len(snek_matrix.A) - 1][len(snek_matrix.A[0]) - 1]
 
     stored_seqA = []
     stored_seqB = []
@@ -141,7 +141,7 @@ def backtrace(NW_matrix, seqA_header, seqB_header):
 
     while all_path_resolved == 0:
         
-        aligned = store_alignment(NW_matrix)
+        aligned = store_alignment(snek_matrix)
         stored_seqA.append(aligned[0])
         stored_seqB.append(aligned[1])
         all_path_resolved = aligned[2]
@@ -149,7 +149,7 @@ def backtrace(NW_matrix, seqA_header, seqB_header):
     ## TODO reverse the aligned sequences in seqA and seqB lists
     return(alignment(seqA_header, seqB_header, stored_seqA, stored_seqB, score))
 
-def NW_setup(type_of_alignment, score_matrix_file, seq1_file, seq2_file, d): 
+def snek_setup(type_of_alignment, score_matrix_file, seq1_file, seq2_file, d): 
 
     ## check type of alignment
     if type_of_alignment != "AA" and type_of_alignment != "NT":
@@ -189,13 +189,13 @@ def NW_setup(type_of_alignment, score_matrix_file, seq1_file, seq2_file, d):
     
     return([seq1,seq2,score_matrix,d,symbol_dict,seq1_header,seq2_header])
 
-def execute(type_of_alignment,score_matrix_file,seq1_file,seq2_file,d):
-    NW_input = NW_setup(type_of_alignment,score_matrix_file,seq1_file,seq2_file,d)
-    my_NW = compute_matrix(NW_input[0],NW_input[1],NW_input[2],NW_input[3],NW_input[4])
-    my_backtrace = backtrace(my_NW, NW_input[5], NW_input[6])
+def start_snek(type_of_alignment,score_matrix_file,seq1_file,seq2_file,d):
+    snek_input = snek_setup(type_of_alignment,score_matrix_file,seq1_file,seq2_file,d)
+    my_NW = compute_matrix(snek_input[0],snek_input[1],snek_input[2],snek_input[3],snek_input[4])
+    my_backtrace = snek_backtrace(my_NW, snek_input[5], snek_input[6])
     return(my_backtrace)
 
-def start_NW(args):
+def initiate_snek(args):
     
     ## check number of arguments
     if len(sys.argv) != 6 and len(sys.argv) != 1:
@@ -209,5 +209,18 @@ def start_NW(args):
     type_of_alignment = sys.argv[1]
     score_matrix_file = sys.argv[2]
 
-#alignment = start_NW(sys.argv)
-#alignment.print_alignment()
+## start the snek from command line
+#initiate_snek(sys.argv)
+
+## or
+
+## test that importing snek module:
+'''
+import snek
+type = "NT"
+score_matrix = "scores.txt"
+sequence1 = "tardigradum.aquaporin10.fa"
+sequence2 = "tardigradum.aquaporin4.fa"
+gap = 2
+alignment = snek.start_snek(type, score_matrix, sequence1, sequence2, gap)
+'''
