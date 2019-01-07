@@ -1,3 +1,5 @@
+## TODO stop backtrace at pointer | score becoming 0
+
 import numpy as np
 import sys
 import math
@@ -89,15 +91,27 @@ def compute_matrix(seq1, seq2, score_matrix, d, symbol_dict):
 
     return(snek_matrix(A, A_path, seq1, seq2))
 
+def define_starting_pointer(snek_matrix_A):
+    
+    max_score = snek_matrix_A.max()
+    pointer_coords = np.argwhere(snek_matrix_A == max_score)
+    #rows_pointer = pointer_coords[len(pointer_coords) - 1][0]
+    #cols_pointer = pointer_coords[len(pointer_coords) - 1][1]
+    
+    return(pointer_coords[len(pointer_coords) - 1])
+
 def store_alignment(snek_matrix):
 
     seqA = ""
     seqB = ""
     
     all_paths_resolved = 1
-    pointer = [len(snek_matrix.path) - 1, len(snek_matrix.path[0]) - 1]
+    pointer = define_starting_pointer(snek_matrix.A)
 
     while pointer[0] > 0 and pointer[1] > 0:
+
+        ## TODO make seqA and seqB growing according to the starting pointer
+        ## ...
         
         directions = list(str(int(snek_matrix.path[pointer[0]][pointer[1]])))
         
@@ -210,17 +224,31 @@ def initiate_snek(args):
     score_matrix_file = sys.argv[2]
 
 ## start the snek from command line
-#initiate_snek(sys.argv)
+'''
+initiate_snek(sys.argv)
+'''
 
 ## or
 
 ## test that importing snek module:
 '''
-import snek
+import snek_SW as snek
 type = "NT"
 score_matrix = "scores.txt"
 sequence1 = "tardigradum.aquaporin10.fa"
 sequence2 = "tardigradum.aquaporin4.fa"
 gap = 2
 alignment = snek.start_snek(type, score_matrix, sequence1, sequence2, gap)
+
+import snek
+type = "NT"
+score_matrix = "scores.txt"
+sequence1 = "seqA.fa"
+sequence2 = "seqB.fa"
+gap = 2
+alignment = snek.start_snek(type, score_matrix, sequence1, sequence2, gap)
+
+snek_input = snek.snek_setup(type,score_matrix,sequence1,sequence2,gap)
+matrix = snek.compute_matrix(snek_input[0],snek_input[1],snek_input[2],snek_input[3],snek_input[4])
+backtrace = snek.snek_backtrace(matrix, snek_input[5], snek_input[6])
 '''

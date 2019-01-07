@@ -25,7 +25,7 @@ class alignment(object):
 
 def print_help_page():
     ## TODO make this shit readable with some smart lib
-    print("\n=== Needleman-Wunsch Algorithm ===\n\nSYNOPSIS:\
+    print("\n=== Snek Tools ===\n\nSYNOPSIS:\
             \n\npython3 NW.py <TYPE> <SCORE_MATRIX> <SEQUENCE1> <SEQUENCE2> <GAP>\
             \n\ntype                    \"NT\" or \"AA\" \
             \nscore_matrix            symmetrical matrix, order of col and rows is A,C,T,G\
@@ -216,7 +216,7 @@ def initiate_snek(args):
 
 ## test that importing snek module:
 '''
-import snek
+import snek_NW as snek
 type = "NT"
 score_matrix = "scores.txt"
 sequence1 = "tardigradum.aquaporin10.fa"
@@ -231,4 +231,8 @@ sequence1 = "seqA.fa"
 sequence2 = "seqB.fa"
 gap = 2
 alignment = snek.start_snek(type, score_matrix, sequence1, sequence2, gap)
+
+single functions:
+snek_input = snek.snek_setup(type,score_matrix,sequence1,sequence2,gap)
+matrix = snek.compute_matrix(snek_input[0],snek_input[1],snek_input[2],snek_input[3],snek_input[4])
 '''
