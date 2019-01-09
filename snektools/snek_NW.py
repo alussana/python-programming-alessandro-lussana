@@ -224,7 +224,7 @@ sequence2 = "tardigradum.aquaporin4.fa"
 gap = 2
 alignment = snek.start_snek(type, score_matrix, sequence1, sequence2, gap)
 
-import snek
+import snek_NW as snek
 type = "NT"
 score_matrix = "scores.txt"
 sequence1 = "seqA.fa"

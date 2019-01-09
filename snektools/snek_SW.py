@@ -1,5 +1,3 @@
-## TODO stop backtrace at pointer | score becoming 0
-
 import numpy as np
 import sys
 import math
@@ -108,11 +106,10 @@ def store_alignment(snek_matrix):
     all_paths_resolved = 1
     pointer = define_starting_pointer(snek_matrix.A)
 
-    while pointer[0] > 0 and pointer[1] > 0:
+    partial_score = 1
 
-        ## TODO make seqA and seqB growing according to the starting pointer
-        ## ...
-        
+    while partial_score > 0:
+
         directions = list(str(int(snek_matrix.path[pointer[0]][pointer[1]])))
         
         ## pop the first direction if there are multiple equivalent directions
@@ -139,6 +136,8 @@ def store_alignment(snek_matrix):
             seqB = seqB + snek_matrix.seq2[pointer[1]]
             pointer[1] = pointer[1] - 1
 
+        partial_score = snek_matrix.A[pointer[0]][pointer[1]]
+
     return([seqA, seqB, all_paths_resolved])
 
 def snek_backtrace(snek_matrix, seqA_header, seqB_header):
@@ -146,7 +145,7 @@ def snek_backtrace(snek_matrix, seqA_header, seqB_header):
     ## seq1 must refer to the rows of snek_matrix.A
     ## seq2 must refer to the cols of snek_matrix.A
 
-    score = snek_matrix.A[len(snek_matrix.A) - 1][len(snek_matrix.A[0]) - 1]
+    score = snek_matrix.A.max()
 
     stored_seqA = []
     stored_seqB = []
@@ -160,7 +159,6 @@ def snek_backtrace(snek_matrix, seqA_header, seqB_header):
         stored_seqB.append(aligned[1][::-1])
         all_path_resolved = aligned[2]
 
-    ## TODO reverse the aligned sequences in seqA and seqB lists
     return(alignment(seqA_header, seqB_header, stored_seqA, stored_seqB, score))
 
 def snek_setup(type_of_alignment, score_matrix_file, seq1_file, seq2_file, d): 
@@ -240,7 +238,7 @@ sequence2 = "tardigradum.aquaporin4.fa"
 gap = 2
 alignment = snek.start_snek(type, score_matrix, sequence1, sequence2, gap)
 
-import snek
+import snek_SW as snek
 type = "NT"
 score_matrix = "scores.txt"
 sequence1 = "seqA.fa"
