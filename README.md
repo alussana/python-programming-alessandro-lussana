@@ -1,28 +1,33 @@
 # python-programming-alessandro-lussana
-Personal storage of miscellaneous projects for Bologna Bioinformatics Master Course
+Personal storage of miscellaneous projects for Bologna Bioinformatics Master Course  
+Contents:
 
 ## /snektools
 Suite of general workflows for the implementation of algorithms  
-Can be used both as a python module or as a command line tool
+Can be used as both a python module and a command line tool
 
-### Needleman-Wunsch
+#### Needleman-Wunsch
 Status: OK  
 Usage: [...]  
 TODO: 
 - Add the option to remove end gap penalty
 - Write documentation
-- Add a command to print the backtrace objects to a text file
+- Add a command to print backtrace objects to text files
 
-### Smith-Waterman
+#### Smith-Waterman
 Status: OK  
 Usage: [...]  
 TODO:  
 - Write documentation
-- Add a command to print the backtrace objects to a text file
+- Add a command to print backtrace objects to text files
 
-### Hidden Markov Model
+#### Baum-Welch
 Status: to be started  
 Usage: [...]
+
+#### Viterbi
+Status: to be started
+Usage: [...] 
 
 ## /exam
 Exams directory
@@ -31,4 +36,4 @@ Exams directory
 Notes directory
 
 ## /misc\_fun
-Miscellaneous functions directory
+Miscellaneous functions directory; random exercises
