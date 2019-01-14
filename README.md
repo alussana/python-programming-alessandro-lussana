@@ -22,12 +22,12 @@ TODO:
 - Add a command to print backtrace objects to text files
 
 #### Baum-Welch
-Status: to be started  
+Status: just started  
 Usage: [...]
 
 #### Viterbi
-Status: to be started
-Usage: [...] 
+Status: to be started  
+Usage: [...]
 
 ## /exam
 Exams directory
