@@ -26,6 +26,7 @@ states = ["B", "Y", "N", "E"]
 
 ###################
 ## viterbi decoding
+## V is the viterbi matrix
 def viterbi(s, t, e, states):
     n = len(s) + 1 ## number of cols of V
     m = len(states) ## number of rows of V

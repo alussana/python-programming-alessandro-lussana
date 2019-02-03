@@ -189,6 +189,7 @@ for index in enumerate(my_list):
 for a, b in zip(list_a, list_b):
 	## do something
 	## note: number of iterations will be == len(shorter_list)
+
 ####################
 ### WHILE CYCLES ###
 
@@ -244,8 +245,11 @@ sys.argv[1]			## returns the first argument imported by command line
 ### FUNCTIONAL PROGRAMMING ###
 
 ## Anonymous Functions (lambda). E.g.:
+## use with map, filter, reduce
 my_list = range(16)
 print filter(lambda x: x % 3 == 0, my_list)
+items = [1, 2, 3, 4, 5]
+squared = list(map(lambda x: x**2, items))
 
 ###############
 ### CLASSES ###

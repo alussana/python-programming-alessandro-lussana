@@ -21,11 +21,11 @@ TODO:
 - Write documentation
 - Add a command to print backtrace objects to text files
 
-#### Baum-Welch
-Status: just started  
+#### Viterbi
+Status: in progress  
 Usage: [...]
 
-#### Viterbi
+#### Baum-Welch
 Status: to be started  
 Usage: [...]
 
