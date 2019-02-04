@@ -141,16 +141,13 @@ def decode_paths(viterbi_matrix):
         for position in list(viterbi_matrix.columns)[len(viterbi_matrix.columns)-2:1:-1]:
             
             state_index = len(viterbi_matrix[position][state][1]) - 1
-            print(state_index)
-            
-            if state_index != 0:
-                multipath = 1
             
             state = viterbi_matrix[position][state][1][state_index]
             path.append(state)
 
-            if state_index > 0:
-                viterbi_matrix[num_of_pos][0][1].pop(state_index)
+            if state_index != 0:
+                viterbi_matrix[position][0][1].pop(state_index)
+                multipath = 1
 
         ## add the path to the list of the optimal paths
         path.append("B")

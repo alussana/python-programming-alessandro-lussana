@@ -25,6 +25,7 @@ TODO:
 Status: OK  
 Usage: [...]  
 TODO: 
+- Covert all the scores to log to distinguish small probabilities from zero
 - Write documentation
 - Add a command to print optimal paths to text files
 
