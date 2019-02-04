@@ -23,17 +23,17 @@ TODO:
 
 #### Viterbi Decoding
 Status: OK  
-Usage: [...] 
+Usage: [...]  
 TODO: 
 - Write documentation
 - Add a command to print optimal paths to text files
 
 #### Farward Algorithm
-Status: to be started 
-Usage: [...] 
+Status: to be started  
+Usage: [...]
 
 #### Backward Algorithm
-Status: to be started 
+Status: to be started  
 Usage: [...]
 
 #### Baum-Welch
