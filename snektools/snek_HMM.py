@@ -181,7 +181,7 @@ def viterbi(model, sequence):
             scores = []
             
             for previous_state in model.states:
-                score = V[position - 1][previous_state][0]
+                score = V[position - 1][previous_state]
                 scores.append(score * model.transitions[previous_state][position_state])
             
             ## maximize score, find optimal states
@@ -202,7 +202,7 @@ def viterbi(model, sequence):
         scores = []
 
         for previous_state in model.states:
-            score = V[position - 1][previous_state][0]
+            score = V[position - 1][previous_state]
             scores.append(score * float(model.endingp[state]))
 
         ## maximize score, find optimal states
@@ -216,6 +216,64 @@ def viterbi(model, sequence):
     ## decode all the optimal paths
     P = decode_paths(V)
     return(P)
+
+def forward(model, sequence):
+    
+    ## initialize forward matrix
+    F = pd.DataFrame(index=model.states,columns=[i for i in range(len(sequence.sequence))])
+    F[0] = 1. 
+
+    ## fill column 1
+    position = 1
+    column_scores = []
+    for state in model.states:
+        score = float(model.startingp[state] * model.emissions[state][sequence.sequence[position]])
+        column_scores.append(score)
+    F[1] = column_scores
+
+    ## iteration
+    for position in F.columns[2:len(F.columns) - 1]:
+        column_scores = []
+
+        for position_state in model.states:
+            scores = []
+
+            for previous_state in model.states:
+                score = F[position - 1][previous_state]
+                scores.append(score * model.transitions[previous_state][position_state])
+
+            ## sum the scores
+            total_score = sum(scores)
+
+            ## fill the column
+            column_scores.append(total_score)
+
+        ## update the forward matrix
+        F[position] = column_scores
+
+    ## termination
+    position = position + 1
+    column_scores = []
+
+    for position_state in model.states:
+        scores = []
+
+        for previous_state in model.states:
+            score = F[position - 1][previous_state]
+            scores.append(score * float(model.endingp[state]))
+
+        ## sum the scores
+        total_score = sum(scores)
+
+        ## fill the last column
+        column_scores.append(total_score)
+
+    ## update the forward matrix
+    F[position] = column_scores
+
+    return(total_score)
+
+def backward(model, sequence)
 
 ######################################
 ### Test This for Viterbi Decoding ###
@@ -231,4 +289,20 @@ sequence_fasta_file = "CpG.fa"
 model = snek.import_model(transitions_matrix_file, emissions_matrix_file, starting_prob_file, ending_prob_file)
 sequence = snek.import_sequence(sequence_fasta_file = sequence_fasta_file)
 V = snek.viterbi(model, sequence)
+'''
+
+#######################################
+### Test This for Farward Algorithm ###
+'''
+import snek_HMM as snek
+import pandas as pd
+import numpy as np
+transitions_matrix_file = "transitions_matrix.txt"
+emissions_matrix_file = "emissions_matrix.txt"
+starting_prob_file = "starting_probabilities.txt"
+ending_prob_file = "ending_probabilities.txt"
+sequence_fasta_file = "CpG.fa"
+model = snek.import_model(transitions_matrix_file, emissions_matrix_file, starting_prob_file, ending_prob_file)
+sequence = snek.import_sequence(sequence_fasta_file = sequence_fasta_file)
+prob = snek.forward(model, sequence)
 '''

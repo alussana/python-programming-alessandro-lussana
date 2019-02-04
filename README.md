@@ -30,8 +30,11 @@ TODO:
 - Add a command to print optimal paths to text files
 
 #### Farward Algorithm
-Status: to be started  
+Status: OK    
 Usage: [...]
+TODO:
+- Covert all the scores to log to distinguish small probabilities from zero
+- Write documentation
 
 #### Backward Algorithm
 Status: to be started  
