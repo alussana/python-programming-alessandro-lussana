@@ -1,7 +1,8 @@
 ### Simple Hidden Markov Model implementation in pandas
 ### Main features:
-### Models are built using parameters stored in external files (csv)
-### An existing model can be trained with Baum-Welsch algorithm
+### Hmm object are built using parameters stored in external files (csv)
+### An existing model can be trained with Baum-Welsch algorithm using TrainingSet objects
+### Sequence objects are build from external files (fasta or plain text)
 ### Optimal hidden paths given a sequence and a model can be found with viterbi decoding
 ### Sequences can be generated given a model and a path
 ### Work is in progress
@@ -36,7 +37,7 @@ def import_sequence(sequence_fasta_file = False, path_fasta_file = False):
     path = "unknown"
     tag = "unknown"
 
-    ## store the symobols if they exist
+    ## store the symbols if they exist
     ## store the fasta header as the tag if it exists
     if sequence_fasta_file != False:
         
@@ -107,54 +108,88 @@ def find_max(scores, states):
 
     return(uniq_max, max_states)
 
+## helper function for viterbi
+#def resolve_paths(P_from_viterbi):
+
+
 def viterbi(model, sequence):
     
-    ## initialize the path
-    P = []
-
     ## initialiaze the viterbi matrix V
     V = pd.DataFrame(index=model.states,columns=[i for i in range(len(sequence.sequence))])
     V[0] = 1.0 
 
     ## fill the first column (the first position in the sequence)
+    position = 1
     column_scores = []
     for state in V.index:
-        column_scores.append(float(model.startingp[state]))
+        score = float(model.startingp[state] * model.emissions[state][sequence.sequence[position]])
+        column_scores.append([score,"B"])
     V[1] = column_scores
 
+    ### tmp test ###
+    print(V)
+    print(sequence.sequence)
+    print(position)
+    print(sequence.sequence[position])
+    ################
+
     ## iteration:
-    for position in V.columns[2:len(V.columns)]:
+    for position in V.columns[2:len(V.columns) - 1]:
         column_scores = []
         
         for position_state in model.states:
             scores = []
             
             for previous_state in model.states:
-                scores.append(model.transitions[previous_state][position_state])
+                score = V[position - 1][previous_state][0]
+                scores.append(score * model.transitions[previous_state][position_state])
             
             ## maximize score, find optimal states
             max_score,max_paths = find_max(scores, model.states)
             ## multiply for the emission probability
-            max_score = max_score * model.emissions[position_state][sequence.sequence[position-1]]
+            max_score = max_score * model.emissions[position_state][sequence.sequence[position]]
+            ## fill the column
+            column_scores.append([max_score,max_paths])
 
-            column_scores.append(max_score)
-            P.append(max_paths)
-
-            ### tmp test ###
-            print(sequence.sequence)
-            print(position)
-            print(sequence.sequence[position-1])
-            print(V)
-            ################
-
+        ### tmp test ###
+        print(V)
+        print(sequence.sequence)
+        print(position)
+        print(sequence.sequence[position])
+        ################
+        
+        ## update the viterbi matrix
         V[position] = column_scores
 
     ## termination
-    ## TODO
+    position = position + 1
+    column_scores = []
+
+    for position_state in model.states:
+        scores = []
+
+        for previous_state in model.states:
+            score = V[position - 1][previous_state][0]
+            scores.append(score * float(model.endingp[state]))
+
+        ## maximize score, find optimal states
+        max_score,max_paths = find_max(scores, model.states)
+        ## fill the last column
+        column_scores.append([max_score,max_paths])
+
+    ## update the viterbi matrix
+    V[position] = column_scores
     
+    ### tmp test ###
+    print(V)
+    print(sequence.sequence)
+    print(position)
+    print(sequence.sequence[position])
+    ################
+
     ## TODO resolve all the optimal paths from P
 
-    return(V,P)
+    return(V)
 
 ######################################
 ### Test This for Viterbi Decoding ###
@@ -169,5 +204,5 @@ ending_prob_file = "ending_probabilities.txt"
 sequence_fasta_file = "CpG.fa"
 model = snek.import_model(transitions_matrix_file, emissions_matrix_file, starting_prob_file, ending_prob_file)
 sequence = snek.import_sequence(sequence_fasta_file = sequence_fasta_file)
-V,P = snek.viterbi(model, sequence)
+V = snek.viterbi(model, sequence)
 '''

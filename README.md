@@ -21,8 +21,16 @@ TODO:
 - Write documentation
 - Add a command to print backtrace objects to text files
 
-#### Viterbi
+#### Viterbi Decoding
 Status: in progress  
+Usage: [...]
+
+#### Farward Algorithm
+Status: to be started 
+Usage: [...] 
+
+#### Backward Algorithm
+Status: to be started 
 Usage: [...]
 
 #### Baum-Welch
