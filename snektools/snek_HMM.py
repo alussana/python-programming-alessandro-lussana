@@ -109,8 +109,58 @@ def find_max(scores, states):
     return(uniq_max, max_states)
 
 ## helper function for viterbi
-#def resolve_paths(P_from_viterbi):
+def decode_paths(viterbi_matrix):
 
+    ## initialize the list of optimal paths
+    P = []
+
+    all_path_decoded = 0
+
+    ## decoding
+    while all_path_decoded == 0:
+        
+        multipath = 0
+
+        ## initialize a new reversed path
+        path = ["E"]
+
+        ## determine the last state
+        num_of_pos = len(viterbi_matrix.columns)-1
+        state_index = len(viterbi_matrix[num_of_pos][0][1]) - 1
+
+        if state_index != 0:
+            multipath = 1
+
+        state = viterbi_matrix[num_of_pos][0][1][state_index]
+        path.append(state)
+
+        if state_index > 0:
+            viterbi_matrix[num_of_pos][0][1].pop(state_index)
+
+        ## decode all the other states
+        for position in list(viterbi_matrix.columns)[len(viterbi_matrix.columns)-2:1:-1]:
+            
+            state_index = len(viterbi_matrix[position][state][1]) - 1
+            print(state_index)
+            
+            if state_index != 0:
+                multipath = 1
+            
+            state = viterbi_matrix[position][state][1][state_index]
+            path.append(state)
+
+            if state_index > 0:
+                viterbi_matrix[num_of_pos][0][1].pop(state_index)
+
+        ## add the path to the list of the optimal paths
+        path.append("B")
+        path = path[::-1]
+        P.append(path)
+
+        if multipath == 0:
+            all_path_decoded = 1
+
+    return(P)
 
 def viterbi(model, sequence):
     
@@ -125,13 +175,6 @@ def viterbi(model, sequence):
         score = float(model.startingp[state] * model.emissions[state][sequence.sequence[position]])
         column_scores.append([score,"B"])
     V[1] = column_scores
-
-    ### tmp test ###
-    print(V)
-    print(sequence.sequence)
-    print(position)
-    print(sequence.sequence[position])
-    ################
 
     ## iteration:
     for position in V.columns[2:len(V.columns) - 1]:
@@ -151,13 +194,6 @@ def viterbi(model, sequence):
             ## fill the column
             column_scores.append([max_score,max_paths])
 
-        ### tmp test ###
-        print(V)
-        print(sequence.sequence)
-        print(position)
-        print(sequence.sequence[position])
-        ################
-        
         ## update the viterbi matrix
         V[position] = column_scores
 
@@ -180,16 +216,9 @@ def viterbi(model, sequence):
     ## update the viterbi matrix
     V[position] = column_scores
     
-    ### tmp test ###
-    print(V)
-    print(sequence.sequence)
-    print(position)
-    print(sequence.sequence[position])
-    ################
-
-    ## TODO resolve all the optimal paths from P
-
-    return(V)
+    ## decode all the optimal paths
+    P = decode_paths(V)
+    return(P)
 
 ######################################
 ### Test This for Viterbi Decoding ###

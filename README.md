@@ -22,8 +22,11 @@ TODO:
 - Add a command to print backtrace objects to text files
 
 #### Viterbi Decoding
-Status: in progress  
-Usage: [...]
+Status: OK  
+Usage: [...] 
+TODO:
+- Write documentation
+- Add a command to print optimal paths to text files
 
 #### Farward Algorithm
 Status: to be started 
