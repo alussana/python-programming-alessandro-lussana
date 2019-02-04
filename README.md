@@ -24,7 +24,7 @@ TODO:
 #### Viterbi Decoding
 Status: OK  
 Usage: [...] 
-TODO:
+TODO: 
 - Write documentation
 - Add a command to print optimal paths to text files
 
