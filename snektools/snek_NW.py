@@ -236,3 +236,6 @@ single functions:
 snek_input = snek.snek_setup(type,score_matrix,sequence1,sequence2,gap)
 matrix = snek.compute_matrix(snek_input[0],snek_input[1],snek_input[2],snek_input[3],snek_input[4])
 '''
+
+if __name__ == '__main__':
+    print_help_page()

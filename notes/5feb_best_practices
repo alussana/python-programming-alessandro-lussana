@@ -1,0 +1,15 @@
+if __name__ == '__main__':
+    ## condition is True if the program is running
+    ## is not imported
+
+## learn about modulo 'strut' to parse files
+
+## error handling
+
+try:
+    ## code                 ## if an exception is raised
+except:
+    ## code
+    raise SystemExit        ## silently exits from the program
+else:
+    ## code                 ## if no exceptions are raised, execute this 

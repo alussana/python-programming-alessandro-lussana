@@ -273,7 +273,8 @@ def forward(model, sequence):
 
     return(total_score)
 
-def backward(model, sequence)
+def backward(model, sequence):
+    
 
 ######################################
 ### Test This for Viterbi Decoding ###

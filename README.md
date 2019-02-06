@@ -37,15 +37,26 @@ TODO:
 - Write documentation
 
 #### Backward Algorithm
-Status: to be started  
+Status: OK, but not yet implemented with pandas
 Usage: [...]
 
 #### Baum-Welch
-Status: to be started  
+Status: in progress, not yet implemented with pandas  
 Usage: [...]
 
 ## /exam
 Exams directory
+
+#### /mid-term
+Mid-term programming exam
+
+#### /bioinfo\_basics\_implementations
+Simple implementations of bioinformatics algorithms
+- Needleman-Wunsch
+- Smith-Waterman
+- Viterbi Decoding
+- Farward Algorithm
+- Backward Algorithm
 
 ## /notes
 Notes directory
