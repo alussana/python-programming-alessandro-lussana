@@ -40,13 +40,6 @@ if __name__ == '__main__':
     M = [[0 for i in range(n2)] for y in range(n1)]
     B = [[0 for i in range(n2 - 1)] for y in range(n1 - 1)]
 
-    # initialize the first row
-    M[0] = [-d*i for i in range(n2)]
-    # initialize the first column
-    first_col = [-d*i for i in range(n1)]
-    for row in range(n1):
-        M[row][0] = first_col[row]
-
     # iteration to fill the matrix M and B
     for row in range(1, n1):
         for col in range(1, n2):
@@ -57,11 +50,22 @@ if __name__ == '__main__':
             M[row][col] = max_score
             B[row - 1][col - 1] = max_path
 
+    prettyMatrix(M)
+
     # backtrace, only one path is printed
-    pointer_row = len(B) - 1
-    pointer_col = len(B[0]) - 1
+    total_score = 0
+    for col in range(len(M[0]) - 1,-1,-1):
+        if M[len(M) - 1][col] > total_score:
+            total_score = M[len(M) - 1][col]
+            pointer_col = col -1
+            pointer_row = len(M) - 2
+    for row in range(len(M) -1,-1,-1):
+        if M[row][len(M[0]) - 1] > total_score:
+            total_score = M[row][len(M[0]) - 1]
+            pointer_row = row -1
+            pointer_col = len(M[0]) - 2
     alignment = {"seq1":"", "seq2":""}
-    while pointer_row != -1 and pointer_col != -1:
+    while pointer_row != -1 or pointer_col != -1:
         backtrace = B[pointer_row][pointer_col]
         trace = backtrace[len(backtrace) - 1]
         if trace == 0:
@@ -77,6 +81,8 @@ if __name__ == '__main__':
             alignment["seq2"] = alignment["seq2"] + seq2[pointer_col + 1]
             pointer_col += -1
             pointer_row += -1
+
+    # TODO add terminal gaps to the sequences
 
     alignment["seq1"] = alignment["seq1"][::-1]
     alignment["seq2"] = alignment["seq2"][::-1]

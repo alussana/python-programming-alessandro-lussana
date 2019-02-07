@@ -1,4 +1,23 @@
-# initialize the matrix M(n1 x n2) where n1 = length seq1; n2 = length seq2
+''' pseudo code
+    input:
+        scoring matrix is a dictionary of dictionaries
+        seq1 is a string of character starting with "-"
+        seq2 is a string of character starting with "-"
+        d is gap penalty
+    initialization:
+        n1 is length seq1
+        n2 is length seq2
+        initialize the matrix M(n2 x n1)
+        initialize the matrix B(n2-1 x n1-1)
+    recurrence:
+        for each row in M
+            for each col in M
+                gap1 = M[row][col - 1] - d
+                gap2 = M[row - 1][col] - d
+                match = M[row - 1][col - 1] + scoring[seq1[row]][seq2[col]]
+                return the index of the max score between gap1, gap2, match, 0
+                
+'''
 
 def find_max(scores):
     max_score = max(scores)
@@ -25,6 +44,7 @@ if __name__ == '__main__':
     n1 = len(seq1)
     n2 = len(seq2)
 
+    # initialization
     M = [[0 for i in range(n2)] for y in range(n1)]
     B = [[0 for i in range(n2 - 1)] for y in range(n1 - 1)]
 
