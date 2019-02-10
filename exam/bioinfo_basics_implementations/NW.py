@@ -81,6 +81,10 @@ if __name__ == '__main__':
     alignment["seq1"] = alignment["seq1"][::-1]
     alignment["seq2"] = alignment["seq2"][::-1]
 
+    # print matrices
+    prettyMatrix(M)
+    prettyMatrix(B)
+
     # print results
     print(alignment["seq1"])
     print(alignment["seq2"])

@@ -52,10 +52,10 @@ if __name__ == '__main__':
         V[k][pos] = max_score
         B[k][pos] = max_states
 
-    print(seq)
-    print()
+    # print matrices and sequence
     prettyMatrix(V)
     prettyMatrix(B)
+    print(seq, "\n")
 
     # traceback one optimal hidden path
     path = ["END"]
@@ -68,4 +68,6 @@ if __name__ == '__main__':
         pos -= 1
     path.append("BEGIN")
     path = path[::-1]
+
+    # print path
     print(path)

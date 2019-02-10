@@ -31,6 +31,7 @@ def find_max(scores):
 def prettyMatrix(M):
     for row in M:
         print(row)
+    print()
 
 if __name__ == '__main__':
     # imported params
@@ -46,7 +47,7 @@ if __name__ == '__main__':
 
     # initialization
     M = [[0 for i in range(n2)] for y in range(n1)]
-    B = [[0 for i in range(n2 - 1)] for y in range(n1 - 1)]
+    B = [[0 for i in range(n2)] for y in range(n1)]
 
     # iteration to fill the matrix M and B
     for row in range(1, n1):
@@ -56,7 +57,7 @@ if __name__ == '__main__':
             match = M[row - 1][col - 1] + scoring[seq1[row]][seq2[col]]
             max_score, max_path = find_max([gap1, gap2, match, 0])
             M[row][col] = max_score
-            B[row - 1][col - 1] = max_path
+            B[row][col] = max_path
 
     # find alignment last position in M (B is smaller)
     max_score = -1
@@ -66,34 +67,39 @@ if __name__ == '__main__':
         for pointer_col in range(len(M[0])):
             if M[pointer_row][pointer_col] >= max_score:
                 max_score = M[pointer_row][pointer_col]
-                max_row = pointer_row - 1 # will be -1 in B
-                max_col = pointer_col - 1 # will be -1 in B
+                max_row = pointer_row
+                max_col = pointer_col
 
     # backtrace, only one optimal path is printed
     pointer_row = max_row
     pointer_col = max_col
-    score = M[pointer_row + 1][pointer_col + 1]
+    score = M[pointer_row][pointer_col]
     alignment = {"seq1":"", "seq2":""}
     while score != 0:
         backtrace = B[pointer_row][pointer_col]
         trace = backtrace[len(backtrace) - 1]
         if trace == 0:
             alignment["seq1"] = alignment["seq1"] + "-"
-            alignment["seq2"] = alignment["seq2"] + seq2[pointer_col + 1]
+            alignment["seq2"] = alignment["seq2"] + seq2[pointer_col]
             pointer_col += -1
         elif trace == 1:
-            alignment["seq1"] = alignment["seq1"] + seq1[pointer_row + 1]
+            alignment["seq1"] = alignment["seq1"] + seq1[pointer_row]
             alignment["seq2"] = alignment["seq2"] + "-"
             pointer_row += -1
         elif trace == 2:
-            alignment["seq1"] = alignment["seq1"] + seq1[pointer_row + 1]
-            alignment["seq2"] = alignment["seq2"] + seq2[pointer_col + 1]
+            alignment["seq1"] = alignment["seq1"] + seq1[pointer_row]
+            alignment["seq2"] = alignment["seq2"] + seq2[pointer_col]
             pointer_col += -1
             pointer_row += -1
-        score = M[pointer_row + 1][pointer_col + 1]
+        score = M[pointer_row][pointer_col]
+        #print(score)
 
     alignment["seq1"] = alignment["seq1"][::-1]
     alignment["seq2"] = alignment["seq2"][::-1]
+
+    # print matrices
+    prettyMatrix(M)
+    prettyMatrix(B)
 
     # print results
     print(alignment["seq1"])

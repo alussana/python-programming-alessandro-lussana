@@ -31,13 +31,13 @@ TODO:
 
 #### Farward Algorithm
 Status: OK    
-Usage: [...]
+Usage: [...]  
 TODO:
 - Covert all the scores to log to distinguish small probabilities from zero
 - Write documentation
 
 #### Backward Algorithm
-Status: OK, but not yet implemented with pandas
+Status: OK, but not yet implemented with pandas  
 Usage: [...]
 
 #### Baum-Welch

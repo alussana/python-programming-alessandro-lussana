@@ -65,14 +65,14 @@ def compute_matrix(t, e, startp, endp, seq):
         for k in range(K):
             total_score = 0
             for l in range(K):
-                score = B[l][i + 1] * t[k][l] * e[l][seq[i]]
+                score = round(B[l][i + 1] * t[k][l] * e[l][seq[i]], 8)
                 total_score += score
             B[k][i] = total_score
 
     ## termination:
     total_score = 0
     for k in range(K):
-        score = B[k][0] * e[k][seq[i]] * startp[k]
+        score = round(B[k][0] * e[k][seq[i]] * startp[k], 8)
         total_score += score
 
     return(B, total_score)
@@ -81,6 +81,7 @@ if __name__ == '__main__':
     ## dummy data:
     ## dummy sequence
     seq = "ATCGCGAA"    ## length is 8
+    
     ## dummy parameters
     ## states and symbols order are consistent with t and e
     states = ["Y","N"]
@@ -90,8 +91,8 @@ if __name__ == '__main__':
     startp = [0.2,0.8]                              ## starting probabilities
     endp = [0.0,1.0]                                ## ending probabilities
     B, total_score = compute_matrix(t, e, startp, endp, seq)
+    
     ## display result
-    print("forward matrix")
     for row in B:
         print(row)
     print("total score = %f" %(total_score))

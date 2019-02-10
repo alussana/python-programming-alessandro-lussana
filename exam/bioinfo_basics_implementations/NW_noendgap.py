@@ -50,20 +50,20 @@ if __name__ == '__main__':
             M[row][col] = max_score
             B[row - 1][col - 1] = max_path
 
-    prettyMatrix(M)
-
     # backtrace, only one path is printed
     total_score = 0
     for col in range(len(M[0]) - 1,-1,-1):
         if M[len(M) - 1][col] > total_score:
             total_score = M[len(M) - 1][col]
-            pointer_col = col -1
-            pointer_row = len(M) - 2
+            end_pointer_col = col -1
+            end_pointer_row = len(M) - 2
     for row in range(len(M) -1,-1,-1):
         if M[row][len(M[0]) - 1] > total_score:
             total_score = M[row][len(M[0]) - 1]
-            pointer_row = row -1
-            pointer_col = len(M[0]) - 2
+            end_pointer_row = row -1
+            end_pointer_col = len(M[0]) - 2
+    pointer_col = end_pointer_col
+    pointer_row = end_pointer_row
     alignment = {"seq1":"", "seq2":""}
     while pointer_row != -1 or pointer_col != -1:
         backtrace = B[pointer_row][pointer_col]
@@ -82,11 +82,28 @@ if __name__ == '__main__':
             pointer_col += -1
             pointer_row += -1
 
-    # TODO add terminal gaps to the sequences
-
     alignment["seq1"] = alignment["seq1"][::-1]
     alignment["seq2"] = alignment["seq2"][::-1]
 
+    # TODO add terminal gaps to the sequences
+    for i in range(end_pointer_col + 1, len(seq2) - 1):
+        alignment["seq2"] += seq2[i]
+        alignment["seq1"] += "-"
+    for i in range(end_pointer_row + 1, len(seq1) - 1):
+        alignment["seq2"] += "-"
+        alignment["seq1"] += seq1[i]
+    for i in range(pointer_col - 1, -1, -1):
+        alignment[seq2] += seq2[i]
+        alignment[seq1] += "-"
+    for i in range(pointer_row - 1, -1, -1):
+        alignment[seq2] += "-"
+        alignment[seq1] += seq1[i]
+
+    # print matrices
+    prettyMatrix(M)
+    prettyMatrix(B)
+
     # print results
+    print("Total Score:", total_score)
     print(alignment["seq1"])
     print(alignment["seq2"])
