@@ -50,6 +50,9 @@ Exams directory
 #### /mid-term
 Mid-term programming exam
 
+#### /REDO\_midterm\_exam\_2019\_02\_11
+New mid-term exam, taken on 2019-02-11
+
 #### /bioinfo\_basics\_implementations
 Simple implementations of bioinformatics algorithms
 - Needleman-Wunsch
