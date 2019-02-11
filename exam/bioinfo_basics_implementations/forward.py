@@ -49,12 +49,16 @@
 ##
 ## ===============================================================================  
 ## implementation
+def PrettyMatrix(M):
+    for row in M:
+        print(row)
+    print()
 
 def compute_matrix(t, e, startp, endp, seq):
     ## initialize empty forward matrix
     N = len(seq)    ## number of positions in the list
     K = len(t)      ## number of different states
-    F = [[0] * N for i in range(K)]
+    F = [[0 for j in range(N)] for i in range(K)]
 
     ## initialization:
     for k in range(K):
@@ -92,7 +96,8 @@ if __name__ == '__main__':
     endp = [0.0,1.0]                                ## ending probabilities
     F, total_score = compute_matrix(t, e, startp, endp, seq)
 
+    ## print matrix
+    PrettyMatrix(F)
+
     ## display result
-    for row in F:
-        print(row)
     print("total score = %f" %(total_score))

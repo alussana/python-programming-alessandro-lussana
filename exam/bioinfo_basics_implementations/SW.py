@@ -59,7 +59,7 @@ if __name__ == '__main__':
             M[row][col] = max_score
             B[row][col] = max_path
 
-    # find alignment last position in M (B is smaller)
+    # find alignment last position in M
     max_score = -1
     max_row = 0
     max_col = 0
