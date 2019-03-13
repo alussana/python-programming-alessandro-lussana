@@ -53,6 +53,7 @@ if __name__ == '__main__':
     #chain_2 = input("Chain identifier for file 2: ")
     
     ## hard coded some vars to test
+    ## note that 5a22.pdb is strangely formatted, str.splice() will not work properly
     xstructure1 = get_Xstructure("5e4v.pdb")
     for i in xstructure1.coords:
         print(i)

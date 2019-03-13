@@ -1,6 +1,27 @@
 # python-programming-alessandro-lussana
 Personal storage of miscellaneous projects for Bologna Bioinformatics Master Course  
-Contents:
+
+[TOC]
+
+## /formiche
+Random entities evolving in a two dimensional space; to be started
+
+## /LB1
+Implementations of algorithms and programs for Laboratory of Bioinformatics I  
+
+#### roto
+**ROtation TOol**  
+Status: just started; xStructure object can be build from a PDB file  
+Usage: [...]  
+
+## /ADS
+Implementations of algorithms and programs for Algorithms and Data Structures for Computational Biology
+
+#### Insertion Sort
+DONE
+
+#### Merge Sort
+In progress
 
 ## /snektools
 Suite of general workflows for the implementation of algorithms  
