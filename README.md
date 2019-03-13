@@ -1,7 +1,28 @@
 # python-programming-alessandro-lussana
 Personal storage of miscellaneous projects for Bologna Bioinformatics Master Course  
 
-[TOC]
+- [python-programming-alessandro-lussana](#python-programming-alessandro-lussana)
+  * [/formiche](#-formiche)
+  * [/LB1](#-lb1)
+      - [roto](#roto)
+  * [/ADS](#-ads)
+      - [Insertion Sort](#insertion-sort)
+      - [Merge Sort](#merge-sort)
+  * [/snektools](#-snektools)
+      - [Needleman-Wunsch](#needleman-wunsch)
+      - [Smith-Waterman](#smith-waterman)
+      - [Viterbi Decoding](#viterbi-decoding)
+      - [Farward Algorithm](#farward-algorithm)
+      - [Backward Algorithm](#backward-algorithm)
+      - [Baum-Welch](#baum-welch)
+  * [/exam](#-exam)
+      - [/mid-term](#-mid-term)
+      - [/REDO\_midterm\_exam\_2019\_02\_11](#-redo--midterm--exam--2019--02--11)
+      - [/bioinfo\_basics\_implementations](#-bioinfo--basics--implementations)
+  * [/notes](#-notes)
+  * [/misc\_fun](#-misc--fun)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 ## /formiche
 Random entities evolving in a two dimensional space; to be started
@@ -21,7 +42,7 @@ Implementations of algorithms and programs for Algorithms and Data Structures fo
 DONE
 
 #### Merge Sort
-In progress
+DONE
 
 ## /snektools
 Suite of general workflows for the implementation of algorithms  
