@@ -22,8 +22,6 @@ Personal storage of miscellaneous projects for Bologna Bioinformatics Master Cou
   * [/notes](#-notes)
   * [/misc\_fun](#-misc--fun)
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 ## /formiche
 Random entities evolving in a two dimensional space; to be started
 
