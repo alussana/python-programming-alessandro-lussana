@@ -27,16 +27,26 @@ def super_prot(cas1,cas2):
     sup.run()
     return(sup.get_rms())
 
+def dist(p1, p2):
+    return(np.sqrt(np.sum((p1-p2)**2)))
+
 if __name__ == '__main__':
     pdb1=sys.argv[1]
     ch1=sys.argv[2]
     pdb2=sys.argv[3]
     ch2=sys.argv[4]
-    #aln=sys.argv[5]
 
-    atoms1 = get_atoms(pdb1,ch1)
-    atoms2 = get_atoms(pdb2,ch2)
+    latm1 = get_atoms(pdb1,ch1)
+    latm2 = get_atoms(pdb2,ch2)
+
+    n = len(latm1)
+
+    for i in range(n-1):
+        d = dist(latm1[i,], latm1[i+1,])
+        print(i,d)
     
-    if len(atoms1)==len(atoms2):
-        rmsd=super_prot(atoms1,atoms2)
+    print("MEAN", np.mean(d), "STD", np.std(d))
+
+    if len(latm1) == len(latm2):
+        rmsd = super_prot(latm1, latm2)
         print(rmsd)
