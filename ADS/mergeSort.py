@@ -1,42 +1,39 @@
+import numpy as np
+
 def mergeSort(A):
-    '''Recursively divide list A and call merge() to sort and merge the sublists'''
-    if len(A) > 1: 
-        q = int(len(A) / 2)
-        L = A[:q]  
-        R = A[q:]
+    p = 0
+    r = len(A) - 1
+    return(divide(A, p, r))
 
-        mergeSort(L) 
-        mergeSort(R)
-        merge(L, R)
+def divide(A, p, r):
+    if p < r:
+        q = int((p + r) / 2)
 
-def merge(L, R):
-    '''Helper function of mergeSort() to sort and merge the sublists'''
-    i = j = k = 0
-          
-    while i < len(L) and j < len(R): 
-        if L[i] < R[j]: 
-            A[k] = L[i] 
-            i+=1
-        else: 
-            A[k] = R[j] 
-            j+=1
-        k+=1
+        divide(A, p, q)
+        divide(A, q + 1, r)
+        
+        return(conquer(A, p, q, r))
 
-    while i < len(L): 
-        A[k] = L[i] 
-        i+=1
-        k+=1
-          
-    while j < len(R): 
-        A[k] = R[j] 
-        j+=1
-        k+=1
-  
-# hard code some vars for testing
-if __name__ == '__main__': 
+def conquer(A, p, q, r):
+    L = A[p:q + 1]
+    L.append(np.inf)
+    R = A[q + 1:r + 1]
+    R.append(np.inf)
+    i = j = 0
+
+    for k in range(p, r + 1):
+        if L[i] <= R[j]:
+            A[k] = L[i]
+            i += 1
+        else:
+            A[k] = R[j]
+            j += 1
+
+    return(A)
+
+
+if __name__ == '__main__':
     A = [5,2,4,7,1,3,2,6]
-    print ("in:")  
-    print(A) 
-    mergeSort(A) 
-    print("out:") 
-    print(A) 
+    print ("in:", A)
+    A = mergeSort(A) 
+    print("out:", A)
