@@ -201,6 +201,8 @@ else:
 ####################
 ### DICTIONARIES ###
 
+d.get(key, defaultvalue)    ## if key does not exists, it returns defaultvalue instead of crashing
+
 d = {'key1' : 1, 'key2' : 2, 'key3' : 3}
 d['key1'] returns 1
 del d[key] 				## removes the item specified by the key_name
