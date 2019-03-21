@@ -39,9 +39,10 @@ Usage: [...]
 
 Perform pairwise structural superimposition between sets of atoms in pdb format
 
-#### MSA_assistant
+#### MSA\_assistant
 
-Merge together the aligned sequences that have the same identifier from a clustalw aln file
+Merge together the aligned sequences that have the same identifier from a clustalw aln file  
+Includes a set of functions to analyze the alignment profile
 
 ## /ADS
 Implementations of algorithms and programs for Algorithms and Data Structures for Computational Biology
