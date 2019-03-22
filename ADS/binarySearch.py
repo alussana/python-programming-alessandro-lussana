@@ -1,3 +1,27 @@
+'''
+BS(A, target, i, r):
+    
+    m = (i + r) // 2
+    
+    if A[m] == target then
+        
+        return(m)
+    
+    else if target < A[m] and i < r then
+        
+        i = BS(A, target, i, m - 1)
+    
+    else if target > A[m] and i < r then
+        
+        i = BS(A, target, m + 1, r)
+    
+    else
+        
+        i <- "NIL"
+    
+    return(i)
+'''
+
 def iterativeBinarySearch(A, target):
     i = 0
     r = len(A)
