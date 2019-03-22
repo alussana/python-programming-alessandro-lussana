@@ -46,24 +46,17 @@ def get_complete_profile(d_aln):
 
 if __name__ == '__main__':
 	# vars and tests are temporarily hard coded
-	# usage: MSA_assistant.py alnfile.aln position_integer
-	# test this: python MSA_assistant.py uniprot2clustalw/all_seqs.aln
+	# usage: MSA_assistant.py alnfile.aln
+	# test this: python MSA_assistant.py db/fasta2MSA.aln
 	alnfile = sys.argv[1]
-	pos = int(sys.argv[2])
 	d = parse_aln(alnfile)
-	#for key in d.keys():
-	#	print(key,d[key])
-	#prof = get_profile(d,pos + 1)
-	#aa = list('ACDEFGHIKLMNPQRSTVWY')
-	#for i in range(0,len(aa)):
-	#	print(aa[i], prof[i])
-	#s = get_entropy(prof)
-	#print("entropy", s)
-	#print(max_freq(prof))
 	prof = get_complete_profile(d)
-	for i in prof:
-		print(i)
+	for position_prof in prof:
+		rl = 'ACDEFGHIKLMNPQRSTVWY'
+		s = get_entropy(position_prof)
+		i = position_prof.argmax()
+		print(rl[i], position_prof[i], s)
 	
-# MEMO returning max_freq, symbols, entropy for each position can be
+# TODO returning max_freq, symbols, entropy for each position can be
 # useful for assessing the number of conserved position that have been
 # aligned
