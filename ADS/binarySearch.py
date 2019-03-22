@@ -1,7 +1,7 @@
 def iterativeBinarySearch(A, target):
     i = 0
     r = len(A)
-    while i < r:
+    while i < r - 1:
         m = (i + r) // 2
         if A[m] == target:
             return(m)
@@ -20,10 +20,12 @@ def bs(A, target, i, r):
     print(A, i, r)
     if A[m] == target:
         return(m)
-    elif target < A[m]:
+    elif target < A[m] and i < r:
         i = bs(A, target, i, m - 1)
-    elif target > A[m]:
+    elif target > A[m] and i < r:
         i = bs(A, target, m + 1, r)
+    else:
+        i = "NIL"
     return(i)
 
 if __name__ == '__main__':
@@ -31,4 +33,5 @@ if __name__ == '__main__':
     print(A)
     target = int(input("Insert the target: "))
     m = recursiveBinarySearch(A, target)
+    #m = iterativeBinarySearch(A, target)
     print("The index of %i in A is %s" %(target, str(m)))
