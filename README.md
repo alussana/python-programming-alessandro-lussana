@@ -6,10 +6,14 @@ Personal storage of miscellaneous projects for Bologna Bioinformatics Master Cou
   * [/LB1](#-lb1)
       - [roto](#roto)
       - [superimposer](#superimposer)
-      - [MSA_assistant](#MSA_assistant)
+      - [MSA\_assistant](#msa--assistant)
   * [/ADS](#-ads)
       - [Insertion Sort](#insertion-sort)
       - [Merge Sort](#merge-sort)
+      - [Selection Sort](#selection-sort)
+      - [Binary Search](#binary-search)
+      - [Heap Sort](#heap-sort)
+      - [Quick Sort](#quick-sort)
   * [/snektools](#-snektools)
       - [Needleman-Wunsch](#needleman-wunsch)
       - [Smith-Waterman](#smith-waterman)
@@ -51,6 +55,22 @@ Implementations of algorithms and programs for Algorithms and Data Structures fo
 DONE
 
 #### Merge Sort
+DONE
+
+#### Selection Sort
+
+DONE
+
+#### Binary Search
+
+DONE
+
+#### Heap Sort
+
+DONE
+
+#### Quick Sort
+
 DONE
 
 ## /snektools
