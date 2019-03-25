@@ -2,6 +2,8 @@
 Personal storage of miscellaneous projects for Bologna Bioinformatics Master Course  
 
 - [python-programming-alessandro-lussana](#python-programming-alessandro-lussana)
+  * [/AML](#-aml)
+      - [Gradient Descent](#gradient-descent)
   * [/formiche](#-formiche)
   * [/LB1](#-lb1)
       - [roto](#roto)
@@ -28,7 +30,16 @@ Personal storage of miscellaneous projects for Bologna Bioinformatics Master Cou
   * [/notes](#-notes)
   * [/misc\_fun](#-misc--fun)
 
+## /AML
+
+Implementations of algorithms for Applied Machine Learning
+
+#### Gradient Descent
+
+DONE
+
 ## /formiche
+
 Random entities evolving in a two dimensional space; to be started
 
 ## /LB1
