@@ -1,0 +1,45 @@
+# run blast on local database; the output is in tabular format
+# try:
+# alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
+# snakemake -p query_vs_uniprot_sprot_e0.001_blast_out.gz
+# MEMO: database has to be indexed
+rule homology_search:
+    input:
+        db="{database}.fasta",
+        query="{query}.fasta"
+    output:
+        "{query}_vs_{database}_e{evalue}_blast_out.gz"
+    params:
+        "{evalue}"
+    shell:
+        "blastpgp -i {input.query} -d {input.db} -e {params} -m 8"
+        "| gzip > {output}"
+
+# fetches the sequences from uniprot given a list of uniprot IDs
+# try:
+# alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
+# snakemake -p id_for_MSA.fasta.gz
+rule fetch_fasta_from_uniprot:
+    input:
+        "{id_list}.txt"
+    output:
+        "{id_list}.fasta.gz"
+    shell:
+        "mkdir tmp;"
+        " for i in $(cat {input}); do"
+        " wget https://www.uniprot.org/uniprot/$i.fasta -O tmp/$i.fasta; done;"
+        " cat tmp/*.fasta | gzip > {output};"
+        " rm -fr tmp/"
+
+# perform MSA with muscle using default parameters
+# try:
+# alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
+# snakemake -p id_for_MSA_muscle_out.aln.gz
+# TODO add params to tune the muscle's parameters
+rule muscle_align:
+    input:
+        "{sequences}.fasta.gz"
+    output:
+        "{sequences}_muscle_out.aln.gz"
+    shell:
+        "muscle -in <(zcat {input}) | gzip > {output}"
