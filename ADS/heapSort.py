@@ -36,10 +36,7 @@ def maxHeapify(A, i, heapsize):
         largest = r
     
     if largest != i:
-        #A[i], A[largest] = A[largest], A[i]
-        largest_elem = A[largest]
-        A[largest] = A[i]
-        A[i] = largest_elem
+        A[i], A[largest] = A[largest], A[i]
         
         maxHeapify(A, largest, heapsize)
 
@@ -49,7 +46,7 @@ def buildMaxHeap(A):
     '''
     heapsize = len(A) - 1
 
-    for i in range(heapsize, -1, -1):
+    for i in range(heapsize // 2, -1, -1):
         maxHeapify(A, i, heapsize)
 
 def maxHeapSort(A):
@@ -61,10 +58,7 @@ def maxHeapSort(A):
     buildMaxHeap(A)
     
     for i in range(heapsize, -1, -1):
-        #A[0], A[i] = A[i], A[0]
-        first_value = A[0]
-        A[0] = A[i]
-        A[i] = first_value
+        A[0], A[i] = A[i], A[0]
         maxHeapify(A, i, heapsize)
     
     return(A)
@@ -72,6 +66,5 @@ def maxHeapSort(A):
 if __name__ == '__main__':
     A = [5,2,4,7,1,3,2,6]
     print("in:", A)
-    #processed_A = maxHeapify(A, 0, heapsize)
     sorted_A = maxHeapSort(A)
     print("out:", sorted_A)

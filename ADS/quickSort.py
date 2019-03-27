@@ -5,15 +5,9 @@ def partition(A, p, r):
     for j in range(p, r):
         if A[j] <= x:
             i += 1
-            #A[i], A[j] = A[j], A[i]
-            ith_elem = A[i]
-            A[i] = A[j]
-            A[j] = ith_elem
+            A[i], A[j] = A[j], A[i]
     
-    #A[i + 1], A[r] = A[r], A[i + 1]
-    rth_elem = A[r]
-    A[r] = A[i + 1]
-    A[i + 1] = rth_elem
+    A[i + 1], A[r] = A[r], A[i + 1]
     
     return(i + 1)
     
