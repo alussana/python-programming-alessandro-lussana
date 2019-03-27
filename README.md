@@ -16,6 +16,7 @@ Personal storage of miscellaneous projects for Bologna Bioinformatics Master Cou
       - [Binary Search](#binary-search)
       - [Heap Sort](#heap-sort)
       - [Quick Sort](#quick-sort)
+      - [Counting Sort](#counting-sort)
   * [/snektools](#-snektools)
       - [Needleman-Wunsch](#needleman-wunsch)
       - [Smith-Waterman](#smith-waterman)
@@ -81,6 +82,10 @@ DONE
 DONE
 
 #### Quick Sort
+
+DONE
+
+#### Counting Sort
 
 DONE
 
