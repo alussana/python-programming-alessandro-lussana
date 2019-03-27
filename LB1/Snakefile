@@ -1,3 +1,18 @@
+# index a protein database in fasta format
+# try:
+# alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
+# snakemake -p uniprot_sprot.phr
+# MEMO: the rule will also generate the following two files
+# {db}.pin
+# {db}.psq
+rule index_protein_database:
+    input:
+        "{db}.fasta"
+    output:
+        phr="{db}.fasta.phr"
+    shell:
+        "formatdb -i {input} -p T"
+
 # run blast on local database; the output is in tabular format
 # try:
 # alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
@@ -6,7 +21,8 @@
 rule homology_search:
     input:
         db="{database}.fasta",
-        query="{query}.fasta"
+        query="{query}.fasta",
+        phr="{database}.fasta.phr",
     output:
         "{query}_vs_{database}_e{evalue}_blast_out.gz"
     params:
