@@ -13,7 +13,7 @@ def visualGD(x, alpha, max_error):
         x = x - alpha * d
         y = getY(x)
         e = abs(y1 - y)
-        print("Descending the gradient\tx = %f\ty = %f\te = %f" %(x, y, e))
+        print("x = %f\ty = %f\te = %f\td = %f" %(x, y, e, d / delta))
 
 def getY(x):
     '''
@@ -25,5 +25,6 @@ if __name__ == "__main__":
     print("\n\t=== Grandient Descent Dummy Demo ===\n")
     x = float(input("Insert the starting value for sinx + abs(x) + 1\nx = "))
     lr = float(input("Insert the learning rate parameter\nlr = "))
-    maxE = float(input("insert the maximum tolerated error to define convergence\nmaxE = "))
+    print("Insert the maximum tolerated error to define convergence")
+    maxE = float(input("maxE = "))
     visualGD(x, lr, maxE)
