@@ -1,0 +1,119 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b2 (February 2015); http://hmmer.org/
+# Copyright (C) 2015 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  fn3.hmm
+# target sequence database:        7LESS_DROME
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       fn3  [M=85]
+Accession:   PF00041.20
+Description: Fibronectin type III domain
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence    Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------    -----------
+    6.2e-56  173.1   1.6    1.1e-16   47.3   0.9    9.5  9  7LESS_DROME  RecName: Full=Protein sevenless;          EC=2.7
+
+
+Domain annotation for each sequence (and alignments):
+>> 7LESS_DROME  RecName: Full=Protein sevenless;          EC=2.7.10.1;
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 ?   -1.5   0.0      0.18      0.18      60      72 ..     396     408 ..     395     410 .. 0.86
+   2 !   40.8   0.0   1.2e-14   1.2e-14       1      83 [.     439     520 ..     439     521 .. 0.95
+   3 !   14.8   0.0   1.5e-06   1.5e-06      12      84 ..     836     913 ..     826     914 .. 0.74
+   4 !    5.0   0.0    0.0017    0.0017       9      36 ..    1209    1236 ..    1203    1258 .. 0.83
+   5 !   22.4   0.0   6.7e-09   6.7e-09      13      79 ..    1313    1380 ..    1305    1385 .. 0.81
+   6 ?    0.6   0.0      0.04      0.04      55      72 ..    1753    1769 ..    1720    1769 .. 0.87
+   7 !   47.3   0.9   1.1e-16   1.1e-16       1      84 [.    1800    1890 ..    1800    1891 .. 0.91
+   8 !   17.9   0.0   1.6e-07   1.6e-07       5      73 ..    1904    1966 ..    1901    1976 .. 0.91
+   9 !   10.1   0.0   4.5e-05   4.5e-05       1      85 []    1994    2107 ..    1994    2107 .. 0.87
+
+  Alignments for each domain:
+  == domain 1  score: -1.5 bits;  conditional E-value: 0.18
+                  EESSSTTEEEEEE CS
+          fn3  60 ltgLkpgteYevr 72 
+                  l+ L p+t+Y++r
+  7LESS_DROME 396 LEALIPYTQYRFR 408
+                  67799*******8 PP
+
+  == domain 2  score: 40.8 bits;  conditional E-value: 1.2e-14
+                  TSBCEEEEEEESSSEEEEEEE-CSSSSSTECEEEEEEEETTSSSTEEEEEEESTCSEEEEESSSTTEEEEEEEEEEETTEEEE CS
+          fn3   1 saPsnlsvsevtstsltvsWeppkdgggpitgYeveyrekgseeewneftvprtttsvtltgLkpgteYevrVqavngggegp 83 
+                  saP   ++    ++ l v+W p +  +gpi+gY++++++++++  + e+ vp+   s+ +++L++gt+Y++ +  +n++gegp
+  7LESS_DROME 439 SAPVIEHLMGLDDSHLAVHWHPGRFTNGPIEGYRLRLSSSEGNA-TSEQLVPAGRGSYIFSQLQAGTNYTLALSMINKQGEGP 520
+                  5777788889999***************************9998.***********************************997 PP
+
+  == domain 3  score: 14.8 bits;  conditional E-value: 1.5e-06
+                  SSSEEEEEEE-CS..SSSSTEC....EEEEEEEETTSSSTEEEEEEESTCSEEEEESSSTTEEEEEEEEEEETTE.EEEE CS
+          fn3  12 tstsltvsWeppk..dgggpit....gYeveyrekgseeewneftvprtttsvtltgLkpgteYevrVqavnggg.egpe 84 
+                  ++  + +sW++p+  + ++ +     +Ye+e+ ++ s++   ++++ r +  + l+ L+p+  Y++rV+a+n +g  g++
+  7LESS_DROME 836 GAQAAKISWKEPErnPYQSADAarswSYELEVLDVASQS-AFSIRNIRGP-IFGLQRLQPDNLYQLRVRAINVDGePGEW 913
+                  566678899999874333322133338********9999.7777766666.6**********************955655 PP
+
+  == domain 4  score: 5.0 bits;  conditional E-value: 0.0017
+                   EEESSSEEEEEEE-CSSSSSTECEEEEE CS
+          fn3    9 sevtstsltvsWeppkdgggpitgYeve 36  
+                    +   + ++v+W+p+++gg + ++Y++ 
+  7LESS_DROME 1209 DDGHWDDFHVRWQPSTSGGNHSVSYRLL 1236
+                   555678899******9999999999985 PP
+
+  == domain 5  score: 22.4 bits;  conditional E-value: 6.7e-09
+                   SSEEEEEEE-CS...SSSSTECEEEEEEEETTSSSTEEEEEEESTCSEEEEESSSTTEEEEEEEEEEETT CS
+          fn3   13 stsltvsWeppk...dgggpitgYeveyrekgseeewneftvprtttsvtltgLkpgteYevrVqavngg 79  
+                   + s++++W++p+   +   +   Y++ ++  ++ +   e ++  ++ ++ +++L+p+++Y+++V+a+ ++
+  7LESS_DROME 1313 NVSAVLRWDAPEqgqEAPMQALEYHISCWVGSELH--EELRLNQSALEARVEHLQPDQTYHFQVEARVAA 1380
+                   6699********75555667789******997775..67777777667*****************98665 PP
+
+  == domain 6  score: 0.6 bits;  conditional E-value: 0.04
+                   CSEEEEESSSTTEEEEEE CS
+          fn3   55 ttsvtltgLkpgteYevr 72  
+                   + s++lt+L p t+Y+v+
+  7LESS_DROME 1753 E-SLNLTDLLPFTRYRVS 1769
+                   4.899**********985 PP
+
+  == domain 7  score: 47.3 bits;  conditional E-value: 1.1e-16
+                   TSBCEEEEEEESSSEEEEEEE-CSSSSSTECEEEEEEEETTSSS.......TEEEEEEESTCSEEEEESSSTTEEEEEEEEEEETTEEEEE CS
+          fn3    1 saPsnlsvsevtstsltvsWeppkdgggpitgYeveyrekgsee.......ewneftvprtttsvtltgLkpgteYevrVqavngggegpe 84  
+                   s+P+n+sv+  ++++l vsW pp++++++ ++Y+++++++ ++e       ++ + +  +t+ ++ ltg+kpg+ Y+++Vqa+ + +++ +
+  7LESS_DROME 1800 SPPRNFSVRVLSPRELEVSWLPPEQLRSESVYYTLHWQQELDGEnvqdrreWEAHERRLETAGTHRLTGIKPGSGYSLWVQAHATPTKSNS 1890
+                   79***********************************99999998****98777777777777*******************988877665 PP
+
+  == domain 8  score: 17.9 bits;  conditional E-value: 1.6e-07
+                   EEEEEEESSSEEEEEEE-CSSSSSTECEEEEEEEETTSSSTEEEEEEESTCSEEEEESSSTTEEEEEEE CS
+          fn3    5 nlsvsevtstsltvsWeppkdgggpitgYeveyrekgseeewneftvprtttsvtltgLkpgteYevrV 73  
+                   +l++ e ++ sl+++W       +p+ + ++e+r++ ++    +++v +++t ++++ L+p t+Y++r+
+  7LESS_DROME 1904 ELQLLELGPYSLSLTWAGT---PDPLGSLQLECRSSAEQ---LRRNVAGNHTKMVVEPLQPRTRYQCRL 1966
+                   5888999************...9************9666...69**********************997 PP
+
+  == domain 9  score: 10.1 bits;  conditional E-value: 4.5e-05
+                   TSBCEEEEEEESSSEEEEEEE-CSSSSSTECEEEEEEEETTSSS...........................TEEEEEEESTCS.EEEEESSSTTEE CS
+          fn3    1 saPsnlsvsevtstsltvsWeppkdgggpitgYeveyrekgsee...........................ewneftvprttt.svtltgLkpgte 68  
+                   s+P+ ++++ + +  ++v+W++ +  g+pi  Y++e  + +s                             e+++ +  +tt+ s+ ++ L  ++ 
+  7LESS_DROME 1994 SQPGKPQLEHIAEEVFRVTWTAARGNGAPIALYNLEALQARSDIrrrrrrrrrnsggsleqlpwaeepvvvEDQWLDFCNTTElSCIVKSLHSSRL 2089
+                   68999*******************999**********77766657999999999999999999999999998888888888888999999999999 PP
+
+                   EEEEEEEEETTE.EEEEE CS
+          fn3   69 YevrVqavnggg.egpes 85  
+                     +rV+a++ +  +gp+s
+  7LESS_DROME 2090 LLFRVRARSLEHgWGPYS 2107
+                   999999998655477766 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (85 nodes)
+Target sequences:                            1  (2554 residues searched)
+Passed MSV filter:                         1  (1); expected 0.0 (0.02)
+Passed bias filter:                        1  (1); expected 0.0 (0.02)
+Passed Vit filter:                         1  (1); expected 0.0 (0.001)
+Passed Fwd filter:                         1  (1); expected 0.0 (1e-05)
+Initial search space (Z):                  1  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.01u 0.00s 00:00:00.01 Elapsed: 00:00:00.00
+# Mc/sec: inf
+//
+[ok]

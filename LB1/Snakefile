@@ -1,3 +1,7 @@
+###################################################################
+# Set of rules to perform protein sequences analysis and modeling #
+###################################################################
+
 # index a protein database in fasta format
 # try:
 # alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
@@ -17,7 +21,6 @@ rule index_protein_database:
 # try:
 # alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
 # snakemake -p query_vs_uniprot_sprot_e0.001_blast_out.gz
-# MEMO: database has to be indexed
 rule homology_search:
     input:
         db="{database}.fasta",
@@ -31,7 +34,7 @@ rule homology_search:
         "blastpgp -i {input.query} -d {input.db} -e {params} -m 8"
         "| gzip > {output}"
 
-# fetches the sequences from uniprot given a list of uniprot IDs
+# fetch the sequences from uniprot given a list of uniprot IDs
 # try:
 # alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
 # snakemake -p id_for_MSA.fasta.gz
@@ -59,3 +62,93 @@ rule muscle_align:
         "{sequences}_muscle_out.aln.gz"
     shell:
         "muscle -in <(zcat {input}) | gzip > {output}"
+
+# train a hidden markov model with hmmer from an alignment in stockholm format
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
+# snakemake -p globin.hmm
+rule build_hmm:
+    input:
+        "{msa}.sto"
+    output:
+        "{msa}.hmm"
+    shell:
+        "hmmbuild {output} {input}"
+
+# generate random sequences with a hmm
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
+# snakemake -p globin_emit5.fasta.gz
+rule emit_sequence:
+    input:
+        "{model}.hmm"
+    output:
+        "{model}_emit{N}.fasta.gz"
+    params:
+        "{N}"
+    shell:
+        "hmmemit -N {params} {input} | gzip > {output}"
+
+# perform database search with a hmm
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
+# snakemake -p globin_vs_globin_emit5.search_out.gz
+rule hmm_db_search:
+    input:
+        "{db}.fasta.gz"
+    output:
+        "{model}_vs_{db}.search_out.gz"
+    params:
+        "{model}.hmm"
+    shell:
+        "hmmsearch {params} <(zcat {input}) | gzip > {output}"
+
+# create a library of models to efficiently perform database search
+# W! hmm files have to be concat together manually
+# TODO solve the W
+# this rule also creates the following files:
+# {models}.hmm.h3m
+# {models}.hmm.h3f
+# {models}.hmm.h3p
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
+# snakemake -p global.hmm.h3i
+rule build_hmm_library:
+    input:
+        "{models}.hmm"
+    output:
+        "{models}.hmm.h3i"
+    params:
+        "{models}"
+    shell:
+        "hmmpress {params}.hmm"
+
+# scan a database with a library of hmm
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
+# snakemake -p global_vs_globin_emit5.scan_out.gz
+rule hmm_db_scan:
+    input:
+        "{db}.fasta.gz"
+    output:
+        "{models}_vs_{db}.scan_out.gz"
+    params:
+        "{models}.hmm"
+    shell:
+        "hmmscan {params} <(zcat {input}) | gzip > {output}"
+
+# filter a multifasta given a list of identifiers
+# W! might be a non rigorous method - spurious output might occur
+# TODO write a python script to solve W
+# try:
+# snakemake -p dummy_ids_filter_on_uniprot_sprot.fasta.gz
+rule filterfasta:
+    input:
+        "{db}.fasta.gz"
+    output:
+        "{filter}_filter_on_{db}.fasta.gz"
+    params:
+        "{filter}"
+    shell:
+        "zcat {input} | tr -d \"\n\" | sed 's/>/\n>/g' | grep -f {filter}"
+        " | sed -r 's/(SV=[1-9]*)/\1\n/ | gzip > {output}"
