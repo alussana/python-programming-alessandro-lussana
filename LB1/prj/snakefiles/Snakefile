@@ -11,11 +11,14 @@
 # {db}.psq
 rule index_protein_database:
     input:
-        "{db}.fasta"
+        "{db}.fasta.gz"
     output:
         phr="{db}.fasta.phr"
+    params:
+        "{db}"
     shell:
-        "formatdb -i {input} -p T"
+        "zcat {input} > {params}.fasta;"
+        " formatdb -i {params}.fasta -p T"
 
 # run blast on local database; the output is in tabular format
 # try:
@@ -25,13 +28,28 @@ rule homology_search:
     input:
         db="{database}.fasta",
         query="{query}.fasta",
-        phr="{database}.fasta.phr",
+        phr="{database}.fasta.phr"
     output:
         "{query}_vs_{database}_e{evalue}_blast_out.gz"
     params:
         "{evalue}"
     shell:
         "blastpgp -i {input.query} -d {input.db} -e {params} -m 8"
+        "| gzip > {output}"
+
+# run blast on local database; the output is in tabular format
+# try:
+# [...]
+# MEMO: e-value is stored in 11th column
+rule blast_run:
+    input:
+        db="{database}.fasta",
+        query="{query}.fasta",
+        phr="{database}.fasta.phr"
+    output:
+        "{query}_vs_{database}_blast_run.gz"
+    shell:
+        "blastpgp -i {input.query} -d {input.db} -m 8 "
         "| gzip > {output}"
 
 # fetch the sequences from uniprot given a list of uniprot IDs
@@ -42,7 +60,7 @@ rule fetch_fasta_from_uniprot:
     input:
         "{id_list}.txt"
     output:
-        "{id_list}.fasta.gz"
+        "{id_list}.uniprot.fasta.gz"
     shell:
         "mkdir tmp;"
         " for i in $(cat {input}); do"
@@ -138,17 +156,47 @@ rule hmm_db_scan:
         "hmmscan {params} <(zcat {input}) | gzip > {output}"
 
 # filter a multifasta given a list of identifiers
-# W! might be a non rigorous method - spurious output might occur
-# TODO write a python script to solve W
 # try:
-# snakemake -p dummy_ids_filter_on_uniprot_sprot.fasta.gz
+# snakemake -p idlist_filter_on_uniprot_sprot.fasta.gz
+# W! Snakemake thinks that the output file might be corrupted;
+# the rule works actually properly
+#rule filterfasta:
+#    input:
+#        "{db}.fasta.gz"
+#    output:
+#        "{filter}_filter_on_{db}.fasta.gz"
+#    params:
+#        "{filter}.txt"
+#    shell:
+        #"zcat {input} | tr -d \"\n\" | sed 's/>/\n>/g' | grep -f {filter}"
+        #" | sed -r 's/(SV=[1-9]*)/\1\n/ | gzip > {output}"
+#        "for entry in $(cat {params}); do"
+#        " zcat uniprot_sprot.fasta.gz | awk -v entry=$entry"
+#        " '{{ if($0~entry){{print $0; getline; while($0 !~ /^>/)"
+#        " {{print $0; getline}}; exit }} }}'; done"
+#        " | gzip > {output}"
+
+# filter a multifasta given a list of identifiers
+# try:
+# snakemake -p idlist_filter_on_uniprot_sprot.fasta.gz
 rule filterfasta:
     input:
-        "{db}.fasta.gz"
+        db = "{db}.fasta.gz",
+        fl = "{filter}.txt"
     output:
         "{filter}_filter_on_{db}.fasta.gz"
-    params:
-        "{filter}"
     shell:
-        "zcat {input} | tr -d \"\n\" | sed 's/>/\n>/g' | grep -f {filter}"
-        " | sed -r 's/(SV=[1-9]*)/\1\n/ | gzip > {output}"
+        "python ../src/fastafilter.py {input.db} {input.fl} | gzip > {output}"
+
+# sample N items from a list
+# try:
+# snakemake -p sprot_pf00014_non_human_id_sampled18.txt
+rule random_sampling:
+    input:
+        "{list}.txt"
+    output:
+        "{list}_sampled{N}.txt"
+    params:
+        "{N}"
+    shell:
+        "cat {input} | sort -R | sed -n '{params}p' > {output}"
