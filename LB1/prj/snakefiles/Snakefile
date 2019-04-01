@@ -2,6 +2,8 @@
 # Set of rules to perform protein sequences analysis and modeling #
 ###################################################################
 
+# TODO add rule to download swissprot
+
 # index a protein database in fasta format
 # try:
 # alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
@@ -41,6 +43,7 @@ rule homology_search:
 # try:
 # [...]
 # MEMO: e-value is stored in 11th column
+# MEMO -e option is hard-coded: basically you want to get printed every score
 rule blast_run:
     input:
         db="{database}.fasta",
@@ -49,7 +52,7 @@ rule blast_run:
     output:
         "{query}_vs_{database}_blast_run.gz"
     shell:
-        "blastpgp -i {input.query} -d {input.db} -m 8 "
+        "blastpgp -i {input.query} -d {input.db} -e 1000 -m 8 "
         "| gzip > {output}"
 
 # fetch the sequences from uniprot given a list of uniprot IDs
@@ -199,4 +202,4 @@ rule random_sampling:
     params:
         "{N}"
     shell:
-        "cat {input} | sort -R | sed -n '{params}p' > {output}"
+        "cat {input} | sort -R | sed -n '1,{params}p' > {output}"
