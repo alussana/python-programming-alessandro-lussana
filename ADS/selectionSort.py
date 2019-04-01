@@ -1,11 +1,3 @@
-'''
-T(n) = n + T(n - 1)
-
-number of recursions = n 
-
-T(n) = $\sum_{i = 1}^{N}{i}$ = \frac{(n)(n+1)}{2} = \theta(n^2)$
-'''
-
 from numpy import inf
 
 def recursiveSelectionSort(A):
