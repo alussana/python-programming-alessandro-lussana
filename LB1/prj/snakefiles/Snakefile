@@ -52,7 +52,7 @@ rule blast_run:
     output:
         "{query}_vs_{database}_blast_run.gz"
     shell:
-        "blastpgp -i {input.query} -d {input.db} -e 1000 -m 8 "
+        "blastpgp -i {input.query} -d {input.db} -e 1000000000 -m 8 "
         "| gzip > {output}"
 
 # fetch the sequences from uniprot given a list of uniprot IDs
@@ -161,27 +161,6 @@ rule hmm_db_scan:
 # filter a multifasta given a list of identifiers
 # try:
 # snakemake -p idlist_filter_on_uniprot_sprot.fasta.gz
-# W! Snakemake thinks that the output file might be corrupted;
-# the rule works actually properly
-#rule filterfasta:
-#    input:
-#        "{db}.fasta.gz"
-#    output:
-#        "{filter}_filter_on_{db}.fasta.gz"
-#    params:
-#        "{filter}.txt"
-#    shell:
-        #"zcat {input} | tr -d \"\n\" | sed 's/>/\n>/g' | grep -f {filter}"
-        #" | sed -r 's/(SV=[1-9]*)/\1\n/ | gzip > {output}"
-#        "for entry in $(cat {params}); do"
-#        " zcat uniprot_sprot.fasta.gz | awk -v entry=$entry"
-#        " '{{ if($0~entry){{print $0; getline; while($0 !~ /^>/)"
-#        " {{print $0; getline}}; exit }} }}'; done"
-#        " | gzip > {output}"
-
-# filter a multifasta given a list of identifiers
-# try:
-# snakemake -p idlist_filter_on_uniprot_sprot.fasta.gz
 rule filterfasta:
     input:
         db = "{db}.fasta.gz",
@@ -203,3 +182,56 @@ rule random_sampling:
         "{N}"
     shell:
         "cat {input} | sort -R | sed -n '1,{params}p' > {output}"
+
+# list the target identifiers with their lowest e-value computed in a blast search
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj/dataset$ \
+# snakemake -p sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot_blast_min_eval.gz
+rule list_min_evalues:
+    input:
+        "{blast_run}_blast_run.gz"
+    output:
+        "{blast_run}_blast_min_eval.gz"
+    shell:
+        "for id in $(zcat {input} | cut -f2 | sort | uniq); do"
+        " zcat {input} | grep $id | cut -f2,11 | LC_ALL=c sort -gk2 | sed -n '1p';"
+        " done | gzip > {output}"
+
+# generate list of examples to later feed a confusion matrix
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj/dataset$ \
+# snakemake -p conf_list_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot.gz
+rule compute_confusion_matrix:
+    input:
+        p="{p}_blast_min_eval.gz",
+        n="{n}_blast_min_eval.gz"
+    output:
+        "conf_list_of_{p}_and_{n}.gz"
+    shell:
+        "cat"
+        " <(zcat {input.p} | awk '{{print $0\"\t\"1}}')"
+        " <(zcat {input.n} | awk '{{print $0\"\t\"0}}')"
+        " | gzip > {output}"
+
+####################
+# deprecated rules #
+####################
+
+# filter a multifasta given a list of identifiers
+# try:
+# snakemake -p idlist_filter_on_uniprot_sprot.fasta.gz
+# W! Snakemake thinks that the output file might be corrupted;
+# the rule works actually properly
+#rule filterfasta:
+#    input:
+#        "{db}.fasta.gz"
+#    output:
+#        "{filter}_filter_on_{db}.fasta.gz"
+#    params:
+#        "{filter}.txt"
+#    shell:
+#        "for entry in $(cat {params}); do"
+#        " zcat uniprot_sprot.fasta.gz | awk -v entry=$entry"
+#        " '{{ if($0~entry){{print $0; getline; while($0 !~ /^>/)"
+#        " {{print $0; getline}}; exit }} }}'; done"
+#        " | gzip > {output}"
