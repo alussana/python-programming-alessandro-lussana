@@ -197,11 +197,11 @@ rule list_min_evalues:
         " zcat {input} | grep $id | cut -f2,11 | LC_ALL=c sort -gk2 | sed -n '1p';"
         " done | gzip > {output}"
 
-# generate list of examples to later feed a confusion matrix
+# generate list of examples to then feed a confusion matrix
 # try:
 # (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj/dataset$ \
 # snakemake -p conf_list_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot.gz
-rule compute_confusion_matrix:
+rule compute_confusion_matrix_feed_file:
     input:
         p="{p}_blast_min_eval.gz",
         n="{n}_blast_min_eval.gz"
@@ -212,6 +212,19 @@ rule compute_confusion_matrix:
         " <(zcat {input.p} | awk '{{print $0\"\t\"1}}')"
         " <(zcat {input.n} | awk '{{print $0\"\t\"0}}')"
         " | gzip > {output}"
+
+# compute confusion matrix and print analysis results
+# try:
+# snakemake -p conf_mat_th0.001_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot
+rule compute_confusion_matrix:
+    input:
+        "conf_list_of_{p}_and_{n}.gz"
+    output:
+        "conf_mat_th{th}_of_{p}_and_{n}"
+    params:
+        "{th}"
+    shell:
+        "python ../src/buildConfMatrix.py {input} {params} > {output}"
 
 ####################
 # deprecated rules #

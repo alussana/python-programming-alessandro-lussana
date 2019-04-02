@@ -13313,7 +13313,95 @@ Finished job 0.
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="blastclust">blastclust<a class="anchor-link" href="#blastclust">&#182;</a></h2><p>blastclust -i ids_kunitz.fasta -o ids_kunits.clust -L 0.8 -S 90</p>
+<p>Now all the data has been generated to perform the optimization of the e-value threshold in order to make the best possible predictions. Computation of the precision matrix is performed running the following rules; the final output files will contain these info:</p>
+<ul>
+<li><strong>TP</strong>      number of true positives</li>
+<li><strong>TN</strong>     number of true negatives</li>
+<li><strong>FP</strong>      number of false positives</li>
+<li><strong>FN</strong>      number of false negatives</li>
+<li><strong>acc</strong>     accuracy</li>
+<li><strong>tpr</strong>     sensivity - true positive rate</li>
+<li><strong>ppv</strong>     precision - positive predictive value</li>
+<li><strong>mcc</strong>     matthews correlation coefficient</li>
+</ul>
+<p>TODO: Analysis of the area under the ROC should be implemented</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+<span class="nb">pwd</span>
+snakemake -p conf_mat_th0.001_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot
+cat conf_mat_th0.001_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_blast_classification/dataset
+TP	339
+TN	497
+FP	2
+FN	1
+acc	0.996424
+tpr	0.997059
+ppv	0.994135
+mcc	0.992589
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	compute_confusion_matrix
+	1
+
+rule compute_confusion_matrix:
+    input: conf_list_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot.gz
+    output: conf_mat_th0.001_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot
+    jobid: 0
+    wildcards: th=0.001, p=sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot, n=sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot
+
+python ../src/buildConfMatrix.py conf_list_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot.gz 0.001 &gt; conf_mat_th0.001_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot
+Finished job 0.
+1 of 1 steps (100%) done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Notes-for-HMM-classification-prj">Notes for HMM classification prj<a class="anchor-link" href="#Notes-for-HMM-classification-prj">&#182;</a></h1><h2 id="blastclust">blastclust<a class="anchor-link" href="#blastclust">&#182;</a></h2><p>blastclust -i ids_kunitz.fasta -o ids_kunits.clust -L 0.8 -S 90</p>
 <p>clusters together the sequences that share 90% sequence identity for 0.8 sequence length(?). The output is sorted such that in the first line there is the cluster with the greatest number of sequences</p>
 <p>This will be very useful for checking and removing redundancy when considering queries in PDB</p>
 
