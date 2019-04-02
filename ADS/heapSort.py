@@ -57,14 +57,14 @@ def maxHeapSort(A):
     
     buildMaxHeap(A)
     
-    for i in range(heapsize, -1, -1):
+    for i in range(heapsize, 0, -1):
         A[0], A[i] = A[i], A[0]
-        maxHeapify(A, i, heapsize)
-    
+        maxHeapify(A, 0, i - 1)
+
     return(A)
 
 if __name__ == '__main__':
-    A = [5,2,4,7,1,3,2,6]
+    A = [5,2,4,7,1,3,2,6] 
     print("in:", A)
     sorted_A = maxHeapSort(A)
     print("out:", sorted_A)
