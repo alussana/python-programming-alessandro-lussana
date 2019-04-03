@@ -62,3 +62,47 @@ rule intersect_with_all_data:
         " <(zcat {input.t1} | sort) <(zcat {input.t2} | fgrep -f"
         " <(zcat {input.t1} | cut -f1) | sort )"
         " | sed 's/ /\t/g' | gzip > {output}"
+
+# create a fasta from the intersection table
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
+# snakemake -p intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta
+rule intersection2fasta:
+    input:
+        "intersec_{t1}_and_{t2}.txt.gz"
+    output:
+        "intersec_{t1}_and_{t2}.fasta"
+    shell:
+        "zcat {input} | awk '{{print \">\"$1\"\\n\"$4}}' > {output}"
+
+# run blastclust with custom -L and -S parameters
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
+# snakemake -p intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz
+rule run_blastclust:
+    input:
+        "{db}.fasta"
+    output:
+        "{db}_S{S}_L{L}_blastclust_out.gz"
+    params:
+        S="{S}",
+        L="{L}"
+    shell:
+        "blastclust -i {input} -L {params.L} -S {params.S} | gzip > {output}"
+
+# filter for redundancy the intersection table given sequences clusters
+# for every cluster one sequence in selected as representative of that cluster
+# the criterium for selection is lowest resolution of the structure
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
+# snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.txt 
+rule extract_representative_sequences:
+    input:
+        clust="{sequences}_S{S}_L{L}_blastclust_out.gz",
+        table="{sequences}.txt.gz"
+    output:
+        "chosen_blastclust_seq_for_{sequences}_S{S}_L{L}.txt"
+    shell:
+        "for cluster in $(zcat {input.clust} | sed '1d' | sed 's/ /%/g'); do"
+        " zcat {input.table} | grep -w -f <(echo $cluster | sed 's/%/\\n/g') | sort -n -k2"
+        " | sed -n '1p'; done > {output}"

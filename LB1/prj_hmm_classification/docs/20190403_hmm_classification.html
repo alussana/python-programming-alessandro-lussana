@@ -13481,10 +13481,241 @@ Finished job 0.
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Sort the identifiers from the clusters by resolution (or other custom parameter, e.g the length): extract the representative one for each cluster</p>
+<p>--&gt; Sort the identifiers from the clusters by resolution (or other custom parameter, e.g the length): extract the representative one for each cluster</p>
+<p>Do do so:</p>
+<p>First, generate fasta file from the intersection table:</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+<span class="nb">pwd</span>
+snakemake -p intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta
+head intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset
+&gt;1AAP_A
+VREVCSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVCGSA
+&gt;1AAP_B
+VREVCSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVCGSA
+&gt;1B0C_A
+RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA
+&gt;1B0C_B
+RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA
+&gt;1B0C_C
+RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	intersection2fasta
+	1
+
+rule intersection2fasta:
+    input: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz
+    output: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta
+    jobid: 0
+    wildcards: t1=rcsbpdb_wt_PF00014_len50_90, t2=pdbefold_5pti_A_summary
+
+zcat intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz | awk &#39;{print &#34;&gt;&#34;$1&#34;\n&#34;$4}&#39; &gt; intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta
+Finished job 0.
+1 of 1 steps (100%) done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Then, compute the clusters of these sequences using blastclust:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+<span class="nb">pwd</span>
+snakemake -p intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz
+zcat intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz <span class="p">|</span> head
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset
+Apr 3, 2019  5:15 PM Start clustering of 162 queries
+1B0C_A 1B0C_B 1B0C_C 1B0C_D 1B0C_E 1BHC_A 1BHC_B 1BHC_C 1BHC_D 1BHC_E 1BHC_F 1BHC_G 1BHC_H 1BHC_I 1BHC_J 1BPI_A 1BTH_P 1BTH_Q 1BZ5_A 1BZ5_B 1BZ5_C 1BZ5_D 1BZ5_E 1BZX_I 1CBW_D 1CBW_I 1D0D_B 1EAW_B 1EAW_D 1FY8_I 1MTN_D 1MTN_H 1TPA_I 2FTL_I 2HEX_A 2HEX_B 2HEX_C 2HEX_D 2HEX_E 2IJO_I 2KAI_I 2PTC_I 2R9P_E 2R9P_F 2R9P_G 2R9P_I 2RA3_C 2RA3_I 2TGP_I 2TPI_I 3BTK_I 3FP6_I 3FP8_I 3GYM_I 3GYM_J 3LDI_A 3LDI_B 3LDI_C 3LDI_D 3LDI_E 3LDJ_A 3LDJ_B 3LDJ_C 3LDM_A 3LDM_B 3LDM_C 3LDM_D 3LDM_E 3TPI_I 3U1J_E 4DG4_C 4DG4_E 4DG4_F 4DG4_H 4PTI_A 4WWY_C 4WWY_I 4Y0Y_I 5PTI_A 6F1F_A 6F1F_B 6F1F_C 6F1F_D 6F1F_E 6PTI_A 9PTI_A 1YKT_B 4WXV_C 4WXV_I 5YVU_I 
+1AAP_A 1AAP_B 1TAW_B 1ZJD_B 1BRC_I 1CA0_D 1CA0_I 3L33_E 3L33_F 3L33_G 3L33_H 
+3BYB_A 3BYB_B 3BYB_C 3UIR_C 3UIR_D 5ZJ3_A 5ZJ3_B 5ZJ3_C 3D65_I 
+3WNY_A 3WNY_B 3WNY_C 3WNY_E 3WNY_F 3WNY_G 3WNY_H 3WNY_I 
+1Y62_A 1Y62_B 1Y62_C 1Y62_D 1Y62_E 1Y62_F 
+1F5R_I 1F7Z_I 3TGI_I 3TGJ_I 3TGK_I 
+4U30_W 4U30_X 4U30_Y 4U30_Z 
+4ISN_B 4ISL_B 4ISO_B 
+4NTW_B 4NTX_B 4NTY_B 
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	run_blastclust
+	1
+
+rule run_blastclust:
+    input: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta
+    output: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz
+    jobid: 0
+    wildcards: db=intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary, S=99, L=0.95
+
+blastclust -i intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta -L 0.95 -S 99 | gzip &gt; intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz
+Finished job 0.
+1 of 1 steps (100%) done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, filter the intersection table to remove redundancy given the clustering; the representative sequence for each cluster is selected according to the best resolution of the structure</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+<span class="nb">pwd</span>
+snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.txt
+head chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.txt
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset
+5PTI_A	1.00	Bos_taurus	RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA	58	1	16.18	11.93	0.000
+1AAP_A	1.50	Homo_sapiens	VREVCSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVCGSA	58	0.8785	8.378	8.472	0.944
+3BYB_A	1.63	Pseudonaja_textilis	KDRPDFCELPADTGPCRVRFPSFYYNPDEKKCLEFIYGGCEGNANNFITKEECESTCAA	59	0.8603	10.23	9.402	0.867
+3WNY_A	1.30	Bos_taurus	RPAFCLEPPYAGPGKARIIRYFYNAKAGAAQAFVYGGVRAKRNNFASAADALAACAAAGGKKK	63	0.934	10.78	9.662	0.551
+1Y62_A	2.45	Conus_striatus	KDRPSLCDLPADSGSGTKAEKRIYYNSARKQCLRFDYTGQGGNENNFRRTYDCQRTCLYT	60	0.8862	10.53	9.544	0.897
+1F7Z_I	1.55	Bos_taurus	RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGAIGPWENL	65	0.9549	11.71	10.09	0.317
+4U30_W	2.50	Homo_sapiens	TVAACANLPIVRGPCRAFIQLWAFDAVKGKCVLFPYGGCQGNGNKFYSEKECREYCGVP	59	0.7769	7.288	7.874	1.001
+4ISO_B	2.01	Homo_sapiens	QTEDYCLASNKVGRCRGSFPRWYYDPTEQICKSFVYGGCLGNKNNYLREEECILACRGVQ	60	0.8457	6.038	7.132	0.768
+4NTW_B	2.07	Micrurus_tener	EIRPAFCYEDPPFFQKCGAFVDSYYFNRSRITCVHFFYGQCDVNQNHFTTMSECNRVCHG	60	0.6925	9.322	8.958	1.516
+1KTH_A	0.95	Homo_sapiens	ETDICKLPKDEGTCRDFILKWYYDPNTKSCARFWYGGCGGNENKFGSQKECEKVCAPV	58	0.8585	9.597	9.096	1.218
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	extract_representative_sequences
+	1
+
+rule extract_representative_sequences:
+    input: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz, intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz
+    output: chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.txt
+    jobid: 0
+    wildcards: sequences=intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary, S=99, L=0.95
+
+for cluster in $(zcat intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz | sed &#39;1d&#39; | sed &#39;s/ /%/g&#39;); do zcat intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz | grep -w -f &lt;(echo $cluster | sed &#39;s/%/\n/g&#39;) | sort -n -k2 | sed -n &#39;1p&#39;; done &gt; chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.txt
+Finished job 0.
+1 of 1 steps (100%) done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
     </div>
   </div>
