@@ -106,3 +106,15 @@ rule extract_representative_sequences:
         "for cluster in $(zcat {input.clust} | sed '1d' | sed 's/ /%/g'); do"
         " zcat {input.table} | grep -w -f <(echo $cluster | sed 's/%/\\n/g') | sort -n -k2"
         " | sed -n '1p'; done > {output}"
+
+# create a fasta from the intersection table
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
+# snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.fasta
+rule filtered_intersection2fasta:
+    input:
+        "chosen_blastclust_seq_for_{sequences}_S{S}_L{L}.txt"
+    output:
+        "chosen_blastclust_seq_for_{sequences}_S{S}_L{L}.fasta"
+    shell:
+        "cat {input} | awk '{{print \">\"$1\"\\n\"$4}}' > {output}"
