@@ -1,0 +1,38 @@
+# create a tsv with rcsbpdb ids consistent with parse_pdbefold_summary output
+# .META:
+# 1 ID_CHAIN
+# 2 Resolution
+# 3 Taxonomy
+# 4 Sequence
+# 5 Chain Length
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
+# snakemake -p rcsbpdb_wt_PF00014_len50_90.txt.gz 
+rule parse_rcsbpdb_table:
+    input:
+        "rcsbpdb_wt_PF00014_len50_90.csv"
+    output:
+        "rcsbpdb_wt_PF00014_len50_90.txt.gz"
+    shell:
+        "cat {input} | sed 's/,/\t/g' | sed 's/\"//g' | sed 's/ /_/g'"
+        " | sed '1d' | sed 's/\t/_/' | gzip > {output}"
+
+# create a tsv with pdbefold ids consistent with parse_rcsbpdb_table output
+# .META:
+# 1 ID_CHAIN
+# 2 Q-score
+# 3 P-score
+# 4 Z-score
+# 5 RMSD
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
+# snakemake -p pdbefold_5pti_A_summary.txt.gz
+rule parse_pdbefold_summary:
+    input:
+        "pdbefold_5pti_A_summary"
+    output:
+        "pdbefold_5pti_A_summary.txt.gz"
+    shell:
+        "cat {input} | sed '1,5d' | tr -s \" \" \"\\t\" | cut -f3-"
+        " | awk '{{print toupper($17)\"\t\"$1\"\t\"$2\"\t\"$3\"\t\"$4}}'"
+        " | sed 's/:/_/' | gzip > {output}"
