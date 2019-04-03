@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>20190402_prj_start_confusion_matrix</title>
+<title>20190402_prj_intro_confusion_matrix</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13128,6 +13128,38 @@ div#notebook {
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">pwd</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_blast_classification/docs
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13147,7 +13179,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13172,17 +13204,17 @@ zcat sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_s
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/dataset
-sp|A0A0D3MJQ5|ARSM_CLOSP	4.3
-sp|A0JNI5|CLASR_BOVIN	33
-sp|A0K1I7|TRMB_ARTS2	53
-sp|A0L5J3|RNY_MAGMM	30
-sp|A0M8V0|CAZA2_CANLF	236
-sp|A1A8R7|SYL_ECOK1	8.7
-sp|A1ASM0|APT_PELPD	123
-sp|A1B9H5|RL21_PARDP	194
-sp|A1BF89|PUR7_CHLPD	33
-sp|A1BI83|3MGH_CHLPD	145
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_blast_classification/dataset
+sp|A0B688|PRIS_METTP	98
+sp|A0KS65|DAPF_SHESA	16
+sp|A0PXQ5|PAND_CLONN	128
+sp|A0Q3B8|MURI_CLONN	136
+sp|A0T0X2|RK3_THAPS	62
+sp|A1ANJ2|TRPF_PELPD	33
+sp|A1AWT1|SYFA_RUTMC	4.8
+sp|A1CHU1|MDM34_ASPCL	27
+sp|A1JPP1|ZAPA_YERE8	133
+sp|A1KRG4|RL10_NEIMF	56
 </pre>
 </div>
 </div>
@@ -13252,13 +13284,14 @@ DONE: lines are consistent</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
 <span class="nb">cd</span> ../dataset/
 <span class="nb">pwd</span>
 snakemake -p conf_list_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot.gz
+zcat conf_list_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot.gz <span class="p">|</span> head
 </pre></div>
 
     </div>
@@ -13275,7 +13308,17 @@ snakemake -p conf_list_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/dataset
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_blast_classification/dataset
+sp|A0A1Z0YU59|MAMB1_DENAN	6.83e-15	1
+sp|A5X2X1|VKT_SISCA	9.60e-17	1
+sp|A6MFL1|VKT1_DEMVE	5.99e-15	1
+sp|A6MFL2|VKT2_DEMVE	6.12e-15	1
+sp|A6MFL3|VKT3_DEMVE	8.29e-17	1
+sp|A6MFL4|VKT4_DEMVE	7.86e-17	1
+sp|A6MGX9|VKT5_DEMVE	2.60e-15	1
+sp|A6MGY1|VKT7_DEMVE	8.29e-17	1
+sp|A7X3V4|VKT1_TELDH	7.26e-16	1
+sp|A7X3V7|VKT1_PHIOL	1.18e-16	1
 </pre>
 </div>
 </div>
@@ -13290,10 +13333,10 @@ snakemake -p conf_list_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf
 Rules claiming more threads will be scaled down.
 Job counts:
 	count	jobs
-	1	compute_confusion_matrix
+	1	compute_confusion_matrix_feed_file
 	1
 
-rule compute_confusion_matrix:
+rule compute_confusion_matrix_feed_file:
     input: sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_blast_min_eval.gz, sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot_blast_min_eval.gz
     output: conf_list_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot.gz
     jobid: 0
@@ -13331,7 +13374,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13357,13 +13400,13 @@ cat conf_mat_th0.001_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_blast_classification/dataset
 TP	339
-TN	497
-FP	2
+TN	495
+FP	5
 FN	1
-acc	0.996424
+acc	0.992857
 tpr	0.997059
-ppv	0.994135
-mcc	0.992589
+ppv	0.985465
+mcc	0.985252
 </pre>
 </div>
 </div>
