@@ -36,3 +36,29 @@ rule parse_pdbefold_summary:
         "cat {input} | sed '1,5d' | tr -s \" \" \"\\t\" | cut -f3-"
         " | awk '{{print toupper($17)\"\t\"$1\"\t\"$2\"\t\"$3\"\t\"$4}}'"
         " | sed 's/:/_/' | gzip > {output}"
+
+# merge the fields of two tsv files joining them on the first column
+# .META:
+# 1 ID_CHAIN
+# 2 Resolution
+# 3 Taxonomy
+# 4 Sequence
+# 5 Chain Length
+# 6 Q-score
+# 7 P-score
+# 8 Z-score
+# 9 RMSD
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
+# snakemake -p intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz
+rule intersect_with_all_data:
+    input:
+        t1="{t1}.txt.gz",
+        t2="{t2}.txt.gz"
+    output:
+        "intersec_{t1}_and_{t2}.txt.gz"
+    shell:
+        "join -j 1"
+        " <(zcat {input.t1} | sort) <(zcat {input.t2} | fgrep -f"
+        " <(zcat {input.t1} | cut -f1) | sort )"
+        " | sed 's/ /\t/g' | gzip > {output}"

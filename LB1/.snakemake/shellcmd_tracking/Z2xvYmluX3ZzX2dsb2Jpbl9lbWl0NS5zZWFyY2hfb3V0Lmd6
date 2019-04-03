@@ -1,0 +1,1 @@
+hmmsearch globin.hmm <(zcat globin_emit5.fasta.gz) | gzip > globin_vs_globin_emit5.search_out.gz

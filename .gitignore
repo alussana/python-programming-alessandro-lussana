@@ -2,5 +2,6 @@ __pycache__
 AML/.ipynb_checkpoints/
 LB1/prj_blast_classification/dataset/
 LB1/prj_hmm_classification/dataset/
-LB1/.snakemake/
-LB1/prj/docs/.ipynb_checkpoints/
+LB1/prj_blast_classification/docs/.ipynb_checkpoints/
+LB1/prj_hmm_classification/docs/.ipynb_checkpoints/
+LB1/prj_hmm_classification/handmade/pdb_seqres.txt

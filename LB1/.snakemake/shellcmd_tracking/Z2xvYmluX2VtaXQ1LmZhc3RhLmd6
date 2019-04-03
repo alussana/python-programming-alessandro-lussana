@@ -1,0 +1,1 @@
+hmmemit -N 5 globin.hmm | gzip > globin_emit5.fasta.gz

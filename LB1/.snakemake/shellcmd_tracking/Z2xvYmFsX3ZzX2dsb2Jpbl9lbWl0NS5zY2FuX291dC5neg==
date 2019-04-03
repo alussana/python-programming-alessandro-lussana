@@ -1,0 +1,1 @@
+hmmscan global.hmm <(zcat globin_emit5.fasta.gz) | gzip > global_vs_globin_emit5.scan_out.gz

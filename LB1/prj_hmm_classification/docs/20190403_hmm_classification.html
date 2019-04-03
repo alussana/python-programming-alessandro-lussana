@@ -13386,6 +13386,84 @@ Finished job 0.
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Join-the-tables-on-the-intersection-of-identifiers">Join the tables on the intersection of identifiers<a class="anchor-link" href="#Join-the-tables-on-the-intersection-of-identifiers">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+<span class="nb">pwd</span>
+snakemake -p intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz
+zcat intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz <span class="p">|</span> head
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset
+1AAP_A	1.50	Homo_sapiens	VREVCSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVCGSA	58	0.8785	8.378	8.472	0.944
+1AAP_B	1.50	Homo_sapiens	VREVCSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVCGSA	58	0.8667	7.554	8.024	0.819
+1B0C_A	2.80	Bos_taurus	RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA	58	0.9454	10.26	9.419	0.437
+1B0C_B	2.80	Bos_taurus	RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA	58	0.9463	10.26	9.419	0.428
+1B0C_C	2.80	Bos_taurus	RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA	58	0.9457	10.26	9.419	0.434
+1B0C_D	2.80	Bos_taurus	RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA	58	0.9447	10.23	9.402	0.446
+1B0C_E	2.80	Bos_taurus	RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA	58	0.9453	10.26	9.419	0.439
+1BHC_A	2.70	Bos_taurus	RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA	58	0.9484	11.34	9.924	0.403
+1BHC_B	2.70	Bos_taurus	RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA	58	0.9477	11.28	9.896	0.411
+1BHC_C	2.70	Bos_taurus	RPDFCLEPPYTGPCKARIIRYFYNAKAGLCQTFVYGGCRAKRNNFKSAEDCMRTCGGA	58	0.9474	11.28	9.896	0.414
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	intersect_with_all_data
+	1
+
+rule intersect_with_all_data:
+    input: rcsbpdb_wt_PF00014_len50_90.txt.gz, pdbefold_5pti_A_summary.txt.gz
+    output: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz
+    jobid: 0
+    wildcards: t1=rcsbpdb_wt_PF00014_len50_90, t2=pdbefold_5pti_A_summary
+
+join -j 1 &lt;(zcat rcsbpdb_wt_PF00014_len50_90.txt.gz | sort) &lt;(zcat pdbefold_5pti_A_summary.txt.gz | fgrep -f &lt;(zcat rcsbpdb_wt_PF00014_len50_90.txt.gz | cut -f1) | sort ) | sed &#39;s/ /	/g&#39; | gzip &gt; intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz
+Finished job 0.
+1 of 1 steps (100%) done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Download-seqres-from-wwPDB">Download seqres from wwPDB<a class="anchor-link" href="#Download-seqres-from-wwPDB">&#182;</a></h2><p>wget this: <a href="http://lipid.biocomp.unibo.it/emidio/tmp/pdb_seqres.txt">http://lipid.biocomp.unibo.it/emidio/tmp/pdb_seqres.txt</a></p>
 <p>Not really needed since the sequence are already stored in rcsbpdb_wt_PF00014_len50_90.csv</p>
 
