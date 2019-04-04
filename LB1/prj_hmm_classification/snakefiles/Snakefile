@@ -1,3 +1,9 @@
+# TODO make rule to download swissprot in fasta format
+
+#############################################################
+# Selection of representative kunitz sequences to build hmm #
+#############################################################
+
 # create a tsv with rcsbpdb ids consistent with parse_pdbefold_summary output
 # .META:
 # 1 ID_CHAIN
@@ -119,6 +125,21 @@ rule filtered_intersection2fasta:
     shell:
         "cat {input} | awk '{{print \">\"$1\"\\n\"$4}}' | gzip > {output}"
 
+# simple parsing to get the ids from extract_representative_sequences output
+# try:
+# snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_idlist
+rule create_chosen_ids_list:
+    input:
+        "{sequences}.txt"
+    output:
+        "{sequences}_idlist"
+    shell:
+        "cat {input} | cut -f1 | sed 's/_/:/' > {output}"
+
+############################
+# non-structure-based MSA #
+############################
+
 # perform MSA with muscle using default parameters
 # try:
 # (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
@@ -131,6 +152,37 @@ rule muscle_align:
         "{sequences}.muscle.afa"
     shell:
         "muscle -in <(zcat {input}) > {output}"
+
+###############################
+# Refine positive testing set #
+###############################
+
+rule filter_out_training_clusters:
+    input:
+        flt="intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz",
+        ids="uniprot_kunitz_positive.gz"
+    output:
+        "filtered_uniprot_kunitz_positive.txt"
+    shell:
+        "zcat {input.ids} | grep -v -f <(zcat {input.flt} | sed '1d'"
+        " | sed 's/ $//g' | sed 's/ /\\n/g' | cut -b 1-4 | sort | uniq)"
+        " | cut -f1 > {output}"
+
+###########################
+# Refine negative testing #
+###########################
+
+rule get_negative_set_ids:
+    input:
+        "uniprot_kunitz_negative.gz"
+    output:
+        "filtered_uniprot_kunitz_negative.txt"
+    shell:
+        "zcat {input} | cut -f1 > {output}"
+
+##################
+# HMM operations #
+##################
 
 # train a hidden markov model with hmmer from an alignment in aligned fasta format
 # try:
@@ -206,6 +258,10 @@ rule hmm_db_scan:
     shell:
         "hmmscan {params} <(zcat {input}) | gzip > {output}"
 
+####################
+# fasta operations #
+####################
+
 # filter a multifasta given a list of identifiers
 # try:
 # snakemake -p idlist_filter_on_uniprot_sprot.fasta.gz
@@ -217,6 +273,10 @@ rule filterfasta:
         "{filter}_filter_on_{db}.fasta.gz"
     shell:
         "python ../src/fastafilter.py {input.db} {input.fl} | gzip > {output}"
+
+########
+# misc #
+########
 
 # sample N items from a list
 # try:

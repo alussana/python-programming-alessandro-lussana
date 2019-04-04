@@ -13213,8 +13213,83 @@ RFDWSGCGGNSNRFKTIEECRRTCIG--------------
 Rules claiming more threads will be scaled down.
 Job counts:
 	count	jobs
+	1	extract_representative_sequences
+	1	filtered_intersection2fasta
+	1	intersect_with_all_data
+	1	intersection2fasta
 	1	muscle_align
-	1
+	1	parse_pdbefold_summary
+	1	parse_rcsbpdb_table
+	1	run_blastclust
+	8
+
+rule parse_pdbefold_summary:
+    input: pdbefold_5pti_A_summary
+    output: pdbefold_5pti_A_summary.txt.gz
+    jobid: 6
+
+cat pdbefold_5pti_A_summary | sed &#39;1,5d&#39; | tr -s &#34; &#34; &#34;\t&#34; | cut -f3- | awk &#39;{print toupper($17)&#34;	&#34;$1&#34;	&#34;$2&#34;	&#34;$3&#34;	&#34;$4}&#39; | sed &#39;s/:/_/&#39; | gzip &gt; pdbefold_5pti_A_summary.txt.gz
+Finished job 6.
+1 of 8 steps (12%) done
+
+rule parse_rcsbpdb_table:
+    input: rcsbpdb_wt_PF00014_len50_90.csv
+    output: rcsbpdb_wt_PF00014_len50_90.txt.gz
+    jobid: 7
+
+cat rcsbpdb_wt_PF00014_len50_90.csv | sed &#39;s/,/	/g&#39; | sed &#39;s/&#34;//g&#39; | sed &#39;s/ /_/g&#39; | sed &#39;1d&#39; | sed &#39;s/	/_/&#39; | gzip &gt; rcsbpdb_wt_PF00014_len50_90.txt.gz
+Finished job 7.
+2 of 8 steps (25%) done
+
+rule intersect_with_all_data:
+    input: rcsbpdb_wt_PF00014_len50_90.txt.gz, pdbefold_5pti_A_summary.txt.gz
+    output: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz
+    jobid: 4
+    wildcards: t1=rcsbpdb_wt_PF00014_len50_90, t2=pdbefold_5pti_A_summary
+
+join -j 1 &lt;(zcat rcsbpdb_wt_PF00014_len50_90.txt.gz | sort) &lt;(zcat pdbefold_5pti_A_summary.txt.gz | fgrep -f &lt;(zcat rcsbpdb_wt_PF00014_len50_90.txt.gz | cut -f1) | sort ) | sed &#39;s/ /	/g&#39; | gzip &gt; intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz
+Finished job 4.
+3 of 8 steps (38%) done
+
+rule intersection2fasta:
+    input: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz
+    output: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta
+    jobid: 5
+    wildcards: t1=rcsbpdb_wt_PF00014_len50_90, t2=pdbefold_5pti_A_summary
+
+zcat intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz | awk &#39;{print &#34;&gt;&#34;$1&#34;\n&#34;$4}&#39; &gt; intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta
+Finished job 5.
+4 of 8 steps (50%) done
+
+rule run_blastclust:
+    input: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta
+    output: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz
+    jobid: 3
+    wildcards: db=intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary, S=99, L=0.95
+
+blastclust -i intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta -L 0.95 -S 99 | gzip &gt; intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz
+Finished job 3.
+5 of 8 steps (62%) done
+
+rule extract_representative_sequences:
+    input: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz, intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz
+    output: chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.txt
+    jobid: 2
+    wildcards: sequences=intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary, S=99, L=0.95
+
+for cluster in $(zcat intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz | sed &#39;1d&#39; | sed &#39;s/ /%/g&#39;); do zcat intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz | grep -w -f &lt;(echo $cluster | sed &#39;s/%/\n/g&#39;) | sort -n -k2 | sed -n &#39;1p&#39;; done &gt; chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.txt
+Finished job 2.
+6 of 8 steps (75%) done
+
+rule filtered_intersection2fasta:
+    input: chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.txt
+    output: chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.fasta.gz
+    jobid: 1
+    wildcards: sequences=intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary, S=99, L=0.95
+
+cat chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.txt | awk &#39;{print &#34;&gt;&#34;$1&#34;\n&#34;$4}&#39; | gzip &gt; chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.fasta.gz
+Finished job 1.
+7 of 8 steps (88%) done
 
 rule muscle_align:
     input: chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.fasta.gz
@@ -13244,7 +13319,7 @@ Please cite: Edgar, R.C. Nucleic Acids Res 32(5), 1792-97.
 00:00:00    22 MB(-3%)  Iter   5  100.00%  Refine biparts
 00:00:00    22 MB(-3%)  Iter   6  100.00%  Refine biparts
 Finished job 0.
-1 of 1 steps (100%) done
+8 of 8 steps (100%) done
 </pre>
 </div>
 </div>
@@ -13300,7 +13375,7 @@ head chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold
 #---- -------------------- ----- ----- ----- -------- ------ -----------
 1     chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.muscle    25   100    60     2.07  0.931 
 
-# CPU time: 0.06u 0.00s 00:00:00.06 Elapsed: 00:00:00.07
+# CPU time: 0.05u 0.00s 00:00:00.05 Elapsed: 00:00:00.06
 HMMER3/f [3.1b2 | February 2015]
 NAME  chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.muscle
 LENG  60
@@ -13310,7 +13385,7 @@ MM    no
 CONS  yes
 CS    no
 MAP   yes
-DATE  Thu Apr  4 12:08:08 2019
+DATE  Thu Apr  4 20:10:09 2019
 </pre>
 </div>
 </div>
@@ -13349,6 +13424,826 @@ Finished job 0.
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>[classification and assessment of performance will be done later]</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Multiple-Structural-Alignment">Multiple Structural Alignment<a class="anchor-link" href="#Multiple-Structural-Alignment">&#182;</a></h2><p>From <a href="http://www.ebi.ac.uk/msd-srv/ssm/">pdbefold</a></p>
+<p>You can provide list of PDB entries: &lt;PDBID&gt;:&lt;CHAINID&gt;</p>
+<p>Note: procedure may take some time. prof is showing this with 5-6 structures only</p>
+<ul>
+<li>Check manually the structures for each cluster to be problem proof before starting the alignment submission</li>
+<li>Submit the list here: <a href="http://www.ebi.ac.uk/msd-srv/ssm/cgi-bin/ssmserver">http://www.ebi.ac.uk/msd-srv/ssm/cgi-bin/ssmserver</a></li>
+<li>Download FASTA alignment</li>
+<li>Parse to have everything uppercase</li>
+</ul>
+<h2 id="hmmbuild-on-structure-derived-sequence-alignment">hmmbuild on structure-derived sequence alignment<a class="anchor-link" href="#hmmbuild-on-structure-derived-sequence-alignment">&#182;</a></h2><ul>
+<li>run hmmbuild from the aligned fasta</li>
+<li>go to skylingn to get a nice visualization of the hmm profile: comment the conservation of typical residues etc; maybe compare this sequence logo with the one obtained from the non-structure-derived sequence alignment</li>
+</ul>
+<p>First, get the list of pdb (identifier:chain)s</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+<span class="nb">pwd</span>
+snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_idlist
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	create_chosen_ids_list
+	1
+
+rule create_chosen_ids_list:
+    input: chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.txt
+    output: chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_idlist
+    jobid: 0
+    wildcards: sequences=chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95
+
+cat chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.txt | cut -f1 | sed &#39;s/_/:/&#39; &gt; chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_idlist
+Finished job 0.
+1 of 1 steps (100%) done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Then use it to feed pdbefold</p>
+<p><strong>my session ID is 556-42-1FK</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Choose-the-negative-testing-set">Choose the negative testing set<a class="anchor-link" href="#Choose-the-negative-testing-set">&#182;</a></h2><ul>
+<li>Go to UniProt --&gt; advanced search</li>
+<li>chose same length, non-kunitz, reviewed: yes</li>
+</ul>
+<p><strong>length:[40 TO 500] NOT database:(type:pfam pf00014) AND reviewed:yes</strong></p>
+<p>Downloaded in ../handmade/uniprot_kunitz_negative.gz</p>
+<p>I renamed the file and deleted the header (first line: "Entry   Cross-reference (PDB)")</p>
+<p>Sets generation for testing: prof sort(ed) -R | head -100</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Choose-the-positive-testing-set">Choose the positive testing set<a class="anchor-link" href="#Choose-the-positive-testing-set">&#182;</a></h2><ul>
+<li>Go to UniProt --&gt; advanced search</li>
+<li>search for 40-500L, kunitz, reviewed</li>
+<li>Exclude sequences that are too similar to the training set: possible approaches</li>
+</ul>
+<p><strong>database:(type:pfam pf00014) length:[40 TO 500] AND reviewed:yes</strong></p>
+<p>Downloaded in <strong>../handmade/uniprot_kunitz_positives.gz</strong></p>
+<p>I renamed the file and deleted the header (first line: "Entry   Cross-reference (PDB)")</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../handmade/
+ls -lh
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>total 150M
+-rw-r--r-- 1 alessandro alessandro 3,3K apr  4 15:58 pdbefold_25_selected_kunitz.afa
+-rw-r--r-- 1 alessandro alessandro  78K apr  3 12:58 pdbefold_5pti_A_summary
+-rw-r--r-- 1 alessandro alessandro 147M apr  3 11:53 pdb_seqres.txt
+-rw-r--r-- 1 alessandro alessandro  18K apr  3 11:28 rcsbpdb_wt_PF00014_len50_90_addinfo.csv
+-rw-r--r-- 1 alessandro alessandro  16K apr  3 12:20 rcsbpdb_wt_PF00014_len50_90.csv
+-rw-r--r-- 1 alessandro alessandro 2,0M apr  4 18:03 uniprot_kunitz_negative.gz
+-rw-r--r-- 1 alessandro alessandro 1,6K apr  4 18:38 uniprot_kunitz_positive.gz
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the meantime, MSA of structure finished. I downloaded the fasta alignment (afa) here:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+head ../handmade/pdbefold_25_selected_kunitz.afa
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&gt;PDB:5pti:A STRUCTURE OF BOVINE PANCREATIC TRYPSIN INHIBITOR. 
+--------rpdfcleppytgpckARIIRYFYNAKAGLCQTFVYGgCRA-KRNNFKSAEDCMRTCgga-
+
+&gt;PDB:1aap:A X-RAY CRYSTAL STRUCTURE OF THE PROTEASE INHIBITOR 
+--------vrevcseqaetgpcrAMISRWYFDVTEGKCAPFFYGgCGG-NRNNFDTEEYCMAVCg---
+
+&gt;PDB:3byb:A CRYSTAL STRUCTURE OF TEXTILININ-1, A KUNITZ-TYPE S
+------kdrpdfcelpadtgpcrVRFPSFYYNPDEKKCLEFIYGgCEG-NANNFITKEECESTCa---
+
+&gt;PDB:3wny:A A SIMPLIFIED BPTI VARIANT WITH POLY LYS AMINO ACID
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Symbolic links to the new handmade files are now present in ../dataset/</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+ls -lh
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>total 112M
+-rw-r--r-- 1 alessandro alessandro  809 apr  4 20:10 chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.fasta.gz
+-rw-r--r-- 1 alessandro alessandro  175 apr  4 20:10 chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_idlist
+-rw-r--r-- 1 alessandro alessandro 2,7K apr  4 20:10 chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.muscle.afa
+-rw-r--r-- 1 alessandro alessandro  29K apr  4 20:10 chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.muscle.hmm
+lrwxrwxrwx 1 alessandro alessandro   43 apr  4 16:11 chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.afa -&gt; ../handmade/pdbefold_25_selected_kunitz.afa
+-rw-r--r-- 1 alessandro alessandro 2,9K apr  4 20:10 chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.txt
+-rw-r--r-- 1 alessandro alessandro  11K apr  4 20:10 intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta
+-rw-r--r-- 1 alessandro alessandro  552 apr  4 20:10 intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz
+-rw-r--r-- 1 alessandro alessandro 3,4K apr  4 20:10 intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz
+lrwxrwxrwx 1 alessandro alessandro   35 apr  3 11:40 pdbefold_5pti_A_summary -&gt; ../handmade/pdbefold_5pti_A_summary
+-rw-r--r-- 1 alessandro alessandro 7,1K apr  4 20:10 pdbefold_5pti_A_summary.txt.gz
+lrwxrwxrwx 1 alessandro alessandro   43 apr  3 12:16 rcsbpdb_wt_PF00014_len50_90.csv -&gt; ../handmade/rcsbpdb_wt_PF00014_len50_90.csv
+-rw-r--r-- 1 alessandro alessandro 1,8K apr  4 20:10 rcsbpdb_wt_PF00014_len50_90.txt.gz
+lrwxrwxrwx 1 alessandro alessandro   23 apr  3 09:25 Snakefile -&gt; ../snakefiles/Snakefile
+-rw-r--r-- 1 alessandro alessandro 112M apr  4 18:41 swissprot.fasta.gz
+lrwxrwxrwx 1 alessandro alessandro   38 apr  4 16:12 uniprot_kunitz_negative.gz -&gt; ../handmade/uniprot_kunitz_negative.gz
+lrwxrwxrwx 1 alessandro alessandro   38 apr  4 18:39 uniprot_kunitz_positive.gz -&gt; ../handmade/uniprot_kunitz_positive.gz
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Building-HMM-with-structure-derived-sequence-alignment">Building HMM with structure-derived sequence alignment<a class="anchor-link" href="#Building-HMM-with-structure-derived-sequence-alignment">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.hmm
+head chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.hmm
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre># hmmbuild :: profile HMM construction from multiple sequence alignments
+# HMMER 3.1b2 (February 2015); http://hmmer.org/
+# Copyright (C) 2015 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# input alignment file:             chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.afa
+# output HMM file:                  chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.hmm
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# idx name                  nseq  alen  mlen eff_nseq re/pos description
+#---- -------------------- ----- ----- ----- -------- ------ -----------
+1     chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold    25    68    59     2.43  0.946 
+
+# CPU time: 0.07u 0.00s 00:00:00.07 Elapsed: 00:00:00.07
+HMMER3/f [3.1b2 | February 2015]
+NAME  chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold
+LENG  59
+ALPH  amino
+RF    no
+MM    no
+CONS  yes
+CS    no
+MAP   yes
+DATE  Thu Apr  4 20:10:10 2019
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	build_hmm
+	1
+
+rule build_hmm:
+    input: chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.afa
+    output: chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.hmm
+    jobid: 0
+    wildcards: msa=chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95, source=pdbefold
+
+hmmbuild --informat afa chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.hmm chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.afa
+Finished job 0.
+1 of 1 steps (100%) done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Filtering-the-positive-set-for-similarity-with-the-training-set">Filtering the positive set for similarity with the training set<a class="anchor-link" href="#Filtering-the-positive-set-for-similarity-with-the-training-set">&#182;</a></h2><ul>
+<li>best way: use blastclust to remove some extremely similar clusters</li>
+<li>fast, ugly alternative: remove only the 25 training sequences</li>
+</ul>
+<p>Here I do the best way:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+<span class="nb">pwd</span>
+snakemake -p filtered_uniprot_kunitz_positive.txt
+cat filtered_uniprot_kunitz_positive.txt <span class="p">|</span> head
+wc -l filtered_uniprot_kunitz_positive.txt
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset
+P00981
+P00982
+P00978
+Q64240
+P04366
+O95925
+P68425
+Q9WU03
+P29216
+Q07456
+310 filtered_uniprot_kunitz_positive.txt
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	filter_out_training_clusters
+	1
+
+rule filter_out_training_clusters:
+    input: intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz, uniprot_kunitz_positive.gz
+    output: filtered_uniprot_kunitz_positive.txt
+    jobid: 0
+
+zcat uniprot_kunitz_positive.gz | grep -v -f &lt;(zcat intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz | sed &#39;1d&#39; | sed &#39;s/ $//g&#39; | sed &#39;s/ /\n/g&#39; | cut -b 1-4 | sort | uniq) | cut -f1 &gt; filtered_uniprot_kunitz_positive.txt
+Finished job 0.
+1 of 1 steps (100%) done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Retrieve-multifasta-testing-sets">Retrieve multifasta testing sets<a class="anchor-link" href="#Retrieve-multifasta-testing-sets">&#182;</a></h2><h3 id="positive:">positive:<a class="anchor-link" href="#positive:">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+<span class="nb">pwd</span>
+snakemake -p filtered_uniprot_kunitz_positive_filter_on_swissprot.fasta.gz
+zcat filtered_uniprot_kunitz_positive_filter_on_swissprot.fasta.gz <span class="p">|</span> head
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset
+&gt;sp|P84875|PCPI_SABMA Carboxypeptidase inhibitor SmCI OS=Sabellastarte magnifica OX=389514 PE=1 SV=1
+ISVCDLPADRGQCTAYIPQWFFNKTTEDCEKFVYGGCQGNANRFETKDDCIANCGCNLPS
+KVGPCRVSARMWFHNPETEKCEVFIYGGCHGNANRFATETECQEVCDRYQKPGFCYQPSE
+TGPCKGSFPRYYYDYEDGECKEFIYGGCEGNANNFETKESCENAC
+&gt;sp|Q9D263|SPIT4_MOUSE Kunitz-type protease inhibitor 4 OS=Mus musculus OX=10090 GN=Spint4 PE=2 SV=1
+MKPTKLGFLLGLSLLCSLSPPVLSGVERLANYLCKDYNDPCLLDVEPGSCYEVHFRFFYN
+QTAKQCQIFLFTGCNGNLNNFKLKIDCDVTCHETYKNPPLPSGDKRKRSLRALATKNLAT
+DWRLTTLQPGRLRQTERKETLLQRARRESRRQPLARHHT
+&gt;sp|Q9WU03|SPIT2_MOUSE Kunitz-type protease inhibitor 2 OS=Mus musculus OX=10090 GN=Spint2 PE=1 SV=1
+MAQLCELRRGRALLALVASLLLSGAQVASRELDVHESCGVSKVVGKCRASIPRWWYNITD
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	filterfasta
+	1
+
+rule filterfasta:
+    input: swissprot.fasta.gz, filtered_uniprot_kunitz_positive.txt
+    output: filtered_uniprot_kunitz_positive_filter_on_swissprot.fasta.gz
+    jobid: 0
+    wildcards: filter=filtered_uniprot_kunitz_positive, db=swissprot
+
+python ../src/fastafilter.py swissprot.fasta.gz filtered_uniprot_kunitz_positive.txt | gzip &gt; filtered_uniprot_kunitz_positive_filter_on_swissprot.fasta.gz
+Finished job 0.
+1 of 1 steps (100%) done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Negative:">Negative:<a class="anchor-link" href="#Negative:">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+<span class="nb">pwd</span>
+snakemake -p filtered_uniprot_kunitz_negative.txt
+head filtered_uniprot_kunitz_negative.txt
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset
+Q00604
+Q62433
+P13738
+P01179
+P25427
+P55769
+Q9D0T1
+Q4PSE2
+Q92886
+P80188
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	get_negative_set_ids
+	1
+
+rule get_negative_set_ids:
+    input: uniprot_kunitz_negative.gz
+    output: filtered_uniprot_kunitz_negative.txt
+    jobid: 0
+
+zcat uniprot_kunitz_negative.gz | cut -f1 &gt; filtered_uniprot_kunitz_negative.txt
+Finished job 0.
+1 of 1 steps (100%) done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Run-hmmsearch">Run hmmsearch<a class="anchor-link" href="#Run-hmmsearch">&#182;</a></h2><h3 id="Positive-set:">Positive set:<a class="anchor-link" href="#Positive-set:">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+<span class="nb">pwd</span>
+snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold_vs_filtered_uniprot_kunitz_positive_filter_on_swissprot.search_out.gz
+zcat chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold_vs_filtered_uniprot_kunitz_positive_filter_on_swissprot.search_out.gz <span class="p">|</span> head -20
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b2 (February 2015); http://hmmer.org/
+# Copyright (C) 2015 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.hmm
+# target sequence database:        /dev/fd/63
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold  [M=59]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence                  Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------                  -----------
+    4.7e-71  229.2  42.1      3e-27   88.9   8.0    3.2  3  sp|Q28864|TFPI1_MACMU      Tissue factor pathway inhibitor OS
+    2.1e-70  227.1  42.4    1.2e-25   83.8   5.9    3.2  3  sp|Q02445|TFPI1_RAT        Tissue factor pathway inhibitor OS
+    1.4e-68  221.3  39.0      8e-26   84.3   5.7    3.1  3  sp|O54819|TFPI1_MOUSE      Tissue factor pathway inhibitor OS
+    5.8e-67  216.1  39.1    1.1e-25   83.9   6.9    3.1  3  sp|P19761|TFPI1_RABIT      Tissue factor pathway inhibitor OS
+    2.7e-66  213.9  38.2    1.5e-23   77.1   7.0    3.0  3  sp|P84875|PCPI_SABMA       Carboxypeptidase inhibitor SmCI OS
+    1.1e-64  208.8  42.9      3e-23   76.1   8.8    3.2  3  sp|P83606|BMTI6_RHIMP      Kunitz-type serine protease inhibi
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	hmm_db_search
+	1
+
+rule hmm_db_search:
+    input: filtered_uniprot_kunitz_positive_filter_on_swissprot.fasta.gz
+    output: chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold_vs_filtered_uniprot_kunitz_positive_filter_on_swissprot.search_out.gz
+    jobid: 0
+    wildcards: model=chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold, db=filtered_uniprot_kunitz_positive_filter_on_swissprot
+
+hmmsearch chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.hmm &lt;(zcat filtered_uniprot_kunitz_positive_filter_on_swissprot.fasta.gz) | gzip &gt; chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold_vs_filtered_uniprot_kunitz_positive_filter_on_swissprot.search_out.gz
+Finished job 0.
+1 of 1 steps (100%) done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Negative-set:">Negative set:<a class="anchor-link" href="#Negative-set:">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>%%bash
+<span class="nb">cd</span> ../dataset/
+<span class="nb">pwd</span>
+snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold_vs_swissprot.search_out.gz
+zcat chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold_vs_swissprot.search_out.gz <span class="p">|</span> head -20
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b2 (February 2015); http://hmmer.org/
+# Copyright (C) 2015 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.hmm
+# target sequence database:        /dev/fd/63
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold  [M=59]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence                  Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------                  -----------
+   1.5e-197  644.7 184.1    1.8e-17   68.0   6.1   14.3 12  sp|Q868Z9|PPN_DROME        Papilin OS=Drosophila melanogaster
+   2.7e-176  576.7 160.0    6.7e-18   69.4   5.3   13.8 11  sp|O76840|PPN1_CAEEL       Papilin OS=Caenorhabditis elegans 
+    5.8e-68  229.7  42.1    1.1e-23   87.9   8.3    3.2  3  sp|P10646|TFPI1_HUMAN      Tissue factor pathway inhibitor OS
+    8.4e-68  229.2  42.1    5.5e-24   88.9   8.0    3.2  3  sp|Q28864|TFPI1_MACMU      Tissue factor pathway inhibitor OS
+    3.8e-67  227.1  42.4    2.1e-22   83.8   5.9    3.2  3  sp|Q02445|TFPI1_RAT        Tissue factor pathway inhibitor OS
+    2.5e-65  221.3  39.0    1.4e-22   84.3   5.7    3.1  3  sp|O54819|TFPI1_MOUSE      Tissue factor pathway inhibitor OS
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	hmm_db_search
+	1
+
+rule hmm_db_search:
+    input: swissprot.fasta.gz
+    output: chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold_vs_swissprot.search_out.gz
+    jobid: 0
+    wildcards: model=chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold, db=swissprot
+
+hmmsearch chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold.hmm &lt;(zcat swissprot.fasta.gz) | gzip &gt; chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.pdbefold_vs_swissprot.search_out.gz
+Finished job 0.
+1 of 1 steps (100%) done
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Parse-the-hmmsearch-results">Parse the hmmsearch results<a class="anchor-link" href="#Parse-the-hmmsearch-results">&#182;</a></h2><p>Keep the identifier and one of the e-value (test different values and their meaning in order to maximize the classificator performance)</p>
+<h3 id="Notes-of-e-value-operative-interpretation">Notes of e-value operative interpretation<a class="anchor-link" href="#Notes-of-e-value-operative-interpretation">&#182;</a></h3><p>e-val is a function of the dataset size; if you hmmsearch a dataset that is made but only 1 sequence: you obtain an e-value that is x times higher than what you get in a database of x sequences --&gt; due to Bonferroni Correction</p>
+<p>If you divide for the size of the datasets, you should be able to compare two searches</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Classification-of-negatives">Classification of negatives<a class="anchor-link" href="#Classification-of-negatives">&#182;</a></h2><p>You need to pass option not to neglet the non-hits: --max</p>
+<p>--max    : Turn all heuristic filters off (less speed, more power)</p>
+<p>or</p>
+<p>to scale the threshold, remove the e-value cutoff:</p>
+<p>--domE <x> : report domains &lt;= this E-value threshold in output  [10.0]  (x&gt;0)</p>
+<p>(domE works for the domain e-value, there is also an option for the full sequence)</p>
+<p><strong>If you don't want the alignment: hmmsearch --noali</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Assessment-of-the-performance">Assessment of the performance<a class="anchor-link" href="#Assessment-of-the-performance">&#182;</a></h2><ul>
+<li>Correction of e-value</li>
+<li>parse to have<ul>
+<li>id</li>
+<li>score</li>
+<li>class (positive: 1; negative: 0)</li>
+</ul>
+</li>
+<li>feed the python script for computing the confusion_matrix with the info in point 2</li>
+</ul>
+<p><strong>For the report</strong>:</p>
+<ul>
+<li>TODO put some equations showing some assessment scores from the confusion matrix</li>
+<li>TODO use also tcoffee for structure-based MSA and compare the HMMs</li>
+<li>TODO automatize the threshold optimization (maybe with scikit-learn)</li>
+<li>TODO plot ROC and compute the area under ROC</li>
+</ul>
 
 </div>
 </div>
