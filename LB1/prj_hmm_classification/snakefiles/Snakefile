@@ -110,11 +110,123 @@ rule extract_representative_sequences:
 # create a fasta from the intersection table
 # try:
 # (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
-# snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.fasta
+# snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.fasta.gz
 rule filtered_intersection2fasta:
     input:
         "chosen_blastclust_seq_for_{sequences}_S{S}_L{L}.txt"
     output:
-        "chosen_blastclust_seq_for_{sequences}_S{S}_L{L}.fasta"
+        "chosen_blastclust_seq_for_{sequences}_S{S}_L{L}.fasta.gz"
     shell:
-        "cat {input} | awk '{{print \">\"$1\"\\n\"$4}}' > {output}"
+        "cat {input} | awk '{{print \">\"$1\"\\n\"$4}}' | gzip > {output}"
+
+# perform MSA with muscle using default parameters
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
+# snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.muscle.afa
+# TODO add params to tune the muscle's parameters
+rule muscle_align:
+    input:
+        "{sequences}.fasta.gz"
+    output:
+        "{sequences}.muscle.afa"
+    shell:
+        "muscle -in <(zcat {input}) > {output}"
+
+# train a hidden markov model with hmmer from an alignment in aligned fasta format
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
+# snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.muscle.hmm
+rule build_hmm:
+    input:
+        "{msa}.{source}.afa"
+    output:
+        "{msa}.{source}.hmm"
+    shell:
+        "hmmbuild --informat afa {output} {input}"
+
+# generate random sequences with a hmm
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
+# snakemake -p globin_emit5.fasta.gz
+rule emit_sequence:
+    input:
+        "{model}.hmm"
+    output:
+        "{model}_emit{N}.fasta.gz"
+    params:
+        "{N}"
+    shell:
+        "hmmemit -N {params} {input} | gzip > {output}"
+
+# perform database search with a hmm
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
+# snakemake -p globin_vs_globin_emit5.search_out.gz
+rule hmm_db_search:
+    input:
+        "{db}.fasta.gz"
+    output:
+        "{model}_vs_{db}.search_out.gz"
+    params:
+        "{model}.hmm"
+    shell:
+        "hmmsearch {params} <(zcat {input}) | gzip > {output}"
+
+# create a library of models to efficiently perform database search
+# W! hmm files have to be concat together manually
+# TODO solve the W
+# this rule also creates the following files:
+# {models}.hmm.h3m
+# {models}.hmm.h3f
+# {models}.hmm.h3p
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
+# snakemake -p global.hmm.h3i
+rule build_hmm_library:
+    input:
+        "{models}.hmm"
+    output:
+        "{models}.hmm.h3i"
+    params:
+        "{models}"
+    shell:
+        "hmmpress {params}.hmm"
+
+# scan a database with a library of hmm
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
+# snakemake -p global_vs_globin_emit5.scan_out.gz
+rule hmm_db_scan:
+    input:
+        "{db}.fasta.gz"
+    output:
+        "{models}_vs_{db}.scan_out.gz"
+    params:
+        "{models}.hmm"
+    shell:
+        "hmmscan {params} <(zcat {input}) | gzip > {output}"
+
+# filter a multifasta given a list of identifiers
+# try:
+# snakemake -p idlist_filter_on_uniprot_sprot.fasta.gz
+rule filterfasta:
+    input:
+        db = "{db}.fasta.gz",
+        fl = "{filter}.txt"
+    output:
+        "{filter}_filter_on_{db}.fasta.gz"
+    shell:
+        "python ../src/fastafilter.py {input.db} {input.fl} | gzip > {output}"
+
+# sample N items from a list
+# try:
+# snakemake -p sprot_pf00014_non_human_id_sampled18.txt
+rule random_sampling:
+    input:
+        "{list}.txt"
+    output:
+        "{list}_sampled{N}.txt"
+    params:
+        "{N}"
+    shell:
+        "cat {input} | sort -R | sed -n '1,{params}p' > {output}"
