@@ -17,7 +17,7 @@ class queue(object):
 
 # TODO def a constructor for queue object
 if __name__ == '__main__':
-    A = [2,1,3,0,0,0,0,0,0,0]
+    A = [1,2,3,0,0,0,0,0,0,0]
     h = 0
     t = 3
     s = 10
@@ -26,3 +26,7 @@ if __name__ == '__main__':
     print(myqueue.head)
     print(myqueue.tail)
     print(myqueue.size)
+    print(myqueue.isfull)
+    for i in range(4,11):
+        myqueue.enqueue(i)
+    print(myqueue.isfull)
