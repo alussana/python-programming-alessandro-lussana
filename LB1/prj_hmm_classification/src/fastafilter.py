@@ -2,8 +2,8 @@ def generate_filter(filter_file):
     filter = open(filter_file)
     entries = []
     for line in filter:
-        line = line.strip()
-        entries.append(line)
+        line = line.strip().split()
+        entries.append(line[0])
     filter.close()
     return(entries)
 

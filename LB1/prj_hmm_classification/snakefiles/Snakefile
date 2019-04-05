@@ -1,3 +1,9 @@
+##################################################################
+# Set of rules to perform protein sequence analysis and modeling #
+##################################################################
+
+configfile: "../snakefiles/config.yml"
+
 # TODO make rule to download swissprot in fasta format
 
 #############################################################
@@ -213,16 +219,16 @@ rule emit_sequence:
 # perform database search with a hmm
 # try:
 # (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
-# snakemake -p globin_vs_globin_emit5.search_out.gz
+# snakemake -p globin_vs_globin_emit5.search_out
 rule hmm_db_search:
     input:
-        "{db}.fasta.gz"
+        fa="{db}.fasta.gz",
+        md="{model}.hmm"
     output:
-        "{model}_vs_{db}.search_out.gz"
-    params:
-        "{model}.hmm"
+        "{model}_vs_{db}.search_out"
     shell:
-        "hmmsearch {params} <(zcat {input}) | gzip > {output}"
+        "hmmsearch --tblout {output} --max --noali --domE 100000000"
+        " -E 100000000 {input.md} <(zcat {input.fa}) > /dev/null"
 
 # create a library of models to efficiently perform database search
 # W! hmm files have to be concat together manually
@@ -274,19 +280,98 @@ rule filterfasta:
     shell:
         "python ../src/fastafilter.py {input.db} {input.fl} | gzip > {output}"
 
+########################
+# performance analysis #
+########################
+
+# generate list of examples to then feed a confusion matrix
+# try:
+#rule compute_confusion_matrix_feed_file:
+#    input:
+#        p="{p}.search_out.gz",
+#        n="{n}.search_out.gz"
+#    output:
+#        "conf_list_of_{p}_AND_{n}.gz"
+#    shell:
+#        "cat"
+#        " <(zcat {input.p} | sed '1,14d; s/^    //'  | tr -s \" \" \"\\t\""
+#        " | cut -f4,9 | sed 's/|/\t/g'  | cut -f1,3 | awk '{{print $0\"\\t\"1}})"
+#        " <(zcat {input.n} | sed '1,14d; s/^    //'  | tr -s \" \" \"\\t\""
+#        " | cut -f4,9 | sed 's/|/\t/g'  | cut -f1,3 | awk '{{print $0\"\\t\"0}})"
+#        " | gzip > {output}"
+rule compute_confusion_matrix_feed_file:
+    input:
+        p=lambda wildcards: config["testing_sets"]["positives"] + ".search_out",
+        n=lambda wildcards: config["testing_sets"]["negatives"] + ".search_out"
+    output:
+        "conf_list.gz"
+    shell:
+        "cat"
+        " <(cat {input.p} | grep ^sp | tr -s \" \" \"\\t\" | cut -f1,8"
+        " | awk '{{print $0\"\\t1\"}}')"
+        " <(cat {input.n} | grep ^sp | tr -s \" \" \"\\t\" | cut -f1,8"
+        " | awk '{{print $0\"\\t0\"}}')"
+        " | gzip > {output}"
+
+rule add_missing_id_to_conf_list:
+    input:
+        cl="conf_list.gz",
+        id="uniprot_kunitz_negative_sampled400.txt"
+    output:
+        "filled_conf_list.gz"
+    shell:
+        "cat <(zcat {input.cl}) <(cat {input.id} | cut -f1"
+        "  | grep -v -f <(zcat {input.cl} | cut -d '|' -f2)"
+        " | awk '{{print $0\"\\t1.0\\t0\"}}') | gzip > {output}"
+
+rule correct_e_values:
+    input:
+        "filled_conf_list.gz"
+    output:
+        "corrected_filled_conf_list.gz"
+    shell:
+        "N=$(zcat {input} | awk '$3==0{{print $0}}' | wc -l);"
+        " P=$(zcat {input} | awk '$3==1{{print $0}}' | wc -l);"
+        " zcat {input} | awk -v P=$P -v N=$N"
+        " '{{if($2 != 1.0 && $3 == 1){{print $1\"\\t\"$2*P\"\\t\"$3}}"
+        "else if($2 != 1.0 && $3 == 0){{print $1\"\\t\"$2*N\"\\t\"$3}}"
+        " else{{print $0}}}}' | gzip > {output}"
+
+# compute confusion matrix and print analysis results
+# try:
+# snakemake -p 
+#rule compute_confusion_matrix:
+#    input:
+#        "conf_list_of_{p}_AND_{n}.gz"
+#    output:
+#        "conf_mat_th{th}_of_{p}_AND_{n}"
+#    params:
+#        "{th}"
+#    shell:
+#        "python ../src/buildConfMatrix.py {input} {params} > {output}"
+rule compute_confusion_matrix:
+    input:
+        "corrected_filled_conf_list.gz"
+    output:
+        "conf_mat_th{th}"
+    params:
+        "{th}"
+    shell:
+        "python ../src/buildConfMatrix.py {input} {params} > {output}"
+
 ########
 # misc #
 ########
 
 # sample N items from a list
 # try:
-# snakemake -p sprot_pf00014_non_human_id_sampled18.txt
+# snakeimake -p sprot_pf00014_non_human_id_sampled18.txt
 rule random_sampling:
     input:
-        "{list}.txt"
+        "{list}.gz"
     output:
         "{list}_sampled{N}.txt"
     params:
         "{N}"
     shell:
-        "cat {input} | sort -R | sed -n '1,{params}p' > {output}"
+        "zcat {input} | sort -R | sed -n '1,{params}p' > {output}"
