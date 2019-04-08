@@ -1,3 +1,10 @@
+import sys
+import numpy as np
+from sklearn.metrics import roc_curve
+from sklearn.metrics import roc_auc_score
+import gzip
+import matplotlib.pyplot as plt
+
 def get_examples(file):
     group = []
     scores = []
@@ -20,13 +27,6 @@ def compute_auc(group, scores):
     return(auc)
 
 if __name__ == '__main__':
-    import sys
-    import numpy as np
-    from sklearn.metrics import roc_curve
-    from sklearn.metrics import roc_auc_score
-    import gzip
-    import matplotlib.pyplot as plt
-
     file = sys.argv[1]
 
     group, scores = get_examples(file)
