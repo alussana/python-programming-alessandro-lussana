@@ -1,0 +1,396 @@
+# create a tsv with rcsbpdb ids consistent with parse_pdbefold_summary output
+# .META:
+# 1 ID_CHAIN
+# 2 Resolution
+# 3 Taxonomy
+# 4 Sequence
+# 5 Chain Length
+rule parse_rcsbpdb_table:
+    input:
+        "PF00014_pdb_tab"
+    output:
+        "PF00014_pdb.gz"
+    shell:
+        "cat {input} | sed 's/,/\t/g' | sed 's/\"//g' | sed 's/ /_/g'"
+        " | sed '1d' | sed 's/\t/_/' | gzip > {output}"
+
+# create a tsv with pdbefold ids consistent with parse_rcsbpdb_table output
+# .META:
+# 1 ID_CHAIN
+# 2 Q-score
+# 3 P-score
+# 4 Z-score
+# 5 RMSD
+rule parse_pdbefold_summary:
+    input:
+        "5pti_pdbefold"
+    output:
+        "5pti_pdbefold.gz"
+    shell:
+        "cat {input} | sed '1,5d' | tr -s \" \" \"\\t\" | cut -f3-"
+        " | awk '{{print toupper($17)\"\t\"$1\"\t\"$2\"\t\"$3\"\t\"$4}}'"
+        " | sed 's/:/_/' | gzip > {output}"
+
+# merge the fields of two tsv files joining them on the first column
+# .META:
+# 1 ID_CHAIN
+# 2 Resolution
+# 3 Taxonomy
+# 4 Sequence
+# 5 Chain Length
+# 6 Q-score
+# 7 P-score
+# 8 Z-score
+# 9 RMSD
+rule intersect_and_join:
+    input:
+        t1="PF00014_pdb.gz",
+        t2="5pti_pdbefold.gz"
+    output:
+        "PF00014_pdb.5pti_pdbefold.gz"
+    shell:
+        "join -j 1"
+        " <(zcat {input.t1} | sort) <(zcat {input.t2} | fgrep -f"
+        " <(zcat {input.t1} | cut -f1) | sort )"
+        " | sed 's/ /\t/g' | gzip > {output}"
+
+#############################################################
+# Selection of representative kunitz sequences to build hmm #
+#############################################################
+
+# create a fasta from the intersection table
+# try:
+# snakemake -p PF00014_pdb.5pti_pdbefold.fasta
+# snakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.fasta
+rule intersection2fasta:
+    input:
+        "{seqs}.txt.gz"
+    output:
+        "{seqs}.fasta"
+    shell:
+        "zcat {input} | awk '{{print \">\"$1\"\\n\"$4}}' > {output}"
+
+# run blastclust with custom -L and -S parameters
+# try:
+# snakemake -p PF00014_pdb.5pti_pdbefold_S99_L0.95_clust.gz
+rule run_blastclust:
+    input:
+        "{db}.fasta"
+    output:
+        "{db}_S{S}_L{L}_clust.gz"
+    params:
+        S="{S}",
+        L="{L}"
+    shell:
+        "blastclust -i {input} -L {params.L} -S {params.S} | gzip > {output}"
+
+# filter for redundancy the intersection table given sequences clusters
+# for every cluster one sequence in selected as representative of that cluster
+# the criterium for selection is best resolution of the structure
+# try:
+# snakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.txt.gz
+rule extract_representative_sequences:
+    input:
+        clust="{sequences}_S{S}_L{L}_clust.gz",
+        table="PF00014_pdb.5pti_pdbefold.gz"
+    output:
+        "nonredund_{sequences}_S{S}_L{L}.txt.gz"
+    shell:
+        "for cluster in $(zcat {input.clust} | sed '1d' | sed 's/ /%/g'); do"
+        " zcat {input.table} | grep -w -f <(echo $cluster | sed 's/%/\\n/g') | sort -n -k2"
+        " | sed -n '1p'; done | gzip > {output}"
+
+# simple parsing to get the ids from extract_representative_sequences output
+# in the form of <structure:chain>
+# try:
+# snakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.idlist
+rule create_chosen_ids_list:
+    input:
+        "{sequences}.txt.gz"
+    output:
+        "{sequences}.idlist"
+    shell:
+        "zcat {input} | cut -f1 | sed 's/_/:/' > {output}"
+
+############################
+# MUSTANG and T-Coffee MSA #
+############################
+
+# fetch pdb files for the web given a list of identifiers
+# the generated pdb are single-chain
+# try:
+# snakemake -p PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/get_chains_completed
+rule get_pdb_files:
+    input:
+        "{sequences}.idlist"
+    output:
+        "PDB.{sequences}/get_chains_completed"
+    params:
+        "PDB.{sequences}"
+    shell:
+        "idlist=$(cat {input} | sed 's/:/\\t/' | cut -f1);"
+        " idarr=($(cat {input} | sed 's/:/\\t/' | cut -f1));"
+        " charr=($(cat {input} | sed 's/:/\\t/' | cut -f2));"
+        " i=0;"
+        " for id in $idlist; do"
+        " wget -P {params}/ http://www.rcsb.org/pdb/files/${{id}}.pdb;"
+        " chain=${{charr[$i]}};"
+        " cat {params}/${{id}}.pdb | awk -v chain=$chain '{{split($0,line);"
+        " if((line[1]==\"ATOM\" || line[1]==\"ANISOU\") && line[5]!=chain)"
+        " {{getline}} else {{print  $0}}}}'"
+        " > {params}/${{id}}.${{chain}}.pdb;"
+        " rm {params}/${{id}}.pdb;"
+        " i=$(echo \"$i+1\" | bc);"
+        " done;"
+        "touch {output}"
+
+# run mustang to perform multiple structure-based MSA
+# try:
+# snakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.afa
+rule mustang_msa:
+    input:
+        pdb="PDB.{sequences}/get_chains_completed",
+        ids="{sequences}.idlist"
+    output:
+        "{sequences}.mustang.afa"
+    params:
+        "PDB.{sequences}"
+    shell:
+        "mustang -p {params}/ -o {params}/mustang"
+        " -i $(cat {input.ids} | sed 's/:/./' | awk '{{print $0\".pdb\"}}')"
+        " -F fasta -s OFF"
+
+# TODO
+rule t_coffee_msa:
+    input:
+        ""
+    output:
+        ""
+    shell:
+        ""
+##################
+# HMM operations #
+##################
+
+# train a hidden markov model with hmmer from an alignment in aligned fasta format
+# try:
+# snakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.hmm
+rule build_hmm:
+    input:
+        "{msa}.afa"
+    output:
+        "{msa}.hmm"
+    shell:
+        "hmmbuild --informat afa {output} {input}"
+
+# perform database search with a hmm
+# try:
+#
+rule hmm_db_search:
+    input:
+        fa="{db}.fasta.gz",
+        md="{model}.hmm"
+    output:
+        "{model}.vs.{db}.search_out"
+    shell:
+        "hmmsearch --tblout {output} --max --noali --domE 100000000"
+        " -E 100000000 {input.md} <(zcat {input.fa}) > /dev/null"
+
+###############################
+# Refine positive testing set #
+###############################
+
+# filter the positive testing set to avoid redundancy with the training set
+# try:
+# snakemake -p filtered_S99_L0.95_kunitz_positive.txt
+rule filter_out_training_clusters:
+    input:
+        flt="PF00014_pdb.5pti_pdbefold_S{S}_L{L}_clust.gz",
+        ids="uniprot_kunitz_positive.gz"
+    output:
+        "filtered_S{S}_L{L}_kunitz_positive.txt"
+    shell:
+        "zcat {input.ids} | grep -v -f <(zcat {input.flt} | sed '1d'"
+        " | sed 's/ $//g' | sed 's/ /\\n/g' | cut -b 1-4 | sort | uniq)"
+        " | cut -f1 > {output}"
+
+##############################################
+# Create random sampled negative testing set #
+##############################################
+
+# sample N items from a list
+# try:
+# snakemake -p samp400.uniprot_kunitz_negative
+rule random_sampling:
+    input:
+        "{list}.gz"
+    output:
+        "samp{N}.{list}"
+    params:
+        "{N}"
+    shell:
+        "zcat {input} | sort -R | sed -n '1,{params}p' > {output}"
+
+###################################
+# Generate fasta from identifiers #
+###################################
+
+# filter a multifasta given a list of identifiers
+# try:
+# snakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.idlist.filter.swissProt.fasta.gz 
+# snakemake -p filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.fasta.gz
+rule filterfasta:
+    input:
+        db = "{db}.fasta.gz",
+        fl = "{filter}"
+    output:
+        "{filter}.filter.{db}.fasta.gz"
+    shell:
+        "python ../src/fastafilter.py {input.db} {input.fl} | gzip > {output}"
+
+########################
+# performance analysis #
+########################
+
+# generate list of examples to then feed a confusion matrix
+# try:
+# snakemake -p conflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
+rule compute_confusion_matrix_feed_file:
+    input:
+        p="{p}.search_out",
+        n="{n}.search_out"
+    output:
+        "conflst.{p}.and.{n}.gz"
+    shell:
+        "cat"
+        " <(cat {input.p} | grep ^sp | tr -s \" \" \"\\t\" | cut -f1,8"
+        " | awk '{{print $0\"\\t1\"}}')"
+        " <(cat {input.n} | grep ^sp | tr -s \" \" \"\\t\" | cut -f1,8"
+        " | awk '{{print $0\"\\t0\"}}')"
+        " | gzip > {output}"
+
+# add the non-hits sequences to the conflist file assigning e-value=1
+# try:
+# snakemake -p filledconflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
+rule add_missing_id_to_conf_list:
+    input:
+        cl="conflst.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.gz",
+        id="{n}"
+    output:
+        "filledconflst.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.gz"
+    shell:
+        "cat <(zcat {input.cl}) <(cat {input.id} | cut -f1"
+        " | grep -v -f <(zcat {input.cl} | cut -d '|' -f2)"
+        " | awk '{{print $0\"\\t1.0\\t0\"}}') | gzip > {output}"
+
+# divide e-values by the database size in filled.conflist files
+# try:
+# snakemake -p corrconflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
+rule correct_e_values:
+    input:
+        "filledconflst.{conflist}.gz"
+    output:
+        "corrconflst.{conflist}.gz"
+    shell:
+        "N=$(zcat {input} | awk '$3==0{{print $0}}' | wc -l);"
+        " P=$(zcat {input} | awk '$3==1{{print $0}}' | wc -l);"
+        " zcat {input} | awk -v P=$P -v N=$N"
+        " '{{if($2 != 1.0 && $3 == 1){{print $1\"\\t\"$2*P\"\\t\"$3}}"
+        "else if($2 != 1.0 && $3 == 0){{print $1\"\\t\"$2*N\"\\t\"$3}}"
+        " else{{print $0}}}}' | gzip > {output}"
+
+# compute confusion matrix and print analysis results
+# try:
+# snakemake -p confmat_th0.001.of.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt
+rule compute_confusion_matrix:
+    input:
+        "corrconflst.{conflist}.gz"
+    output:
+        "confmat_th{th}.of.{conflist}"
+    params:
+        "{th}"
+    shell:
+        "python ../src/buildConfMatrix.py {input} {params} > {output}"
+
+###                                                                         ###
+# =========================================================================== #
+###                                                                         ###
+
+# OLD #
+
+##################################################################
+# Set of rules to perform protein sequence analysis and modeling #
+##################################################################
+
+configfile: "../snakefiles/config.yml"
+
+# TODO make rule to download swissprot in fasta format
+
+############################
+# non-structure-based MSA #
+############################
+
+# perform MSA with muscle using default parameters
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
+# snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.muscle.afa
+# TODO add params to tune the muscle's parameters
+rule muscle_align:
+    input:
+        "{sequences}.fasta.gz"
+    output:
+        "{sequences}.muscle.afa"
+    shell:
+        "muscle -in <(zcat {input}) > {output}"
+
+##################
+# HMM operations #
+##################
+
+# generate random sequences with a hmm
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
+# snakemake -p globin_emit5.fasta.gz
+rule emit_sequence:
+    input:
+        "{model}.hmm"
+    output:
+        "{model}_emit{N}.fasta.gz"
+    params:
+        "{N}"
+    shell:
+        "hmmemit -N {params} {input} | gzip > {output}"
+
+# create a library of models to efficiently perform database search
+# W! hmm files have to be concat together manually
+# TODO solve the W
+# this rule also creates the following files:
+# {models}.hmm.h3m
+# {models}.hmm.h3f
+# {models}.hmm.h3p
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
+# snakemake -p global.hmm.h3i
+rule build_hmm_library:
+    input:
+        "{models}.hmm"
+    output:
+        "{models}.hmm.h3i"
+    params:
+        "{models}"
+    shell:
+        "hmmpress {params}.hmm"
+
+# scan a database with a library of hmm
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
+# snakemake -p global_vs_globin_emit5.scan_out.gz
+rule hmm_db_scan:
+    input:
+        "{db}.fasta.gz"
+    output:
+        "{models}_vs_{db}.scan_out.gz"
+    params:
+        "{models}.hmm"
+    shell:
+        "hmmscan {params} <(zcat {input}) | gzip > {output}"

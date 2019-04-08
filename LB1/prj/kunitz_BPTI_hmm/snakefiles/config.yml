@@ -1,0 +1,9 @@
+testing_sets:
+    positives:
+        "chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_\
+         pdbefold_5pti_A_summary_S99_L0.95.pdbefold_vs_\
+         filtered_uniprot_kunitz_positive_filter_on_swissprot"
+    negatives:
+        "chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_\
+         pdbefold_5pti_A_summary_S99_L0.95.pdbefold_vs\
+         _uniprot_kunitz_negative_sampled400_filter_on_swissprot"
