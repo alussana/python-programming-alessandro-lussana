@@ -5,9 +5,5 @@ LB1/prj_hmm_classification/dataset/
 LB1/prj_blast_classification/docs/.ipynb_checkpoints/
 LB1/prj_hmm_classification/docs/.ipynb_checkpoints/
 LB1/prj_hmm_classification/handmade/pdb_seqres.txt
-<<<<<<< HEAD
-LB1/prj/kunitz_BPTI_hmm/dataset/
-=======
 LB1/prj/kunitz_BPTI_hmm/dataset/.snakemake/
->>>>>>> refs/remotes/origin/master
 LB1/prj/kunitz_BPTI_hmm/handmade/uniprot-reviewed_yes.fasta.gz
