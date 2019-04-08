@@ -1,0 +1,1 @@
+for cluster in $(zcat PF00014_pdb.5pti_pdbefold_S99_L0.95_clust.gz | sed '1d' | sed 's/ /%/g'); do zcat PF00014_pdb.5pti_pdbefold.gz | grep -w -f <(echo $cluster | sed 's/%/\n/g') | sort -n -k2 | sed -n '1p'; done | gzip > nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.gz

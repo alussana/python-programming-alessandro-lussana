@@ -1,0 +1,1 @@
+cat pdbefold_5pti_A_summary | sed '1,5d' | tr -s " " "\t" | cut -f3- | awk '{print toupper($17)"	"$1"	"$2"	"$3"	"$4}' | sed 's/:/_/' | gzip > pdbefold_5pti_A_summary.txt.gz

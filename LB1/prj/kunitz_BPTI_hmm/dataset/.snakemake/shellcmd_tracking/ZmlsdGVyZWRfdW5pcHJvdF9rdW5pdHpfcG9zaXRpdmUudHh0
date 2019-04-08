@@ -1,0 +1,1 @@
+zcat uniprot_kunitz_positive.gz | grep -v -f <(zcat intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95_blastclust_out.gz | sed '1d' | sed 's/ $//g' | sed 's/ /\n/g' | cut -b 1-4 | sort | uniq) | cut -f1 > filtered_uniprot_kunitz_positive.txt

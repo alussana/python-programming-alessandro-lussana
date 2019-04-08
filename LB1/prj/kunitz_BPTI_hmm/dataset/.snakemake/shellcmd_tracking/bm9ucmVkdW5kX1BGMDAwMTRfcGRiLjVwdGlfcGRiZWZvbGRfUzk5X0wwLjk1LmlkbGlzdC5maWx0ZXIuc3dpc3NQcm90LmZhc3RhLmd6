@@ -1,0 +1,1 @@
+python ../src/fastafilter.py swissProt.fasta.gz nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.idlist | gzip > nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.idlist.filter.swissProt.fasta.gz

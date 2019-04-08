@@ -1,0 +1,1 @@
+cat PF00014_pdb_tab | sed 's/,/	/g' | sed 's/"//g' | sed 's/ /_/g' | sed '1d' | sed 's/	/_/' | gzip > PF00014_pdb.gz

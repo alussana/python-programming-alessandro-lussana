@@ -1,0 +1,1 @@
+join -j 1 <(zcat PF00014_pdb.gz | sort) <(zcat 5pti_pdbefold.gz | fgrep -f <(zcat PF00014_pdb.gz | cut -f1) | sort ) | sed 's/ /	/g' | gzip > joined.PF00014_pdb.5pti_pdbefold.gz

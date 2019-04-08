@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+=======
+# run complete analysis (in prog)
+# temporarily this rule creates the confusion matrix with fixed parameters
+# try:
+# snakemake -p make_all
+rule make_all:
+    input:
+        "confmat_th0.001.of.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt"
+
+>>>>>>> refs/remotes/origin/master
 # create a tsv with rcsbpdb ids consistent with parse_pdbefold_summary output
 # .META:
 # 1 ID_CHAIN
@@ -47,7 +58,11 @@ rule intersect_and_join:
         t1="PF00014_pdb.gz",
         t2="5pti_pdbefold.gz"
     output:
+<<<<<<< HEAD
         "PF00014_pdb.5pti_pdbefold.gz"
+=======
+        "PF00014_pdb.5pti_pdbefold.txt.gz"
+>>>>>>> refs/remotes/origin/master
     shell:
         "join -j 1"
         " <(zcat {input.t1} | sort) <(zcat {input.t2} | fgrep -f"
@@ -92,7 +107,11 @@ rule run_blastclust:
 rule extract_representative_sequences:
     input:
         clust="{sequences}_S{S}_L{L}_clust.gz",
+<<<<<<< HEAD
         table="PF00014_pdb.5pti_pdbefold.gz"
+=======
+        table="PF00014_pdb.5pti_pdbefold.txt.gz"
+>>>>>>> refs/remotes/origin/master
     output:
         "nonredund_{sequences}_S{S}_L{L}.txt.gz"
     shell:
@@ -100,14 +119,26 @@ rule extract_representative_sequences:
         " zcat {input.table} | grep -w -f <(echo $cluster | sed 's/%/\\n/g') | sort -n -k2"
         " | sed -n '1p'; done | gzip > {output}"
 
+<<<<<<< HEAD
 # simple parsing to get the ids from extract_representative_sequences output
 # in the form of <structure:chain>
 # try:
 # snakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.idlist
+=======
+############################
+# MUSTANG and T-Coffee MSA #
+############################
+
+# simple parsing to get the ids from extract_representative_sequences output
+# in the form of <structure:chain>
+# try:
+# snakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/idlist
+>>>>>>> refs/remotes/origin/master
 rule create_chosen_ids_list:
     input:
         "{sequences}.txt.gz"
     output:
+<<<<<<< HEAD
         "{sequences}.idlist"
     shell:
         "zcat {input} | cut -f1 | sed 's/_/:/' > {output}"
@@ -116,13 +147,23 @@ rule create_chosen_ids_list:
 # MUSTANG and T-Coffee MSA #
 ############################
 
+=======
+        "PDB.{sequences}/idlist"
+    shell:
+        "zcat {input} | cut -f1 | sed 's/_/:/' > {output}"
+
+>>>>>>> refs/remotes/origin/master
 # fetch pdb files for the web given a list of identifiers
 # the generated pdb are single-chain
 # try:
 # snakemake -p PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/get_chains_completed
 rule get_pdb_files:
     input:
+<<<<<<< HEAD
         "{sequences}.idlist"
+=======
+        "PDB.{sequences}/idlist"
+>>>>>>> refs/remotes/origin/master
     output:
         "PDB.{sequences}/get_chains_completed"
     params:
@@ -136,20 +177,32 @@ rule get_pdb_files:
         " wget -P {params}/ http://www.rcsb.org/pdb/files/${{id}}.pdb;"
         " chain=${{charr[$i]}};"
         " cat {params}/${{id}}.pdb | awk -v chain=$chain '{{split($0,line);"
+<<<<<<< HEAD
         " if((line[1]==\"ATOM\" || line[1]==\"ANISOU\") && line[5]!=chain)"
         " {{getline}} else {{print  $0}}}}'"
+=======
+        #" if((line[1]==\"ATOM\" || line[1]==\"ANISOU\") && line[5]!=chain)"
+        " if(line[1]==\"ATOM\" && line[5]==chain)"
+        #" {{getline}} else {{print  $0}}}}'"
+        " {{print $0}}}}'"
+>>>>>>> refs/remotes/origin/master
         " > {params}/${{id}}.${{chain}}.pdb;"
         " rm {params}/${{id}}.pdb;"
         " i=$(echo \"$i+1\" | bc);"
         " done;"
         "touch {output}"
 
+<<<<<<< HEAD
 # run mustang to perform multiple structure-based MSA
+=======
+# run mustang to perform structure-based MSA
+>>>>>>> refs/remotes/origin/master
 # try:
 # snakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.afa
 rule mustang_msa:
     input:
         pdb="PDB.{sequences}/get_chains_completed",
+<<<<<<< HEAD
         ids="{sequences}.idlist"
     output:
         "{sequences}.mustang.afa"
@@ -159,6 +212,18 @@ rule mustang_msa:
         "mustang -p {params}/ -o {params}/mustang"
         " -i $(cat {input.ids} | sed 's/:/./' | awk '{{print $0\".pdb\"}}')"
         " -F fasta -s OFF"
+=======
+        ids="PDB.{sequences}/idlist"
+    output:
+        "{sequences}.mustang.afa"
+    params:
+        "{sequences}"
+    shell:
+        "mustang -p PDB.{params}/ -o PDB.{params}/mustang"
+        " -i $(cat {input.ids} | sed 's/:/./' | awk '{{print $0\".pdb\"}}')"
+        " -F fasta -s OFF;"
+        " ln -s PDB.{params}/mustang.afasta {output}" 
+>>>>>>> refs/remotes/origin/master
 
 # TODO
 rule t_coffee_msa:

@@ -1,0 +1,1 @@
+hmmsearch --tblout nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.search_out --max --noali --domE 100000000 -E 100000000 nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.hmm <(zcat samp400.uniprot_kunitz_negative.filter.swissProt.fasta.gz) > /dev/null

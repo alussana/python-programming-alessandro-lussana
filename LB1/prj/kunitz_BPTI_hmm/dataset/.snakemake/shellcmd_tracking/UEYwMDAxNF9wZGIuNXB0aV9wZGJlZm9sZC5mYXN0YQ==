@@ -1,0 +1,1 @@
+zcat PF00014_pdb.5pti_pdbefold.txt.gz | awk '{print ">"$1"\n"$4}' > PF00014_pdb.5pti_pdbefold.fasta

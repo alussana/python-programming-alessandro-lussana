@@ -1,0 +1,1 @@
+blastclust -i PF00014_pdb.5pti_pdbefold.fasta -L 0.95 -S 99 | gzip > PF00014_pdb.5pti_pdbefold_S99_L0.95_clust.gz

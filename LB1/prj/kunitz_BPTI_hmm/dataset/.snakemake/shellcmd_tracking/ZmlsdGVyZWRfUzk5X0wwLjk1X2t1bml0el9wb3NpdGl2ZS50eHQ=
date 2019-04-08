@@ -1,0 +1,1 @@
+zcat uniprot_kunitz_positive.gz | grep -v -f <(zcat PF00014_pdb.5pti_pdbefold_S99_L0.95_clust.gz | sed '1d' | sed 's/ $//g' | sed 's/ /\n/g' | cut -b 1-4 | sort | uniq) | cut -f1 > filtered_S99_L0.95_kunitz_positive.txt
