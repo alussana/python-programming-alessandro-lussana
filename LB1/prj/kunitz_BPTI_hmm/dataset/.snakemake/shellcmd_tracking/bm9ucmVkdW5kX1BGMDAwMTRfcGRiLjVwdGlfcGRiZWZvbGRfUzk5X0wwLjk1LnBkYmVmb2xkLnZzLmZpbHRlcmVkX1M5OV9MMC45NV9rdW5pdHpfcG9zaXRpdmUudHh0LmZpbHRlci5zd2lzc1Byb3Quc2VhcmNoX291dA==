@@ -1,0 +1,1 @@
+hmmsearch --tblout nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.search_out --max --noali --domE 100000000 -E 100000000 nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.hmm <(zcat filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.fasta.gz) > /dev/null

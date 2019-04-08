@@ -1,0 +1,1 @@
+zcat uniprot_kunitz_negative.gz | sort -R | sed -n '1,400p' > uniprot_kunitz_negative_samp400

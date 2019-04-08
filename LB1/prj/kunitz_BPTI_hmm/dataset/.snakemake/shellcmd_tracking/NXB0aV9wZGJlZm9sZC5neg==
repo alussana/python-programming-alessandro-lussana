@@ -1,0 +1,1 @@
+cat 5pti_pdbefold | sed '1,5d' | tr -s " " "\t" | cut -f3- | awk '{print toupper($17)"	"$1"	"$2"	"$3"	"$4}' | sed 's/:/_/' | gzip > 5pti_pdbefold.gz

@@ -1,0 +1,1 @@
+python ../src/fastafilter.py swissprot.fasta.gz filtered_uniprot_kunitz_positive.txt | gzip > filtered_uniprot_kunitz_positive_filter_on_swissprot.fasta.gz
