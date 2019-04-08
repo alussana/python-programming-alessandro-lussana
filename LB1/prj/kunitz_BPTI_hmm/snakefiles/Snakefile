@@ -1,3 +1,11 @@
+# run complete analysis (in prog)
+# temporarily this rule creates the confusion matrix with fixed parameters
+# try:
+# snakemake -p make_all
+rule make_all:
+    input:
+        "confmat_th0.001.of.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt"
+
 # create a tsv with rcsbpdb ids consistent with parse_pdbefold_summary output
 # .META:
 # 1 ID_CHAIN
