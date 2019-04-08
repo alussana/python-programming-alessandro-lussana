@@ -47,7 +47,7 @@ rule intersect_and_join:
         t1="PF00014_pdb.gz",
         t2="5pti_pdbefold.gz"
     output:
-        "PF00014_pdb.5pti_pdbefold.gz"
+        "PF00014_pdb.5pti_pdbefold.txt.gz"
     shell:
         "join -j 1"
         " <(zcat {input.t1} | sort) <(zcat {input.t2} | fgrep -f"
@@ -92,7 +92,7 @@ rule run_blastclust:
 rule extract_representative_sequences:
     input:
         clust="{sequences}_S{S}_L{L}_clust.gz",
-        table="PF00014_pdb.5pti_pdbefold.gz"
+        table="PF00014_pdb.5pti_pdbefold.txt.gz"
     output:
         "nonredund_{sequences}_S{S}_L{L}.txt.gz"
     shell:

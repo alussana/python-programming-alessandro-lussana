@@ -13124,7 +13124,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13164,7 +13164,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13188,7 +13188,7 @@ ls -lh swissProt.fasta.gz
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
-lrwxrwxrwx 1 alessandro alessandro 41 apr  6 19:17 swissProt.fasta.gz -&gt; ../handmade/uniprot-reviewed_yes.fasta.gz
+lrwxrwxrwx 1 alessandro alessandro 41 apr  8 17:02 swissProt.fasta.gz -&gt; ../handmade/uniprot-reviewed_yes.fasta.gz
 </pre>
 </div>
 </div>
@@ -13218,7 +13218,7 @@ lrwxrwxrwx 1 alessandro alessandro 41 apr  6 19:17 swissProt.fasta.gz -&gt; ../h
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13244,7 +13244,7 @@ head -5 PF00014_pdb_tab
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
-lrwxrwxrwx 1 alessandro alessandro 30 apr  6 17:09 PF00014_pdb_tab -&gt; ../handmade/tabularResults.csv
+lrwxrwxrwx 1 alessandro alessandro 30 apr  8 17:02 PF00014_pdb_tab -&gt; ../handmade/tabularResults.csv
 163
 PDB ID,Chain ID,Resolution,Taxonomy,Sequence,Chain Length
 &#34;1AAP&#34;,&#34;A&#34;,&#34;1.50&#34;,&#34;Homo sapiens&#34;,&#34;VREVCSEQAETGPCRAMISRWYFDVTEGKCAPFFYGGCGGNRNNFDTEEYCMAVCGSA&#34;,&#34;58&#34;
@@ -13273,7 +13273,7 @@ PDB ID,Chain ID,Resolution,Taxonomy,Sequence,Chain Length
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13299,7 +13299,7 @@ cat 5pti_pdbefold <span class="p">|</span> head
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
-lrwxrwxrwx 1 alessandro alessandro 37 apr  6 17:57 5pti_pdbefold -&gt; ../handmade/5pti_pdbefold_normal_prec
+lrwxrwxrwx 1 alessandro alessandro 37 apr  8 17:02 5pti_pdbefold -&gt; ../handmade/5pti_pdbefold_normal_prec
 569
  PDBe Fold v2.59. (src3) 14 Apr 2014 result file.
 
@@ -13335,7 +13335,7 @@ lrwxrwxrwx 1 alessandro alessandro 37 apr  6 17:57 5pti_pdbefold -&gt; ../handma
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13410,7 +13410,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13459,7 +13459,7 @@ cat ../handmade/5pti_pdbefold_highest_prec <span class="p">|</span> tr -s <span 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13536,15 +13536,15 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
 <span class="nb">cd</span> ../dataset/
 <span class="nb">pwd</span>
-snakemake -p PF00014_pdb.5pti_pdbefold.gz
-zcat PF00014_pdb.5pti_pdbefold.gz <span class="p">|</span> wc -l
-zcat PF00014_pdb.5pti_pdbefold.gz <span class="p">|</span> head -5
+snakemake -p PF00014_pdb.5pti_pdbefold.txt.gz
+zcat PF00014_pdb.5pti_pdbefold.txt.gz <span class="p">|</span> wc -l
+zcat PF00014_pdb.5pti_pdbefold.txt.gz <span class="p">|</span> head -5
 </pre></div>
 
     </div>
@@ -13587,10 +13587,10 @@ Job counts:
 
 rule intersect_and_join:
     input: PF00014_pdb.gz, 5pti_pdbefold.gz
-    output: PF00014_pdb.5pti_pdbefold.gz
+    output: PF00014_pdb.5pti_pdbefold.txt.gz
     jobid: 0
 
-join -j 1 &lt;(zcat PF00014_pdb.gz | sort) &lt;(zcat 5pti_pdbefold.gz | fgrep -f &lt;(zcat PF00014_pdb.gz | cut -f1) | sort ) | sed &#39;s/ /	/g&#39; | gzip &gt; PF00014_pdb.5pti_pdbefold.gz
+join -j 1 &lt;(zcat PF00014_pdb.gz | sort) &lt;(zcat 5pti_pdbefold.gz | fgrep -f &lt;(zcat PF00014_pdb.gz | cut -f1) | sort ) | sed &#39;s/ /	/g&#39; | gzip &gt; PF00014_pdb.5pti_pdbefold.txt.gz
 Finished job 0.
 1 of 1 steps (100%) done
 </pre>
@@ -13613,7 +13613,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13664,7 +13664,7 @@ diff &lt;<span class="o">(</span>zcat PF00014_pdb.gz <span class="p">|</span> gr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13715,12 +13715,12 @@ Job counts:
 	1
 
 rule intersection2fasta:
-    input: PF00014_pdb.5pti_pdbefold.gz
+    input: PF00014_pdb.5pti_pdbefold.txt.gz
     output: PF00014_pdb.5pti_pdbefold.fasta
     jobid: 0
     wildcards: seqs=PF00014_pdb.5pti_pdbefold
 
-zcat PF00014_pdb.5pti_pdbefold.gz | awk &#39;{print &#34;&gt;&#34;$1&#34;\n&#34;$4}&#39; &gt; PF00014_pdb.5pti_pdbefold.fasta
+zcat PF00014_pdb.5pti_pdbefold.txt.gz | awk &#39;{print &#34;&gt;&#34;$1&#34;\n&#34;$4}&#39; &gt; PF00014_pdb.5pti_pdbefold.fasta
 Finished job 0.
 1 of 1 steps (100%) done
 </pre>
@@ -13742,7 +13742,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13769,7 +13769,7 @@ zcat PF00014_pdb.5pti_pdbefold_S99_L0.95_clust.gz <span class="p">|</span> head 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
 26
-Apr 8, 2019  2:53 PM Start clustering of 162 queries
+Apr 8, 2019  5:25 PM Start clustering of 162 queries
 1B0C_A 1B0C_B 1B0C_C 1B0C_D 1B0C_E 1BHC_A 1BHC_B 1BHC_C 1BHC_D 1BHC_E 1BHC_F 1BHC_G 1BHC_H 1BHC_I 1BHC_J 1BPI_A 1BTH_P 1BTH_Q 1BZ5_A 1BZ5_B 1BZ5_C 1BZ5_D 1BZ5_E 1BZX_I 1CBW_D 1CBW_I 1D0D_B 1EAW_B 1EAW_D 1FY8_I 1MTN_D 1MTN_H 1TPA_I 2FTL_I 2HEX_A 2HEX_B 2HEX_C 2HEX_D 2HEX_E 2IJO_I 2KAI_I 2PTC_I 2R9P_E 2R9P_F 2R9P_G 2R9P_I 2RA3_C 2RA3_I 2TGP_I 2TPI_I 3BTK_I 3FP6_I 3FP8_I 3GYM_I 3GYM_J 3LDI_A 3LDI_B 3LDI_C 3LDI_D 3LDI_E 3LDJ_A 3LDJ_B 3LDJ_C 3LDM_A 3LDM_B 3LDM_C 3LDM_D 3LDM_E 3TPI_I 3U1J_E 4DG4_C 4DG4_E 4DG4_F 4DG4_H 4PTI_A 4WWY_C 4WWY_I 4Y0Y_I 5PTI_A 6F1F_A 6F1F_B 6F1F_C 6F1F_D 6F1F_E 6PTI_A 9PTI_A 1YKT_B 4WXV_C 4WXV_I 5YVU_I 
 1AAP_A 1AAP_B 1TAW_B 1ZJD_B 1BRC_I 1CA0_D 1CA0_I 3L33_E 3L33_F 3L33_G 3L33_H 
 3BYB_A 3BYB_B 3BYB_C 3UIR_C 3UIR_D 5ZJ3_A 5ZJ3_B 5ZJ3_C 3D65_I 
@@ -13818,7 +13818,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13868,12 +13868,12 @@ Job counts:
 	1
 
 rule extract_representative_sequences:
-    input: PF00014_pdb.5pti_pdbefold_S99_L0.95_clust.gz, PF00014_pdb.5pti_pdbefold.gz
+    input: PF00014_pdb.5pti_pdbefold_S99_L0.95_clust.gz, PF00014_pdb.5pti_pdbefold.txt.gz
     output: nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.txt.gz
     jobid: 0
     wildcards: sequences=PF00014_pdb.5pti_pdbefold, S=99, L=0.95
 
-for cluster in $(zcat PF00014_pdb.5pti_pdbefold_S99_L0.95_clust.gz | sed &#39;1d&#39; | sed &#39;s/ /%/g&#39;); do zcat PF00014_pdb.5pti_pdbefold.gz | grep -w -f &lt;(echo $cluster | sed &#39;s/%/\n/g&#39;) | sort -n -k2 | sed -n &#39;1p&#39;; done | gzip &gt; nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.txt.gz
+for cluster in $(zcat PF00014_pdb.5pti_pdbefold_S99_L0.95_clust.gz | sed &#39;1d&#39; | sed &#39;s/ /%/g&#39;); do zcat PF00014_pdb.5pti_pdbefold.txt.gz | grep -w -f &lt;(echo $cluster | sed &#39;s/%/\n/g&#39;) | sort -n -k2 | sed -n &#39;1p&#39;; done | gzip &gt; nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.txt.gz
 Finished job 0.
 1 of 1 steps (100%) done
 </pre>
@@ -13895,7 +13895,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -13972,7 +13972,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -14054,7 +14054,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -14082,32 +14082,32 @@ ls -lh PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/
 <pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
 27
 total 3,0M
--rw-r--r-- 1 alessandro alessandro  69K apr  8 14:57 1AAP.A.pdb
--rw-r--r-- 1 alessandro alessandro  80K apr  8 14:58 1BUN.B.pdb
--rw-r--r-- 1 alessandro alessandro  75K apr  8 14:58 1DTX.A.pdb
--rw-r--r-- 1 alessandro alessandro  88K apr  8 14:57 1F7Z.I.pdb
--rw-r--r-- 1 alessandro alessandro 105K apr  8 14:57 1KTH.A.pdb
--rw-r--r-- 1 alessandro alessandro  97K apr  8 14:57 1TFX.C.pdb
--rw-r--r-- 1 alessandro alessandro  95K apr  8 14:57 1Y62.A.pdb
--rw-r--r-- 1 alessandro alessandro  97K apr  8 14:58 1YC0.I.pdb
--rw-r--r-- 1 alessandro alessandro 136K apr  8 14:57 1ZR0.B.pdb
--rw-r--r-- 1 alessandro alessandro  93K apr  8 14:57 3BYB.A.pdb
--rw-r--r-- 1 alessandro alessandro 113K apr  8 14:57 3M7Q.B.pdb
--rw-r--r-- 1 alessandro alessandro 177K apr  8 14:57 3T62.D.pdb
--rw-r--r-- 1 alessandro alessandro 149K apr  8 14:57 3WNY.A.pdb
--rw-r--r-- 1 alessandro alessandro 142K apr  8 14:58 4BQD.B.pdb
--rw-r--r-- 1 alessandro alessandro 195K apr  8 14:58 4DTG.K.pdb
--rw-r--r-- 1 alessandro alessandro 108K apr  8 14:57 4ISO.B.pdb
--rw-r--r-- 1 alessandro alessandro 131K apr  8 14:57 4NTW.B.pdb
--rw-r--r-- 1 alessandro alessandro 125K apr  8 14:57 4U30.W.pdb
--rw-r--r-- 1 alessandro alessandro  96K apr  8 14:58 4U32.X.pdb
--rw-r--r-- 1 alessandro alessandro 231K apr  8 14:57 5NMV.K.pdb
--rw-r--r-- 1 alessandro alessandro 146K apr  8 14:58 5NX1.C.pdb
--rw-r--r-- 1 alessandro alessandro 133K apr  8 14:58 5NX1.D.pdb
--rw-r--r-- 1 alessandro alessandro 120K apr  8 14:57 5PTI.A.pdb
--rw-r--r-- 1 alessandro alessandro  69K apr  8 14:58 5YV7.A.pdb
--rw-r--r-- 1 alessandro alessandro 124K apr  8 14:58 5YW1.I.pdb
--rw-r--r-- 1 alessandro alessandro    0 apr  8 14:58 get_chains_completed
+-rw-r--r-- 1 alessandro alessandro  69K apr  8 17:26 1AAP.A.pdb
+-rw-r--r-- 1 alessandro alessandro  80K apr  8 17:27 1BUN.B.pdb
+-rw-r--r-- 1 alessandro alessandro  75K apr  8 17:27 1DTX.A.pdb
+-rw-r--r-- 1 alessandro alessandro  88K apr  8 17:26 1F7Z.I.pdb
+-rw-r--r-- 1 alessandro alessandro 105K apr  8 17:27 1KTH.A.pdb
+-rw-r--r-- 1 alessandro alessandro  97K apr  8 17:27 1TFX.C.pdb
+-rw-r--r-- 1 alessandro alessandro  95K apr  8 17:26 1Y62.A.pdb
+-rw-r--r-- 1 alessandro alessandro  97K apr  8 17:27 1YC0.I.pdb
+-rw-r--r-- 1 alessandro alessandro 136K apr  8 17:27 1ZR0.B.pdb
+-rw-r--r-- 1 alessandro alessandro  93K apr  8 17:26 3BYB.A.pdb
+-rw-r--r-- 1 alessandro alessandro 113K apr  8 17:27 3M7Q.B.pdb
+-rw-r--r-- 1 alessandro alessandro 177K apr  8 17:27 3T62.D.pdb
+-rw-r--r-- 1 alessandro alessandro 149K apr  8 17:26 3WNY.A.pdb
+-rw-r--r-- 1 alessandro alessandro 142K apr  8 17:27 4BQD.B.pdb
+-rw-r--r-- 1 alessandro alessandro 195K apr  8 17:27 4DTG.K.pdb
+-rw-r--r-- 1 alessandro alessandro 108K apr  8 17:27 4ISO.B.pdb
+-rw-r--r-- 1 alessandro alessandro 131K apr  8 17:27 4NTW.B.pdb
+-rw-r--r-- 1 alessandro alessandro 125K apr  8 17:26 4U30.W.pdb
+-rw-r--r-- 1 alessandro alessandro  96K apr  8 17:27 4U32.X.pdb
+-rw-r--r-- 1 alessandro alessandro 231K apr  8 17:27 5NMV.K.pdb
+-rw-r--r-- 1 alessandro alessandro 146K apr  8 17:27 5NX1.C.pdb
+-rw-r--r-- 1 alessandro alessandro 133K apr  8 17:27 5NX1.D.pdb
+-rw-r--r-- 1 alessandro alessandro 120K apr  8 17:26 5PTI.A.pdb
+-rw-r--r-- 1 alessandro alessandro  69K apr  8 17:27 5YV7.A.pdb
+-rw-r--r-- 1 alessandro alessandro 124K apr  8 17:27 5YW1.I.pdb
+-rw-r--r-- 1 alessandro alessandro    0 apr  8 17:27 get_chains_completed
 </pre>
 </div>
 </div>
@@ -14132,12 +14132,12 @@ rule get_pdb_files:
     wildcards: sequences=nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95
 
 idlist=$(cat nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.idlist | sed &#39;s/:/\t/&#39; | cut -f1); idarr=($(cat nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.idlist | sed &#39;s/:/\t/&#39; | cut -f1)); charr=($(cat nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.idlist | sed &#39;s/:/\t/&#39; | cut -f2)); i=0; for id in $idlist; do wget -P PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/ http://www.rcsb.org/pdb/files/${id}.pdb; chain=${charr[$i]}; cat PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/${id}.pdb | awk -v chain=$chain &#39;{split($0,line); if((line[1]==&#34;ATOM&#34; || line[1]==&#34;ANISOU&#34;) &amp;&amp; line[5]!=chain) {getline} else {print  $0}}&#39; &gt; PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/${id}.${chain}.pdb; rm PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/${id}.pdb; i=$(echo &#34;$i+1&#34; | bc); done;touch PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/get_chains_completed
---2019-04-08 14:57:30--  http://www.rcsb.org/pdb/files/5PTI.pdb
+--2019-04-08 17:26:48--  http://www.rcsb.org/pdb/files/5PTI.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/5PTI.pdb [following]
---2019-04-08 14:57:31--  http://files.rcsb.org/view/5PTI.pdb
+--2019-04-08 17:26:48--  http://files.rcsb.org/view/5PTI.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -14146,16 +14146,16 @@ Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5PTI.pdb’
 
      0K .......... .......... .......... .......... ..........  119K
     50K .......... .......... .......... .......... ..........  242K
-   100K .......... .......... .                                7,75M=0,6s
+   100K .......... .......... .                                7,15M=0,6s
 
-2019-04-08 14:57:32 (193 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5PTI.pdb’ saved [124335]
+2019-04-08 17:26:49 (193 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5PTI.pdb’ saved [124335]
 
---2019-04-08 14:57:32--  http://www.rcsb.org/pdb/files/1AAP.pdb
+--2019-04-08 17:26:49--  http://www.rcsb.org/pdb/files/1AAP.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/1AAP.pdb [following]
---2019-04-08 14:57:32--  http://files.rcsb.org/view/1AAP.pdb
+--2019-04-08 17:26:49--  http://files.rcsb.org/view/1AAP.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -14166,14 +14166,14 @@ Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1AAP.pdb’
     50K .......... .......... .......... .......... ..........  242K
    100K ..                                                     5251G=0,6s
 
-2019-04-08 14:57:33 (164 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1AAP.pdb’ saved [105219]
+2019-04-08 17:26:50 (164 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1AAP.pdb’ saved [105219]
 
---2019-04-08 14:57:33--  http://www.rcsb.org/pdb/files/3BYB.pdb
+--2019-04-08 17:26:50--  http://www.rcsb.org/pdb/files/3BYB.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/3BYB.pdb [following]
---2019-04-08 14:57:33--  http://files.rcsb.org/view/3BYB.pdb
+--2019-04-08 17:26:51--  http://files.rcsb.org/view/3BYB.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -14181,89 +14181,89 @@ Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/3BYB.pdb’
 
      0K .......... .......... .......... .......... ..........  119K
-    50K .......... .......... .......... .......... ..........  240K
-   100K .......... .......... .......... .......... .......... 1,77M
-   150K .......... .....                                       15,4M=0,7s
+    50K .......... .......... .......... .......... ..........  242K
+   100K .......... .......... .......... .......... .......... 1,96M
+   150K .......... .....                                       5,30M=0,7s
 
-2019-04-08 14:57:34 (252 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/3BYB.pdb’ saved [169128]
+2019-04-08 17:26:52 (253 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/3BYB.pdb’ saved [169128]
 
---2019-04-08 14:57:34--  http://www.rcsb.org/pdb/files/3WNY.pdb
+--2019-04-08 17:26:52--  http://www.rcsb.org/pdb/files/3WNY.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/3WNY.pdb [following]
---2019-04-08 14:57:35--  http://files.rcsb.org/view/3WNY.pdb
+--2019-04-08 17:26:52--  http://files.rcsb.org/view/3WNY.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/3WNY.pdb’
 
-     0K .......... .......... .......... .......... ..........  204K
-    50K .......... .......... .......... .......... ..........  291K
-   100K .......... .......... .......... .......... .......... 2,38M
-   150K .......... .......... .......... .......... ..........  495K
-   200K .......... .......... .......... .......... ..........  618K
-   250K .......... .......... .......... .......... .......... 1,98M
-   300K .......... .......... .......... .......... ..........  611K
-   350K .......... .......... .......... .......... .......... 1,11M
-   400K .......... .......... .......... .......... ..........  641K
-   450K .......... .......... .......... .......... ..........  584K
-   500K .......... .......... .......... .......... .......... 2,44M
-   550K .......... .......... .......... .......... .......... 2,14M
-   600K .......... .......... .......... .......... ..........  565K
-   650K .......... .......... .......... .......... .......... 3,05M
-   700K .......... .......... .......... .                      111K=1,4s
+     0K .......... .......... .......... .......... ..........  158K
+    50K .......... .......... .......... .......... ..........  241K
+   100K .......... .......... .......... .......... .......... 1,38M
+   150K .......... .......... .......... .......... .......... 4,62M
+   200K .......... .......... .......... .......... ..........  469K
+   250K .......... .......... .......... .......... .......... 3,33M
+   300K .......... .......... .......... .......... ..........  555K
+   350K .......... .......... .......... .......... .......... 2,21M
+   400K .......... .......... .......... .......... ..........  706K
+   450K .......... .......... .......... .......... .......... 1,25M
+   500K .......... .......... .......... .......... .......... 3,17M
+   550K .......... .......... .......... .......... ..........  567K
+   600K .......... .......... .......... .......... .......... 2,41M
+   650K .......... .......... .......... .......... ..........  771K
+   700K .......... .......... .......... .                     1,04M=1,1s
 
-2019-04-08 14:57:36 (537 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/3WNY.pdb’ saved [748764]
+2019-04-08 17:26:54 (646 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/3WNY.pdb’ saved [748764]
 
---2019-04-08 14:57:37--  http://www.rcsb.org/pdb/files/1Y62.pdb
+--2019-04-08 17:26:54--  http://www.rcsb.org/pdb/files/1Y62.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/1Y62.pdb [following]
---2019-04-08 14:57:37--  http://files.rcsb.org/view/1Y62.pdb
+--2019-04-08 17:26:54--  http://files.rcsb.org/view/1Y62.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1Y62.pdb’
 
-     0K .......... .......... .......... .......... ..........  117K
-    50K .......... .......... .......... .......... ..........  208K
-   100K .......... .......... .......... .......... .......... 1,94M
-   150K .......... .......... .......... .......... ..........  295K
-   200K .......... .......... .......... .......... .......... 29,2K
-   250K .......... .......... .                                34,7M=2,6s
+     0K .......... .......... .......... .......... ..........  152K
+    50K .......... .......... .......... .......... ..........  431K
+   100K .......... .......... .......... .......... .......... 4,01M
+   150K .......... .......... .......... .......... .......... 7,89M
+   200K .......... .......... .......... .......... ..........  444K
+   250K .......... .......... .                                7,44M=0,6s
 
-2019-04-08 14:57:40 (106 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1Y62.pdb’ saved [277992]
+2019-04-08 17:26:55 (470 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1Y62.pdb’ saved [277992]
 
---2019-04-08 14:57:40--  http://www.rcsb.org/pdb/files/1F7Z.pdb
+--2019-04-08 17:26:55--  http://www.rcsb.org/pdb/files/1F7Z.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/1F7Z.pdb [following]
---2019-04-08 14:57:41--  http://files.rcsb.org/view/1F7Z.pdb
+--2019-04-08 17:26:55--  http://files.rcsb.org/view/1F7Z.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1F7Z.pdb’
 
-     0K .......... .......... .......... .......... ..........  120K
-    50K .......... .......... .......... .......... ..........  467K
-   100K .......... .......... .......... .......... .......... 2,13M
-   150K .......... .......... .......... .......... .......... 9,51M
-   200K .......... ...                                          152K=0,6s
+     0K .......... .......... .......... .......... ..........  119K
+    50K .......... .......... .......... .......... ..........  242K
+   100K .......... .......... .......... .......... .......... 1,53M
+   150K .......... .......... .......... .......... .......... 4,78M
+   200K .......... ...                                          135K=0,8s
 
-2019-04-08 14:57:42 (334 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1F7Z.pdb’ saved [218619]
+2019-04-08 17:26:57 (278 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1F7Z.pdb’ saved [218619]
 
---2019-04-08 14:57:42--  http://www.rcsb.org/pdb/files/4U30.pdb
+--2019-04-08 17:26:57--  http://www.rcsb.org/pdb/files/4U30.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/4U30.pdb [following]
---2019-04-08 14:57:42--  http://files.rcsb.org/view/4U30.pdb
+--2019-04-08 17:26:57--  http://files.rcsb.org/view/4U30.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -14271,51 +14271,51 @@ Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4U30.pdb’
 
      0K .......... .......... .......... .......... ..........  119K
-    50K .......... .......... .......... .......... ..........  218K
-   100K .......... .......... .......... .......... .......... 4,74M
-   150K .......... .......... .......... .......... ..........  553K
-   200K .......... .......... .......... .......... .......... 1,28M
-   250K .......... .......... .......... .......... .......... 6,90M
-   300K .......... .......... .......... .......... ..........  462K
-   350K .......... .......... .......... .......... .......... 3,63M
-   400K .......... .......... .......... .......... ..........  552K
-   450K .......... .......... .......... .......... .......... 1,86M
-   500K .......... .......... .......... .......... .......... 7,96M
-   550K .......... .......... .......... .......... ..........  512K
-   600K .......... .......... .......... .......... .......... 2,57M
-   650K .......... .......... .......... .......... ..........  646K
-   700K .......... .......... .......... .......... .......... 1,63M
-   750K .......... ..                                          3,06M=1,3s
+    50K .......... .......... .......... .......... ..........  242K
+   100K .......... .......... .......... .......... .......... 1,63M
+   150K .......... .......... .......... .......... .......... 4,59M
+   200K .......... .......... .......... .......... ..........  259K
+   250K .......... .......... .......... .......... .......... 4,58M
+   300K .......... .......... .......... .......... ..........  465K
+   350K .......... .......... .......... .......... .......... 3,62M
+   400K .......... .......... .......... .......... ..........  777K
+   450K .......... .......... .......... .......... ..........  989K
+   500K .......... .......... .......... .......... .......... 4,14M
+   550K .......... .......... .......... .......... ..........  525K
+   600K .......... .......... .......... .......... .......... 2,40M
+   650K .......... .......... .......... .......... ..........  962K
+   700K .......... .......... .......... .......... ..........  930K
+   750K .......... ..                                          8,75M=1,3s
 
-2019-04-08 14:57:44 (601 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4U30.pdb’ saved [781002]
+2019-04-08 17:26:59 (569 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4U30.pdb’ saved [781002]
 
---2019-04-08 14:57:44--  http://www.rcsb.org/pdb/files/4ISO.pdb
+--2019-04-08 17:26:59--  http://www.rcsb.org/pdb/files/4ISO.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/4ISO.pdb [following]
---2019-04-08 14:57:44--  http://files.rcsb.org/view/4ISO.pdb
+--2019-04-08 17:26:59--  http://files.rcsb.org/view/4ISO.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4ISO.pdb’
 
-     0K .......... .......... .......... .......... ..........  115K
-    50K .......... .......... .......... .......... ..........  469K
-   100K .......... .......... .......... .......... .......... 2,33M
-   150K .......... .......... .......... .......... .......... 3,38M
-   200K .......... .......... .......... .......... ..........  469K
-   250K ......                                                 28,2M=0,7s
+     0K .......... .......... .......... .......... ..........  151K
+    50K .......... .......... .......... .......... ..........  473K
+   100K .......... .......... .......... .......... .......... 2,11M
+   150K .......... .......... .......... .......... .......... 4,14M
+   200K .......... .......... .......... .......... ..........  429K
+   250K ......                                                 25,1M=0,6s
 
-2019-04-08 14:57:45 (375 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4ISO.pdb’ saved [262197]
+2019-04-08 17:27:00 (436 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4ISO.pdb’ saved [262197]
 
---2019-04-08 14:57:45--  http://www.rcsb.org/pdb/files/4NTW.pdb
+--2019-04-08 17:27:00--  http://www.rcsb.org/pdb/files/4NTW.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/4NTW.pdb [following]
---2019-04-08 14:57:46--  http://files.rcsb.org/view/4NTW.pdb
+--2019-04-08 17:27:00--  http://files.rcsb.org/view/4NTW.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -14323,24 +14323,24 @@ Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4NTW.pdb’
 
      0K .......... .......... .......... .......... ..........  119K
-    50K .......... .......... .......... .......... ..........  242K
-   100K .......... .......... .......... .......... .......... 1,62M
-   150K .......... .......... .......... .......... .......... 4,51M
-   200K .......... .......... .......... .......... ..........  438K
-   250K .......... .......... .......... .......... .......... 7,08M
-   300K .......... .......... .......... .......... ..........  461K
-   350K .......... .......... .......... .......... .......... 4,10M
-   400K .......... .......... .......... .......... ..........  513K
-   450K ........                                               1,52M=1,0s
+    50K .......... .......... .......... .......... ..........  240K
+   100K .......... .......... .......... .......... ..........  239K
+   150K .......... .......... .......... .......... ..........  236K
+   200K .......... .......... .......... .......... ..........  241K
+   250K .......... .......... .......... .......... ..........  239K
+   300K .......... .......... .......... .......... ..........  435K
+   350K .......... .......... .......... .......... ..........  452K
+   400K .......... .......... .......... .......... ..........  442K
+   450K ........                                               6,84M=1,8s
 
-2019-04-08 14:57:47 (453 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4NTW.pdb’ saved [469152]
+2019-04-08 17:27:02 (253 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4NTW.pdb’ saved [469152]
 
---2019-04-08 14:57:47--  http://www.rcsb.org/pdb/files/1KTH.pdb
+--2019-04-08 17:27:02--  http://www.rcsb.org/pdb/files/1KTH.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/1KTH.pdb [following]
---2019-04-08 14:57:48--  http://files.rcsb.org/view/1KTH.pdb
+--2019-04-08 17:27:03--  http://files.rcsb.org/view/1KTH.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -14348,123 +14348,123 @@ Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1KTH.pdb’
 
      0K .......... .......... .......... .......... ..........  119K
-    50K .......... .......... .......... .......... ..........  241K
-   100K .......                                                7,85M=0,6s
+    50K .......... .......... .......... .......... ..........  239K
+   100K .......                                                48,9M=0,6s
 
-2019-04-08 14:57:49 (171 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1KTH.pdb’ saved [110079]
+2019-04-08 17:27:04 (171 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1KTH.pdb’ saved [110079]
 
---2019-04-08 14:57:49--  http://www.rcsb.org/pdb/files/3T62.pdb
+--2019-04-08 17:27:04--  http://www.rcsb.org/pdb/files/3T62.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/3T62.pdb [following]
---2019-04-08 14:57:49--  http://files.rcsb.org/view/3T62.pdb
+--2019-04-08 17:27:04--  http://files.rcsb.org/view/3T62.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/3T62.pdb’
 
-     0K .......... .......... .......... .......... ..........  120K
-    50K .......... .......... .......... .......... ..........  502K
-   100K .......... .......... .......... .......... .......... 2,04M
-   150K .......... .......... .......... .......... .......... 2,40M
-   200K .......... .......... .......... .......... ..........  505K
-   250K .......... .......... .......... .......... .......... 3,75M
-   300K .......... .......... .......... .......... ..........  554K
-   350K .......... .......... .......... .......... .......... 2,43M
-   400K .......... .......... .......... .......... ..........  633K
-   450K .......... .......... .......... .......... .......... 1,79M
-   500K .......... .......... .......... .......... .......... 4,23M
-   550K .......... .......... .......... .......... ..........  585K
-   600K .......... .......... .......... .......... .......... 2,08M
-   650K .......... .......... .......... .......... ..........  912K
-   700K .......... .......... .......... .......... .......... 1,10M
-   750K .......... .......... .......... .......... .......... 3,13M
-   800K .......... .......... .......... .......... ..........  675K
-   850K .......... .......... .......... .......... .......... 2,02M
-   900K .......... .......... .......... .......... .......... 2,42M
-   950K .......... .......... .......... .......... ..........  740K
-  1000K .......... .......... .......... .......... .......... 1,84M
-  1050K .......... .......... .......... .......... .......... 2,31M
-  1100K .......... .......... .......... .......... ..........  806K
-  1150K ...                                                    4,39M=1,4s
+     0K .......... .......... .......... .......... ..........  119K
+    50K .......... .......... .......... .......... ..........  237K
+   100K .......... .......... .......... .......... ..........  238K
+   150K .......... .......... .......... .......... ..........  240K
+   200K .......... .......... .......... .......... ..........  239K
+   250K .......... .......... .......... .......... ..........  239K
+   300K .......... .......... .......... .......... ..........  239K
+   350K .......... .......... .......... .......... ..........  239K
+   400K .......... .......... .......... .......... ..........  239K
+   450K .......... .......... .......... .......... ..........  238K
+   500K .......... .......... .......... .......... ..........  436K
+   550K .......... .......... .......... .......... .......... 3,27M
+   600K .......... .......... .......... .......... ..........  450K
+   650K .......... .......... .......... .......... ..........  473K
+   700K .......... .......... .......... .......... ..........  517K
+   750K .......... .......... .......... .......... .......... 1,79M
+   800K .......... .......... .......... .......... ..........  494K
+   850K .......... .......... .......... .......... ..........  559K
+   900K .......... .......... .......... .......... .......... 1,40M
+   950K .......... .......... .......... .......... ..........  610K
+  1000K .......... .......... .......... .......... .......... 1,54M
+  1050K .......... .......... .......... .......... ..........  560K
+  1100K .......... .......... .......... .......... .......... 2,09M
+  1150K ...                                                    66,6K=3,3s
 
-2019-04-08 14:57:51 (813 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/3T62.pdb’ saved [1181628]
+2019-04-08 17:27:08 (351 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/3T62.pdb’ saved [1181628]
 
---2019-04-08 14:57:51--  http://www.rcsb.org/pdb/files/1ZR0.pdb
+--2019-04-08 17:27:08--  http://www.rcsb.org/pdb/files/1ZR0.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/1ZR0.pdb [following]
---2019-04-08 14:57:51--  http://files.rcsb.org/view/1ZR0.pdb
+--2019-04-08 17:27:08--  http://files.rcsb.org/view/1ZR0.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1ZR0.pdb’
 
-     0K .......... .......... .......... .......... ..........  119K
-    50K .......... .......... .......... .......... ..........  218K
-   100K .......... .......... .......... .......... .......... 2,30M
-   150K .......... .......... .......... .......... .......... 5,44M
-   200K .......... .......... .......... .......... ..........  548K
-   250K .......... .......... .......... .......... .......... 2,44M
-   300K .......... .......... .......... .......... ..........  565K
-   350K .......... .......... .......... .......... .......... 2,27M
-   400K .......... .......... .......... ...                   6,90M=0,9s
+     0K .......... .......... .......... .......... .......... 89,5K
+    50K .......... .......... .......... .......... ..........  282K
+   100K .......... .......... .......... .......... ..........  448K
+   150K .......... .......... .......... .......... ..........  448K
+   200K .......... .......... .......... .......... ..........  469K
+   250K .......... .......... .......... .......... .......... 3,43M
+   300K .......... .......... .......... .......... ..........  441K
+   350K .......... .......... .......... .......... ..........  449K
+   400K .......... .......... .......... ...                    366K=1,4s
 
-2019-04-08 14:57:52 (479 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1ZR0.pdb’ saved [443961]
+2019-04-08 17:27:10 (311 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1ZR0.pdb’ saved [443961]
 
---2019-04-08 14:57:52--  http://www.rcsb.org/pdb/files/3M7Q.pdb
+--2019-04-08 17:27:10--  http://www.rcsb.org/pdb/files/3M7Q.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/3M7Q.pdb [following]
---2019-04-08 14:57:53--  http://files.rcsb.org/view/3M7Q.pdb
+--2019-04-08 17:27:11--  http://files.rcsb.org/view/3M7Q.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/3M7Q.pdb’
 
-     0K .......... .......... .......... .......... ..........  124K
-    50K .......... .......... .......... .......... ..........  236K
-   100K .......... .......... .......... .......... .......... 2,28M
-   150K .......... .......... .......... .......... ..........  422K
-   200K .......... .......... .......... .......... ......      418K=0,9s
+     0K .......... .......... .......... .......... ..........  119K
+    50K .......... .......... .......... .......... ..........  239K
+   100K .......... .......... .......... .......... ..........  240K
+   150K .......... .......... .......... .......... ..........  240K
+   200K .......... .......... .......... .......... ......      225K=1,3s
 
-2019-04-08 14:57:54 (285 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/3M7Q.pdb’ saved [252477]
+2019-04-08 17:27:12 (197 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/3M7Q.pdb’ saved [252477]
 
---2019-04-08 14:57:54--  http://www.rcsb.org/pdb/files/1TFX.pdb
+--2019-04-08 17:27:12--  http://www.rcsb.org/pdb/files/1TFX.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/1TFX.pdb [following]
---2019-04-08 14:57:54--  http://files.rcsb.org/view/1TFX.pdb
+--2019-04-08 17:27:12--  http://files.rcsb.org/view/1TFX.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1TFX.pdb’
 
-     0K .......... .......... .......... .......... ..........  115K
-    50K .......... .......... .......... .......... ..........  259K
-   100K .......... .......... .......... .......... .......... 3,94M
-   150K .......... .......... .......... .......... ..........  228K
-   200K .......... .......... .......... .......... ..........  397K
-   250K .......... .......... .......... .......... .......... 5,59M
-   300K .......... .......... .......... .......... ..........  391K
-   350K .......... .......... .......... .......... ....        407K=1,2s
+     0K .......... .......... .......... .......... ..........  119K
+    50K .......... .......... .......... .......... ..........  239K
+   100K .......... .......... .......... .......... ..........  240K
+   150K .......... .......... .......... .......... ..........  239K
+   200K .......... .......... .......... .......... ..........  242K
+   250K .......... .......... .......... .......... .......... 8,96M
+   300K .......... .......... .......... .......... ..........  221K
+   350K .......... .......... .......... .......... ....        233K=1,7s
 
-2019-04-08 14:57:56 (320 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1TFX.pdb’ saved [403623]
+2019-04-08 17:27:15 (235 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1TFX.pdb’ saved [403623]
 
---2019-04-08 14:57:56--  http://www.rcsb.org/pdb/files/5NMV.pdb
+--2019-04-08 17:27:15--  http://www.rcsb.org/pdb/files/5NMV.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/5NMV.pdb [following]
---2019-04-08 14:57:56--  http://files.rcsb.org/view/5NMV.pdb
+--2019-04-08 17:27:15--  http://files.rcsb.org/view/5NMV.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -14472,35 +14472,35 @@ Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5NMV.pdb’
 
      0K .......... .......... .......... .......... ..........  119K
-    50K .......... .......... .......... .......... ..........  242K
-   100K .......... .......... .......... .......... .......... 1,92M
-   150K .......... .......... .......... .......... ..........  430K
-   200K .......... .......... .......... .......... ..........  469K
-   250K .......... .......... .......... .......... .......... 2,28M
-   300K .......... .......... .......... .......... ..........  415K
-   350K .......... .......... .......... .......... ..........  541K
-   400K .......... .......... .......... .......... .......... 1,58M
-   450K .......... .......... .......... .......... ..........  431K
-   500K .......... .......... .......... .......... ..........  616K
-   550K .......... .......... .......... .......... .......... 1,17M
-   600K .......... .......... .......... .......... ..........  591K
-   650K .......... .......... .......... .......... .......... 1,40M
-   700K .......... .......... .......... .......... ..........  576K
-   750K .......... .......... .......... .......... .......... 1,47M
-   800K .......... .......... .......... .......... ..........  575K
-   850K .......... .......... .......... .......... .......... 1,49M
-   900K .......... .......... .......... .......... ..........  594K
-   950K .......... .......... .......... .......... .......... 1,54M
-  1000K .......... .......... ...                              5,41M=1,9s
+    50K .......... .......... .......... .......... ..........  239K
+   100K .......... .......... .......... .......... ..........  239K
+   150K .......... .......... .......... .......... ..........  241K
+   200K .......... .......... .......... .......... ..........  240K
+   250K .......... .......... .......... .......... .......... 8,90M
+   300K .......... .......... .......... .......... ..........  221K
+   350K .......... .......... .......... .......... ..........  428K
+   400K .......... .......... .......... .......... ..........  442K
+   450K .......... .......... .......... .......... ..........  449K
+   500K .......... .......... .......... .......... .......... 2,83M
+   550K .......... .......... .......... .......... ..........  441K
+   600K .......... .......... .......... .......... ..........  469K
+   650K .......... .......... .......... .......... .......... 2,60M
+   700K .......... .......... .......... .......... ..........  462K
+   750K .......... .......... .......... .......... ..........  520K
+   800K .......... .......... .......... .......... .......... 1,37M
+   850K .......... .......... .......... .......... ..........  510K
+   900K .......... .......... .......... .......... .......... 2,24M
+   950K .......... .......... .......... .......... ..........  492K
+  1000K .......... .......... ...                              1,71M=2,6s
 
-2019-04-08 14:57:59 (551 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5NMV.pdb’ saved [1048464]
+2019-04-08 17:27:18 (400 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5NMV.pdb’ saved [1048464]
 
---2019-04-08 14:57:59--  http://www.rcsb.org/pdb/files/5NX1.pdb
+--2019-04-08 17:27:18--  http://www.rcsb.org/pdb/files/5NX1.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/5NX1.pdb [following]
---2019-04-08 14:57:59--  http://files.rcsb.org/view/5NX1.pdb
+--2019-04-08 17:27:18--  http://files.rcsb.org/view/5NX1.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -14508,65 +14508,65 @@ Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5NX1.pdb’
 
      0K .......... .......... .......... .......... ..........  119K
-    50K .......... .......... .......... .......... ..........  242K
-   100K .......... .......... .......... .......... .......... 2,04M
-   150K .......... .......... .......... .......... ..........  405K
-   200K .......... .......... .......... .......... ..........  420K
-   250K .......... .......... .......... .......... .......... 3,89M
-   300K .......... .......... .......... .......... ..........  415K
-   350K .......... .......... .......... .......... ..........  292K
-   400K .......... .......... .......... .......... .......... 4,28M
-   450K .......... .......... .......... .....                  235K=1,4s
+    50K .......... .......... .......... .......... ..........  240K
+   100K .......... .......... .......... .......... ..........  239K
+   150K .......... .......... .......... .......... ..........  239K
+   200K .......... .......... .......... .......... ..........  242K
+   250K .......... .......... .......... .......... .......... 9,22M
+   300K .......... .......... .......... .......... ..........  221K
+   350K .......... .......... .......... .......... ..........  256K
+   400K .......... .......... .......... .......... ..........  226K
+   450K .......... .......... .......... .....                 5,53M=1,9s
 
-2019-04-08 14:58:01 (357 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5NX1.pdb’ saved [497502]
+2019-04-08 17:27:21 (255 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5NX1.pdb’ saved [497502]
 
---2019-04-08 14:58:01--  http://www.rcsb.org/pdb/files/4BQD.pdb
+--2019-04-08 17:27:21--  http://www.rcsb.org/pdb/files/4BQD.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/4BQD.pdb [following]
---2019-04-08 14:58:01--  http://files.rcsb.org/view/4BQD.pdb
+--2019-04-08 17:27:21--  http://files.rcsb.org/view/4BQD.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4BQD.pdb’
 
-     0K .......... .......... .......... .......... ..........  115K
-    50K .......... .......... .......... .......... ..........  259K
-   100K .......... .......... .......... .......... .......... 1,87M
-   150K .......... .......... .......... .......... ..........  414K
-   200K .......... .......... .......... .......... ..........  437K
-   250K .......... .......... .......... .......... .....      5,02M=0,9s
+     0K .......... .......... .......... .......... ..........  119K
+    50K .......... .......... .......... .......... ..........  240K
+   100K .......... .......... .......... .......... ..........  239K
+   150K .......... .......... .......... .......... ..........  240K
+   200K .......... .......... .......... .......... ..........  429K
+   250K .......... .......... .......... .......... .....      3,46M=1,2s
 
-2019-04-08 14:58:02 (329 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4BQD.pdb’ saved [302454]
+2019-04-08 17:27:23 (251 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4BQD.pdb’ saved [302454]
 
---2019-04-08 14:58:02--  http://www.rcsb.org/pdb/files/1YC0.pdb
+--2019-04-08 17:27:23--  http://www.rcsb.org/pdb/files/1YC0.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/1YC0.pdb [following]
---2019-04-08 14:58:03--  http://files.rcsb.org/view/1YC0.pdb
+--2019-04-08 17:27:23--  http://files.rcsb.org/view/1YC0.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1YC0.pdb’
 
-     0K .......... .......... .......... .......... ..........  159K
-    50K .......... .......... .......... .......... ..........  241K
-   100K .......... .......... .......... .......... .......... 2,11M
-   150K .......... .......... .......... .......... ..........  421K
-   200K .......... .......... .......... .......... .....       383K=0,8s
+     0K .......... .......... .......... .......... ..........  118K
+    50K .......... .......... .......... .......... ..........  416K
+   100K .......... .......... .......... .......... ..........  415K
+   150K .......... .......... .......... .......... ..........  439K
+   200K .......... .......... .......... .......... .....       419K=0,9s
 
-2019-04-08 14:58:04 (314 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1YC0.pdb’ saved [251586]
+2019-04-08 17:27:24 (277 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1YC0.pdb’ saved [251586]
 
---2019-04-08 14:58:04--  http://www.rcsb.org/pdb/files/4DTG.pdb
+--2019-04-08 17:27:24--  http://www.rcsb.org/pdb/files/4DTG.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/4DTG.pdb [following]
---2019-04-08 14:58:04--  http://files.rcsb.org/view/4DTG.pdb
+--2019-04-08 17:27:25--  http://files.rcsb.org/view/4DTG.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -14574,29 +14574,29 @@ Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4DTG.pdb’
 
      0K .......... .......... .......... .......... ..........  119K
-    50K .......... .......... .......... .......... ..........  242K
-   100K .......... .......... .......... .......... ..........  240K
-   150K .......... .......... .......... .......... .......... 4,09M
-   200K .......... .......... .......... .......... ..........  222K
-   250K .......... .......... .......... .......... ..........  248K
-   300K .......... .......... .......... .......... ..........  396K
-   350K .......... .......... .......... .......... .......... 6,90M
-   400K .......... .......... .......... .......... ..........  396K
-   450K .......... .......... .......... .......... ..........  404K
-   500K .......... .......... .......... .......... ..........  560K
-   550K .......... .......... .......... .......... .......... 1,12M
-   600K .......... .......... .......... .......... ..........  401K
-   650K .......... .......... .......... .......... .......... 5,22M
-   700K .......... .......... .......... ...                    274K=2,0s
+    50K .......... .......... .......... .......... ..........  416K
+   100K .......... .......... .......... .......... ..........  260K
+   150K .......... .......... .......... .......... ..........  239K
+   200K .......... .......... .......... .......... ..........  239K
+   250K .......... .......... .......... .......... ..........  242K
+   300K .......... .......... .......... .......... .......... 2,14M
+   350K .......... .......... .......... .......... ..........  429K
+   400K .......... .......... .......... .......... ..........  439K
+   450K .......... .......... .......... .......... ..........  464K
+   500K .......... .......... .......... .......... .......... 2,39M
+   550K .......... .......... .......... .......... ..........  441K
+   600K .......... .......... .......... .......... ..........  495K
+   650K .......... .......... .......... .......... .......... 1,98M
+   700K .......... .......... .......... ...                    356K=2,1s
 
-2019-04-08 14:58:07 (358 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4DTG.pdb’ saved [750870]
+2019-04-08 17:27:27 (354 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4DTG.pdb’ saved [750870]
 
---2019-04-08 14:58:07--  http://www.rcsb.org/pdb/files/1BUN.pdb
+--2019-04-08 17:27:27--  http://www.rcsb.org/pdb/files/1BUN.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/1BUN.pdb [following]
---2019-04-08 14:58:07--  http://files.rcsb.org/view/1BUN.pdb
+--2019-04-08 17:27:27--  http://files.rcsb.org/view/1BUN.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -14604,18 +14604,18 @@ Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1BUN.pdb’
 
      0K .......... .......... .......... .......... ..........  119K
-    50K .......... .......... .......... .......... ..........  226K
-   100K .......... .......... .......... .......... ..........  472K
-   150K ....                                                    352K=0,8s
+    50K .......... .......... .......... .......... ..........  238K
+   100K .......... .......... .......... .......... ..........  242K
+   150K ....                                                   16,4M=0,8s
 
-2019-04-08 14:58:08 (203 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1BUN.pdb’ saved [157707]
+2019-04-08 17:27:29 (184 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1BUN.pdb’ saved [157707]
 
---2019-04-08 14:58:08--  http://www.rcsb.org/pdb/files/5YV7.pdb
+--2019-04-08 17:27:29--  http://www.rcsb.org/pdb/files/5YV7.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/5YV7.pdb [following]
---2019-04-08 14:58:09--  http://files.rcsb.org/view/5YV7.pdb
+--2019-04-08 17:27:29--  http://files.rcsb.org/view/5YV7.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -14623,16 +14623,16 @@ Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5YV7.pdb’
 
      0K .......... .......... .......... .......... ..........  119K
-    50K .......... ........                                    51,8M=0,4s
+    50K .......... ........                                    58,6M=0,4s
 
-2019-04-08 14:58:09 (164 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5YV7.pdb’ saved [70389]
+2019-04-08 17:27:30 (163 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5YV7.pdb’ saved [70389]
 
---2019-04-08 14:58:09--  http://www.rcsb.org/pdb/files/1DTX.pdb
+--2019-04-08 17:27:30--  http://www.rcsb.org/pdb/files/1DTX.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/1DTX.pdb [following]
---2019-04-08 14:58:10--  http://files.rcsb.org/view/1DTX.pdb
+--2019-04-08 17:27:30--  http://files.rcsb.org/view/1DTX.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
@@ -14640,87 +14640,87 @@ Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1DTX.pdb’
 
      0K .......... .......... .......... .......... ..........  119K
-    50K .......... .......... ....                             49,0M=0,4s
+    50K .......... .......... ....                             13,9M=0,4s
 
-2019-04-08 14:58:11 (176 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1DTX.pdb’ saved [75978]
+2019-04-08 17:27:31 (176 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/1DTX.pdb’ saved [75978]
 
---2019-04-08 14:58:11--  http://www.rcsb.org/pdb/files/5NX1.pdb
+--2019-04-08 17:27:31--  http://www.rcsb.org/pdb/files/5NX1.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/5NX1.pdb [following]
---2019-04-08 14:58:11--  http://files.rcsb.org/view/5NX1.pdb
+--2019-04-08 17:27:31--  http://files.rcsb.org/view/5NX1.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5NX1.pdb’
 
-     0K .......... .......... .......... .......... ..........  119K
-    50K .......... .......... .......... .......... ..........  352K
-   100K .......... .......... .......... .......... ..........  412K
-   150K .......... .......... .......... .......... .......... 2,78M
-   200K .......... .......... .......... .......... ..........  418K
-   250K .......... .......... .......... .......... ..........  430K
-   300K .......... .......... .......... .......... ..........  468K
-   350K .......... .......... .......... .......... ..........  463K
-   400K .......... .......... .......... .......... .......... 1,62M
-   450K .......... .......... .......... .....                  381K=1,3s
+     0K .......... .......... .......... .......... ..........  128K
+    50K .......... .......... .......... .......... ..........  239K
+   100K .......... .......... .......... .......... ..........  240K
+   150K .......... .......... .......... .......... ..........  441K
+   200K .......... .......... .......... .......... ..........  457K
+   250K .......... .......... .......... .......... .......... 3,87M
+   300K .......... .......... .......... .......... ..........  436K
+   350K .......... .......... .......... .......... ..........  431K
+   400K .......... .......... .......... .......... ..........  470K
+   450K .......... .......... .......... .....                 4,43M=1,4s
 
-2019-04-08 14:58:13 (381 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5NX1.pdb’ saved [497502]
+2019-04-08 17:27:33 (350 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5NX1.pdb’ saved [497502]
 
---2019-04-08 14:58:13--  http://www.rcsb.org/pdb/files/4U32.pdb
+--2019-04-08 17:27:33--  http://www.rcsb.org/pdb/files/4U32.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/4U32.pdb [following]
---2019-04-08 14:58:13--  http://files.rcsb.org/view/4U32.pdb
+--2019-04-08 17:27:33--  http://files.rcsb.org/view/4U32.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4U32.pdb’
 
-     0K .......... .......... .......... .......... ..........  152K
-    50K .......... .......... .......... .......... ..........  259K
+     0K .......... .......... .......... .......... ..........  119K
+    50K .......... .......... .......... .......... ..........  239K
    100K .......... .......... .......... .......... ..........  239K
-   150K .......... .......... .......... .......... .......... 2,09M
-   200K .......... .......... .......... ..                     279K=0,9s
+   150K .......... .......... .......... .......... ..........  240K
+   200K .......... .......... .......... ..                    15,1M=1,0s
 
-2019-04-08 14:58:14 (267 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4U32.pdb’ saved [237978]
+2019-04-08 17:27:35 (222 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/4U32.pdb’ saved [237978]
 
---2019-04-08 14:58:14--  http://www.rcsb.org/pdb/files/5YW1.pdb
+--2019-04-08 17:27:35--  http://www.rcsb.org/pdb/files/5YW1.pdb
 Resolving www.rcsb.org (www.rcsb.org)... 128.6.244.65
 Connecting to www.rcsb.org (www.rcsb.org)|128.6.244.65|:80... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
 Location: http://files.rcsb.org/view/5YW1.pdb [following]
---2019-04-08 14:58:14--  http://files.rcsb.org/view/5YW1.pdb
+--2019-04-08 17:27:35--  http://files.rcsb.org/view/5YW1.pdb
 Resolving files.rcsb.org (files.rcsb.org)... 128.6.244.12
 Connecting to files.rcsb.org (files.rcsb.org)|128.6.244.12|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
 Saving to: ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5YW1.pdb’
 
-     0K .......... .......... .......... .......... ..........  159K
-    50K .......... .......... .......... .......... ..........  435K
-   100K .......... .......... .......... .......... ..........  531K
-   150K .......... .......... .......... .......... .......... 1,75M
-   200K .......... .......... .......... .......... ..........  443K
-   250K .......... .......... .......... .......... ..........  457K
-   300K .......... .......... .......... .......... ..........  484K
-   350K .......... .......... .......... .......... .......... 2,04M
-   400K .......... .......... .......... .......... ..........  450K
-   450K .......... .......... .......... .......... ..........  545K
-   500K .......... .......... .......... .......... ..........  517K
-   550K .......... .......... .......... .......... .......... 1,24M
-   600K .......... .......... .......... .......... ..........  578K
-   650K .......... .......... .......... .......... .......... 1,60M
-   700K .......... .......... .......... .......... ..........  508K
-   750K .......... .......... .......... .......... ..........  593K
-   800K .......... .......... .......... .......... .......... 1,37M
-   850K .......... .......... .......... ..........             533K=1,7s
+     0K .......... .......... .......... .......... ..........  119K
+    50K .......... .......... .......... .......... ..........  239K
+   100K .......... .......... .......... .......... ..........  239K
+   150K .......... .......... .......... .......... ..........  239K
+   200K .......... .......... .......... .......... ..........  323K
+   250K .......... .......... .......... .......... .......... 4,98M
+   300K .......... .......... .......... .......... ..........  450K
+   350K .......... .......... .......... .......... ..........  445K
+   400K .......... .......... .......... .......... ..........  447K
+   450K .......... .......... .......... .......... ..........  506K
+   500K .......... .......... .......... .......... .......... 2,43M
+   550K .......... .......... .......... .......... ..........  447K
+   600K .......... .......... .......... .......... ..........  556K
+   650K .......... .......... .......... .......... .......... 1,91M
+   700K .......... .......... .......... .......... ..........  463K
+   750K .......... .......... .......... .......... ..........  656K
+   800K .......... .......... .......... .......... .......... 1,21M
+   850K .......... .......... .......... ..........             527K=2,2s
 
-2019-04-08 14:58:16 (539 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5YW1.pdb’ saved [912060]
+2019-04-08 17:27:38 (406 KB/s) - ‘PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/5YW1.pdb’ saved [912060]
 
 Finished job 0.
 1 of 1 steps (100%) done
@@ -14744,7 +14744,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -14769,7 +14769,7 @@ cat nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.afa <span class="p">|
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
-lrwxrwxrwx 1 alessandro alessandro 70 apr  7 18:28 nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.afa -&gt; ../handmade/nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.afa
+lrwxrwxrwx 1 alessandro alessandro 70 apr  8 17:02 nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.afa -&gt; ../handmade/nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.afa
 &gt;PDB:5pti:A STRUCTURE OF BOVINE PANCREATIC TRYPSIN INHIBITOR. 
 --------rpdfcleppytgpckARIIRYFYNAKAGLCQTFVYGgCRA-KRNNFKSAEDCMRTCgga-
 
@@ -14792,7 +14792,7 @@ lrwxrwxrwx 1 alessandro alessandro 70 apr  7 18:28 nonredund_PF00014_pdb.5pti_pd
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -14815,8 +14815,67 @@ snakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.afa
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Process is interrupted.
+<pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
 </pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>MissingInputException in line 65 of /home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset/Snakefile:
+Missing input files for rule intersection2fasta:
+PF00014_pdb.5pti_pdbefold.txt.gz
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">CalledProcessError</span>                        Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-17-778fabb7f735&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>get_ipython<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>run_cell_magic<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;bash&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;cd ../dataset/\npwd\nsnakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.afa\n&#39;</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/miniconda3/lib/python3.6/site-packages/IPython/core/interactiveshell.py</span> in <span class="ansi-cyan-fg">run_cell_magic</span><span class="ansi-blue-fg">(self, magic_name, line, cell)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2345</span>                 magic_arg_s <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>var_expand<span class="ansi-blue-fg">(</span>line<span class="ansi-blue-fg">,</span> stack_depth<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2346</span>             <span class="ansi-green-fg">with</span> self<span class="ansi-blue-fg">.</span>builtin_trap<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 2347</span><span class="ansi-red-fg">                 </span>result <span class="ansi-blue-fg">=</span> fn<span class="ansi-blue-fg">(</span>magic_arg_s<span class="ansi-blue-fg">,</span> cell<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2348</span>             <span class="ansi-green-fg">return</span> result
+<span class="ansi-green-intense-fg ansi-bold">   2349</span> 
+
+<span class="ansi-green-fg">~/miniconda3/lib/python3.6/site-packages/IPython/core/magics/script.py</span> in <span class="ansi-cyan-fg">named_script_magic</span><span class="ansi-blue-fg">(line, cell)</span>
+<span class="ansi-green-intense-fg ansi-bold">    140</span>             <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    141</span>                 line <span class="ansi-blue-fg">=</span> script
+<span class="ansi-green-fg">--&gt; 142</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>shebang<span class="ansi-blue-fg">(</span>line<span class="ansi-blue-fg">,</span> cell<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    143</span> 
+<span class="ansi-green-intense-fg ansi-bold">    144</span>         <span class="ansi-red-fg"># write a basic docstring:</span>
+
+<span class="ansi-green-fg">&lt;/home/alessandro/miniconda3/lib/python3.6/site-packages/decorator.py:decorator-gen-110&gt;</span> in <span class="ansi-cyan-fg">shebang</span><span class="ansi-blue-fg">(self, line, cell)</span>
+
+<span class="ansi-green-fg">~/miniconda3/lib/python3.6/site-packages/IPython/core/magic.py</span> in <span class="ansi-cyan-fg">&lt;lambda&gt;</span><span class="ansi-blue-fg">(f, *a, **k)</span>
+<span class="ansi-green-intense-fg ansi-bold">    185</span>     <span class="ansi-red-fg"># but it&#39;s overkill for just that one bit of state.</span>
+<span class="ansi-green-intense-fg ansi-bold">    186</span>     <span class="ansi-green-fg">def</span> magic_deco<span class="ansi-blue-fg">(</span>arg<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 187</span><span class="ansi-red-fg">         </span>call <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">lambda</span> f<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>a<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>k<span class="ansi-blue-fg">:</span> f<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>a<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>k<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    188</span> 
+<span class="ansi-green-intense-fg ansi-bold">    189</span>         <span class="ansi-green-fg">if</span> callable<span class="ansi-blue-fg">(</span>arg<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/lib/python3.6/site-packages/IPython/core/magics/script.py</span> in <span class="ansi-cyan-fg">shebang</span><span class="ansi-blue-fg">(self, line, cell)</span>
+<span class="ansi-green-intense-fg ansi-bold">    243</span>             sys<span class="ansi-blue-fg">.</span>stderr<span class="ansi-blue-fg">.</span>flush<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    244</span>         <span class="ansi-green-fg">if</span> args<span class="ansi-blue-fg">.</span>raise_error <span class="ansi-green-fg">and</span> p<span class="ansi-blue-fg">.</span>returncode<span class="ansi-blue-fg">!=</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 245</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> CalledProcessError<span class="ansi-blue-fg">(</span>p<span class="ansi-blue-fg">.</span>returncode<span class="ansi-blue-fg">,</span> cell<span class="ansi-blue-fg">,</span> output<span class="ansi-blue-fg">=</span>out<span class="ansi-blue-fg">,</span> stderr<span class="ansi-blue-fg">=</span>err<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    246</span> 
+<span class="ansi-green-intense-fg ansi-bold">    247</span>     <span class="ansi-green-fg">def</span> _run_script<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> p<span class="ansi-blue-fg">,</span> cell<span class="ansi-blue-fg">,</span> to_close<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">CalledProcessError</span>: Command &#39;b&#39;cd ../dataset/\npwd\nsnakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.afa\n&#39;&#39; returned non-zero exit status 1.</pre>
 </div>
 </div>
 
@@ -14854,7 +14913,7 @@ snakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.afa
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -14892,7 +14951,7 @@ cat nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.hmm <span class="p">|
 #---- -------------------- ----- ----- ----- -------- ------ -----------
 1     nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold    25    68    59     2.43  0.946 
 
-# CPU time: 0.06u 0.00s 00:00:00.06 Elapsed: 00:00:00.07
+# CPU time: 0.06u 0.00s 00:00:00.06 Elapsed: 00:00:00.06
 199
 </pre>
 </div>
@@ -14940,7 +14999,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -14968,9 +15027,9 @@ ls -lh uniprot_kunitz_negative.gz
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
 442129
-lrwxrwxrwx 1 alessandro alessandro 38 apr  6 16:20 uniprot_kunitz_negative.gz -&gt; ../handmade/uniprot_kunitz_negative.gz
+lrwxrwxrwx 1 alessandro alessandro 38 apr  8 17:02 uniprot_kunitz_negative.gz -&gt; ../handmade/uniprot_kunitz_negative.gz
 322
-lrwxrwxrwx 1 alessandro alessandro 38 apr  6 16:20 uniprot_kunitz_negative.gz -&gt; ../handmade/uniprot_kunitz_negative.gz
+lrwxrwxrwx 1 alessandro alessandro 38 apr  8 17:02 uniprot_kunitz_negative.gz -&gt; ../handmade/uniprot_kunitz_negative.gz
 </pre>
 </div>
 </div>
@@ -14989,7 +15048,7 @@ lrwxrwxrwx 1 alessandro alessandro 38 apr  6 16:20 uniprot_kunitz_negative.gz -&
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -15072,7 +15131,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -15099,11 +15158,11 @@ cat samp400.uniprot_kunitz_negative <span class="p">|</span> head -5
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
 400
-P20675	
-Q9YBS7	
-B0R3Y0	
-P48125	
-A9AER8	
+Q4V7Q2	
+B5BFN4	
+Q0HN48	
+Q3J7Z9	
+O73948	1T4G;1XU4;2B21;2F1H;2F1I;2F1J;2FPK;2FPL;2FPM;2GDJ;2I1Q;3FYH;3NTU;4DC9;4QKQ;
 </pre>
 </div>
 </div>
@@ -15225,7 +15284,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -15251,17 +15310,17 @@ zcat samp400.uniprot_kunitz_negative.filter.swissProt.fasta.gz <span class="p">|
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
-2331
-&gt;sp|P52997|PANB_SYNY3 3-methyl-2-oxobutanoate hydroxymethyltransferase OS=Synechocystis sp. (strain PCC 6803 / Kazusa) OX=1111708 GN=panB PE=3 SV=1
-MAITPTQLLDWKRQQRPIVALTAWDTAIASVLDAAGVEIILVGDSLGMVALGYETTLPVS
-LDTMIHHTAAVKRGVQRALVVCDLPFLTYQESPAQAMGSAGRVLQETGAQAVKLEGGHPR
-MVETVARLTEVGIPVMGHVGLTPQSVHQLGYRQQGQDPATAEKILHQAIALAEAGVFAIV
-LEHIPSELAASITEQLPIPTIGIGAGPQCDGQVLVTADLLGLTVKQPPFAPAYLNLRHTI
-TETVHKFSGEVRQRQFPRRG
-&gt;sp|A1JR34|PCP_YERE8 Pyrrolidone-carboxylate peptidase OS=Yersinia enterocolitica serotype O:8 / biotype 1B (strain NCTC 13174 / 8081) OX=393305 GN=pcp PE=3 SV=1
-MKSVLITGFEPFGGERVNPSWEVVKQLNDFMLGGVKVVARQLPCAFGEALTALNAAIDEI
-QPVLVLAIGQAGGRADISIERVAINVDDARIADNLGNQPIDQPIVENGPAAYFTRLPIKA
-MVQGIREAGIPASVSQTAGTYVCNHVMYGLLHRLHQTNDEIKGGFIHIPYLPEQAVNHPG
+2276
+&gt;sp|P27212|P6_TNVD Uncharacterized protein p6 OS=Tobacco necrosis virus (strain D) OX=12056 GN=ORF3 PE=4 SV=1
+MAYIIVHQRDPFPLLGVWIIVIIIVAVIGLLNQSPPERPYQTFKEDNSKIQYITIGGSTT
+TKVSTS
+&gt;sp|A3M810|PDXB_ACIBT Erythronate-4-phosphate dehydrogenase OS=Acinetobacter baumannii (strain ATCC 17978 / CIP 53.77 / LMG 1025 / NCDC KC755 / 5377) OX=400667 GN=pdxB PE=3 SV=2
+MKIVADENLAFTDYFFSEFGDIQHKAGRTLTHTDVQDAEALLVRSVTAVNESLIQNTALK
+YVGSATIGTDHLDIQALEKQGITWANAAGCNAQAVAEYVITALLHLDASLLEQQEKFTLG
+IVGLGNVGKRLAYMAQLLGWKVIGFDPFVQLDSIENVSFQTLLQQANAVSIHVPLTKKGE
+HATYHLFDEKAFAALQPNTILINSARGPVVKEAALIEDIQRTQRKVVLDVFEHEPVISEE
+LLNMLALATPHIAGYSLEGKARGTQMIYEAFCQKFGYDINKRFETQLPACEDYFSRHDLK
+AVLKQKISQIYDIAQDDANIRACVKEGKVEQKAFDLLRKNYPLRREWAAHGGPQA
 </pre>
 </div>
 </div>
@@ -15306,7 +15365,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -15409,13 +15468,13 @@ cat nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_ku
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
-194
-#                                                                                                    --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
-# target name           accession  query name                                             accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
-#   ------------------- ----------                                   -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
-sp|C0HKZ6|SLMA_MACLB    -          nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold -               0.84    4.6   0.2       2.4    3.1   0.2   1.8   1   0   0   1   1   1   0 Snaclec macrovipecetin subunit alpha OS=Macrovipera lebetina OX=8709 PE=1 SV=1
-sp|Q30134|2B18_HUMAN    -          nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold -                2.5    3.1   0.9       6.4    1.7   0.9   1.7   1   1   0   1   1   1   0 HLA class II histocompatibility antigen, DRB1-8 beta chain OS=Homo sapiens OX=9606 GN=HLA-DRB1 PE=1 SV=2
-sp|A7NEQ3|OBG_FRATF     -          nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold -                2.9    2.9   0.0       8.1    1.4   0.0   1.6   1   0   0   1   1   1   0 GTPase Obg OS=Francisella tularensis subsp. holarctica (strain FTNF002-00 / FTA) OX=458234 GN=obg PE=3 SV=1
+217
+#                                                                                                  --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name         accession  query name                                             accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+# ------------------- ----------                                   -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+sp|P00007|CYC_HIPAM   -          nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold -                1.7    3.5   0.0       3.9    2.4   0.0   1.5   1   0   0   1   1   1   0 Cytochrome c OS=Hippopotamus amphibius OX=9833 GN=CYCS PE=1 SV=2
+sp|P0C0Y9|RCEM_RHOSH  -          nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold -                1.9    3.4   0.0       3.6    2.5   0.0   1.4   1   0   0   1   1   1   0 Reaction center protein M chain OS=Rhodobacter sphaeroides OX=1063 GN=pufM PE=1 SV=2
+sp|P0C0F0|CSPA_STRPY  -          nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold -                2.1    3.3   0.0       2.4    3.1   0.0   1.3   1   0   0   1   1   1   0 Major cold shock protein (Fragment) OS=Streptococcus pyogenes OX=1314 GN=cspA PE=3 SV=1
 </pre>
 </div>
 </div>
@@ -15467,7 +15526,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[56]:</div>
+<div class="prompt input_prompt">In&nbsp;[48]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -15493,7 +15552,7 @@ zcat conflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>/home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
-491
+514
 sp|Q28864|TFPI1_MACMU	3e-27	1
 sp|Q02445|TFPI1_RAT	1.2e-25	1
 sp|O54819|TFPI1_MOUSE	8e-26	1
@@ -15544,7 +15603,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -15621,7 +15680,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
@@ -15697,7 +15756,7 @@ Finished job 0.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[64]:</div>
+<div class="prompt input_prompt">In&nbsp;[51]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span>%%bash
