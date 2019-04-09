@@ -1,10 +1,17 @@
+# final ouputs pattern:
+# roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt
+
 # run complete analysis (in prog)
 # temporarily this rule creates the confusion matrix with fixed parameters
 # try:
 # snakemake -p make_all
-rule make_all:
+rule S99_L095_pdbefold_samp400:
     input:
-        "confmat_th0.001.of.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt"
+        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt"
+
+rule S99_L095_mustang_samp400:
+    input:
+        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.samp400.uniprot_kunitz_negative.filter.swissProt" 
 
 # create a tsv with rcsbpdb ids consistent with parse_pdbefold_summary output
 # .META:

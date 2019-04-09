@@ -35,7 +35,11 @@ if __name__ == '__main__':
 
     auc = compute_auc(group, scores)
 
-    plt.plot(fpr, tpr)
+    print("fpr = ", fpr)
+    print("tpr = ", tpr)
+    print("auc = ", auc)
+
+    plt.plot(tpr, fpr)
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.title('ROC')
