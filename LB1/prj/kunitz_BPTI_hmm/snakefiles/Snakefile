@@ -1,5 +1,5 @@
 # final ouputs pattern:
-# roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt
+# roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.pdf
 
 # run complete analysis (in prog)
 # temporarily this rule creates the confusion matrix with fixed parameters
@@ -7,11 +7,11 @@
 # snakemake -p make_all
 rule S99_L095_pdbefold_samp400:
     input:
-        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt"
+        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf"
 
 rule S99_L095_mustang_samp400:
     input:
-        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.samp400.uniprot_kunitz_negative.filter.swissProt" 
+        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf"
 
 # create a tsv with rcsbpdb ids consistent with parse_pdbefold_summary output
 # .META:
@@ -289,10 +289,20 @@ rule compute_confusion_matrix_feed_file:
 # snakemake -p filledconflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
 rule add_missing_id_to_conf_list:
     input:
-        cl="conflst.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.gz",
-        id="{n}"
+        #cl="conflst.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.gz",
+        cl="conflst."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs."
+        "samp{size}.uniprot_kunitz_negative.filter.swissProt.gz",
+        id="samp{size}.uniprot_kunitz_negative"
     output:
-        "filledconflst.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.gz"
+        #"filledconflst.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.gz"
+        "filledconflst."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs."
+        "samp{size}.uniprot_kunitz_negative.filter.swissProt.gz"
     shell:
         "cat <(zcat {input.cl}) <(cat {input.id} | cut -f1"
         " | grep -v -f <(zcat {input.cl} | cut -d '|' -f2)"
@@ -327,24 +337,41 @@ rule compute_confusion_matrix:
     shell:
         "python ../src/buildConfMatrix.py {input} {params} > {output}"
 
-# compute points and auc of roc
+# TODO split the task in the two rules down below
+# compute points and auc of roc + plot (python based)
 # try:
-# snakemake -p roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt
-rule compute_roc:
-    input:
-        "corrconflst.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.gz"
-    output:
-        "roc.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt"
-    shell:
-        "python ../src/roc.py {input} > {output}"
+# snakemake -p roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf
+#rule compute_roc_py:
+#    input:
+#        "corrconflst.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.gz"
+#    output:
+#        "roc.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.pdf"
+#    shell:
+#        "python ../src/roc.py {input} > {output}"
 
-rule plot_roc:
+# compute points and auc of roc + plot (R based)
+# try:
+# snakemake -p roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf
+rule plot_roc_R:
     input:
-        ""
+        "corrconflst."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs."
+        "samp{size}.uniprot_kunitz_negative.filter.swissProt.gz"
     output:
-        ""
+        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs."
+        "samp{size}.uniprot_kunitz_negative.filter.swissProt.pdf"
+    params:
+        S="{S}",
+        L="{L}",
+        aln="{aligner}",
+        n="{size}"
     shell:
-        ""
+        "Rscript ../src/roc.R {input} {output} {params.aln} {params.L}"
+        " {params.S} {params.n}"
 
 ###                                                                         ###
 # =========================================================================== #

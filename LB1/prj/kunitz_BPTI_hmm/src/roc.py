@@ -33,10 +33,13 @@ if __name__ == '__main__':
 
     fpr, tpr, thresholds = compute_roc(group, scores)
 
+    group = group[::-1]
     auc = compute_auc(group, scores)
 
     print("fpr = ", fpr)
     print("tpr = ", tpr)
+    print("group = ", group)
+    print("scores = ", scores)
     print("auc = ", auc)
 
     plt.plot(tpr, fpr)
