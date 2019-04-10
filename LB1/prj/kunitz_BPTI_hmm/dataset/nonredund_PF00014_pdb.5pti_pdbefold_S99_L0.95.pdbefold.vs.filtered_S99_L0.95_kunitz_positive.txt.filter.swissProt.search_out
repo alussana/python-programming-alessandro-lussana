@@ -319,5 +319,5 @@ sp|D3GGZ8|BLI5_HAECO      -          nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.
 # Target file:     /dev/fd/63
 # Option settings: hmmsearch --tblout nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.search_out --noali -E 100000000 --domE 100000000 --max nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.hmm /dev/fd/63 
 # Current dir:     /home/alessandro/Unibo/python-programming-alessandro-lussana/LB1/prj/kunitz_BPTI_hmm/dataset
-# Date:            Tue Apr  9 11:09:09 2019
+# Date:            Wed Apr 10 18:56:53 2019
 # [ok]

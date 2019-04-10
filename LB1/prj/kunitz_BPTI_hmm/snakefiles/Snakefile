@@ -1,4 +1,5 @@
 # final ouputs pattern:
+
 # roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.pdf
 
 # run complete analysis (in prog)
@@ -12,6 +13,24 @@ rule S99_L095_pdbefold_samp400:
 rule S99_L095_mustang_samp400:
     input:
         "roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf"
+
+##################################
+# create datasets symbolic links #
+##################################
+
+# ln -s ../snakefiles/Snakefile Snakefile;
+rule create_links:
+    shell:
+        " ln -s ../handmade/tabularResults.csv PF00014_pdb_tab;"
+        " ln -s ../handmade/uniprot-reviewed_yes.fasta.gz swissProt.fasta.gz;"
+        " ln -s ../handmade/uniprot_kunitz_negative.gz uniprot_kunitz_negative.gz;"
+        " ln -s ../handmade/uniprot_kunitz_positive.gz uniprot_kunitz_positive.gz;"
+        " ln -s ../handmade/5pti_pdbefold_normal_prec 5pti_pdbefold;"
+        " ln -s ../handmade/nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.afa nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.afa"
+
+##########################
+# Handmade files parsing #
+##########################
 
 # create a tsv with rcsbpdb ids consistent with parse_pdbefold_summary output
 # .META:
@@ -107,7 +126,7 @@ rule run_blastclust:
 rule extract_representative_sequences:
     input:
         clust="{sequences}_S{S}_L{L}_clust.gz",
-        table="PF00014_pdb.5pti_pdbefold.gz"
+        table="PF00014_pdb.5pti_pdbefold.txt.gz"
     output:
         "nonredund_{sequences}_S{S}_L{L}.txt.gz"
     shell:
@@ -151,8 +170,8 @@ rule get_pdb_files:
         " wget -P {params}/ http://www.rcsb.org/pdb/files/${{id}}.pdb;"
         " chain=${{charr[$i]}};"
         " cat {params}/${{id}}.pdb | awk -v chain=$chain '{{split($0,line);"
-        " if((line[1]==\"ATOM\" || line[1]==\"ANISOU\") && line[5]!=chain)"
-        " {{getline}} else {{print  $0}}}}'"
+        " if(line[1]==\"ATOM\" && line[5]==chain)"
+        " {{print  $0}}}}'"
         " > {params}/${{id}}.${{chain}}.pdb;"
         " rm {params}/${{id}}.pdb;"
         " i=$(echo \"$i+1\" | bc);"
@@ -173,7 +192,9 @@ rule mustang_msa:
     shell:
         "mustang -p {params}/ -o {params}/mustang"
         " -i $(cat {input.ids} | sed 's/:/./' | awk '{{print $0\".pdb\"}}')"
-        " -F fasta -s OFF"
+        " -F fasta -s OFF;"
+        "ln -s PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/mustang.afasta"
+        " {output}"
 
 # TODO
 rule t_coffee_msa:
@@ -373,15 +394,9 @@ rule plot_roc_R:
         "Rscript ../src/roc.R {input} {output} {params.aln} {params.L}"
         " {params.S} {params.n}"
 
-###                                                                         ###
+### TODO integrate muscle MSA in the workflow
 # =========================================================================== #
 ###                                                                         ###
-
-# OLD #
-
-##################################################################
-# Set of rules to perform protein sequence analysis and modeling #
-##################################################################
 
 configfile: "../snakefiles/config.yml"
 
