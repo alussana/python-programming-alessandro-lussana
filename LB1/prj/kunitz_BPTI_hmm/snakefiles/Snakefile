@@ -1,32 +1,79 @@
-# final ouputs pattern:
+##########
+# README #
+##########
 
-# roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.pdf
+# check these in order:
+# - Snakefile has to be in /snakefiles/
+# - handmade files have to be in /handmade/
+# - working directory has always to be /dataset/
+# - symbolic links to Snakefile has to be in /dataset/
+#       run:
+#       ln -s ../snakefiles/Snakefile Snakefile
+# - symbolic links to handmade file have to be in /dataset/
+#       run:
+#       snakemake -p create_links
+# - ready to start!       
+
+####################
+# Run the workflow #
+####################
+
+# Generate analysis of results and all intermediate files using customized parameters:
+# run:
+#
+# snakemake -p S<S>_L<L>_<aligner>_samp<size>.done
+#
+# where the parameters are:
+# <S>   
+# <L>
+# <aligner>
+# <size> 
+#
+# e.g.
+#
+# snakemake -p S99_L0.95_mustang_samp400.done
+# snakemake -p S99_L0.95_pdbefold_samp400.done
+
+#########
+# Rules #
+#########
+
+# final ouputs pattern:
+# roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.txt
 
 # run complete analysis (in prog)
 # temporarily this rule creates the confusion matrix with fixed parameters
 # try:
-# snakemake -p make_all
-rule S99_L095_pdbefold_samp400:
+# snakemake -p S99_L0.95_mustang_samp400.done
+rule ALL:
     input:
-        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf"
-
-rule S99_L095_mustang_samp400:
-    input:
-        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf"
+        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.txt"
+    output:
+        "S{S}_L{L}_{aligner}_samp{size}.done"
+    shell:
+        "touch {output}"
 
 ##################################
 # create datasets symbolic links #
 ##################################
 
 # ln -s ../snakefiles/Snakefile Snakefile;
+# TODO write rule to download uniprot_kunitz_negative.gz and uniprot_kunitz_positive.gz
 rule create_links:
     shell:
         " ln -s ../handmade/tabularResults.csv PF00014_pdb_tab;"
-        " ln -s ../handmade/uniprot-reviewed_yes.fasta.gz swissProt.fasta.gz;"
         " ln -s ../handmade/uniprot_kunitz_negative.gz uniprot_kunitz_negative.gz;"
         " ln -s ../handmade/uniprot_kunitz_positive.gz uniprot_kunitz_positive.gz;"
         " ln -s ../handmade/5pti_pdbefold_normal_prec 5pti_pdbefold;"
         " ln -s ../handmade/nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.afa nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.afa"
+
+# download UniProtKB/Swiss-Prot database in fasta format
+rule download_swissprot:
+    output:
+        "swissProt.fasta.gz"
+    shell:
+        "wget -O swissProt.fasta 'https://www.uniprot.org/uniprot/?query=reviewed:yes&format=fasta';"
+        " gzip swissProt.fasta > {output}"
 
 ##########################
 # Handmade files parsing #
@@ -196,7 +243,7 @@ rule mustang_msa:
         "ln -s PDB.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95/mustang.afasta"
         " {output}"
 
-# TODO
+# Not useful since it does not support structure-based MSA
 rule t_coffee_msa:
     input:
         ""
@@ -310,7 +357,6 @@ rule compute_confusion_matrix_feed_file:
 # snakemake -p filledconflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
 rule add_missing_id_to_conf_list:
     input:
-        #cl="conflst.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.gz",
         cl="conflst."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
@@ -318,7 +364,6 @@ rule add_missing_id_to_conf_list:
         "samp{size}.uniprot_kunitz_negative.filter.swissProt.gz",
         id="samp{size}.uniprot_kunitz_negative"
     output:
-        #"filledconflst.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.gz"
         "filledconflst."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
@@ -358,22 +403,10 @@ rule compute_confusion_matrix:
     shell:
         "python ../src/buildConfMatrix.py {input} {params} > {output}"
 
-# TODO split the task in the two rules down below
 # compute points and auc of roc + plot (python based)
 # try:
-# snakemake -p roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf
-#rule compute_roc_py:
-#    input:
-#        "corrconflst.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.gz"
-#    output:
-#        "roc.{hmm}.vs.{p}.filter.swissProt.and.{hmm}.vs.{n}.filter.swissProt.pdf"
-#    shell:
-#        "python ../src/roc.py {input} > {output}"
-
-# compute points and auc of roc + plot (R based)
-# try:
-# snakemake -p roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf
-rule plot_roc_R:
+# snakemake -p roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.txt
+rule compute_roc_py:
     input:
         "corrconflst."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
@@ -384,23 +417,45 @@ rule plot_roc_R:
         "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs."
-        "samp{size}.uniprot_kunitz_negative.filter.swissProt.pdf"
+        "samp{size}.uniprot_kunitz_negative.filter.swissProt.txt"
     params:
         S="{S}",
         L="{L}",
         aln="{aligner}",
-        n="{size}"
+        n="{size}"       
     shell:
-        "Rscript ../src/roc.R {input} {output} {params.aln} {params.L}"
-        " {params.S} {params.n}"
+        "python ../src/roc.py {input} {params.S} {params.L} {params.aln} {params.n} > {output}"
+
+# compute points and auc of roc + plot (R based)
+# NOTE now the task is performed by compute_roc_py
+# try:
+# snakemake -p roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf
+#rule plot_roc_R:
+#    input:
+#        "corrconflst."
+#        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+#        "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
+#        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs."
+#        "samp{size}.uniprot_kunitz_negative.filter.swissProt.gz"
+#    output:
+#        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+#        "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
+#        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs."
+#        "samp{size}.uniprot_kunitz_negative.filter.swissProt.pdf"
+#    params:
+#        S="{S}",
+#        L="{L}",
+#        aln="{aligner}",
+#        n="{size}"
+#    shell:
+#        "Rscript ../src/roc.R {input} {output} {params.aln} {params.L}"
+#        " {params.S} {params.n}"
 
 ### TODO integrate muscle MSA in the workflow
 # =========================================================================== #
 ###                                                                         ###
 
 configfile: "../snakefiles/config.yml"
-
-# TODO make rule to download swissprot in fasta format
 
 ############################
 # non-structure-based MSA #

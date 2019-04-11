@@ -5,4 +5,4 @@ To set blastclust data drectory .ncbirc is needed:
 containing the following:
 
 [NCBI]
-DATA=<your_project_dir>/prj_hmm_classification/src/ncbi/data
+DATA=<your_project_dir>/src/ncbi/data

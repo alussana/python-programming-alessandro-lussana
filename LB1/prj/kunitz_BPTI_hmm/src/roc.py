@@ -27,7 +27,11 @@ def compute_auc(group, scores):
     return(auc)
 
 if __name__ == '__main__':
-    file = sys.argv[1]
+    file = str(sys.argv[1])
+    S = round(float(sys.argv[2]),2)
+    L = round(float(sys.argv[3]),2)
+    aln = str(sys.argv[4])
+    n = int(sys.argv[5])
 
     group, scores = get_examples(file)
 
@@ -36,14 +40,18 @@ if __name__ == '__main__':
     group = group[::-1]
     auc = compute_auc(group, scores)
 
-    print("fpr = ", fpr)
-    print("tpr = ", tpr)
-    print("group = ", group)
-    print("scores = ", scores)
     print("auc = ", auc)
 
     plt.plot(tpr, fpr)
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.title('ROC')
+    text = '\n'.join((
+        # TODO round does not work as expected
+        'S = %f' % round(S),
+        'L = %f' % round(L),
+        'aln = %s' % (aln),
+        'n = %i' % (n)))
+    props = dict(boxstyle='round', facecolor='lightblue', alpha=0.5)
+    plt.text(0.75, 0.00, text, bbox=props, fontsize=11)
     plt.show()
