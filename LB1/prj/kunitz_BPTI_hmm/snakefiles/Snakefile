@@ -251,6 +251,22 @@ rule t_coffee_msa:
         ""
     shell:
         ""
+############################
+# non-structure-based MSA #
+############################
+
+# perform MSA with muscle using default parameters
+# try:
+# snakemake -p nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.idlist.filter.swissProt.fasta.gz
+# TODO add params to tune the muscle's parameters
+rule muscle_align:
+    input:
+        "{sequences}.fasta.gz"
+    output:
+        "{sequences}.muscle.afa"
+    shell:
+        "muscle -in <(zcat {input}) > {output}"
+
 ##################
 # HMM operations #
 ##################
@@ -456,23 +472,6 @@ rule compute_roc_py:
 ###                                                                         ###
 
 configfile: "../snakefiles/config.yml"
-
-############################
-# non-structure-based MSA #
-############################
-
-# perform MSA with muscle using default parameters
-# try:
-# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj_hmm_classification/dataset$ \
-# snakemake -p chosen_blastclust_seq_for_intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary_S99_L0.95.muscle.afa
-# TODO add params to tune the muscle's parameters
-rule muscle_align:
-    input:
-        "{sequences}.fasta.gz"
-    output:
-        "{sequences}.muscle.afa"
-    shell:
-        "muscle -in <(zcat {input}) > {output}"
 
 ##################
 # HMM operations #

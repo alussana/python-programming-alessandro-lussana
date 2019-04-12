@@ -37,21 +37,28 @@ if __name__ == '__main__':
 
     fpr, tpr, thresholds = compute_roc(group, scores)
 
+    print(fpr)
+    print(tpr)
+    print(thresholds)
+
     group = group[::-1]
     auc = compute_auc(group, scores)
 
     print("auc = ", auc)
 
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
     plt.plot(tpr, fpr)
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.title('ROC')
     text = '\n'.join((
         # TODO round does not work as expected
-        'S = %f' % round(S),
-        'L = %f' % round(L),
+        'S = %f' % round(S,2),
+        'L = %f' % round(L,2),
         'aln = %s' % (aln),
-        'n = %i' % (n)))
+        'n = %i' % (n),
+        'auc = %f' % (auc)))
     props = dict(boxstyle='round', facecolor='lightblue', alpha=0.5)
-    plt.text(0.75, 0.00, text, bbox=props, fontsize=11)
+    plt.text(1, 0, text, bbox=props, fontsize=11, horizontalalignment='right', verticalalignment='bottom')
     plt.show()
