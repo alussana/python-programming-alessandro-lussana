@@ -1,0 +1,33 @@
+====================================
+le tba grezze sono nel tuo progetto:
+
+/bioinfo/prj/compute_tba/dataset/geuvadis_eur/tba/
+
+dove ci sono anche le matrici.
+
+==============================================
+L'espressione dei TF la puoi ricavare dal file
+
+/bioinfo/data/geuvadis/E-GEUV-1/analysis_results/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt.gz
+
+==============================================
+sapendo che l'associazione tra PWM e geni è in
+
+/bioinfo/prj/integrated_twas/local/data/hocomoco10/HUMAN_mono_motifs.tsv
+
+======================================================
+C'è anche un file già pronto con l'espressione dei TF:
+ 
+/bioinfo/prj/integrated_twas/dataset/raw/tf_expression/geuvadis/hocomoco10/
+
+============================================================
+Infine, c'è anche un file con una matrice di TBA*EXPRESSION,
+che ho usato come predittori in un modello
+(sono i file che finiscono in .tba_times_tf.matrix.gz):
+
+/bioinfo/prj/integrated_twas/dataset/predictors/tba_tf/geuvadis/hocomoco10/
+
+======================================================
+Una nota è che nelle matrici che ti ho indicato la TBA
+non è trasformata con il log2,
+mentre nel tuo progetto se non sbaglio lo era.
