@@ -50,7 +50,7 @@
 # snakemake -p S99_L0.95_mustang_samp400.done
 rule ALL:
     input:
-        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.txt"
+        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.pdf"
     output:
         "S{S}_L{L}_{aligner}_samp{size}.done"
     shell:
@@ -446,31 +446,30 @@ rule compute_roc_py:
         "python ../src/roc.py {input} {params.S} {params.L} {params.aln} {params.n} > {output}"
 
 # compute points and auc of roc + plot (R based)
-# NOTE now the task is performed by compute_roc_py
 # try:
 # snakemake -p roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf
-#rule plot_roc_R:
-#    input:
-#        "corrconflst."
-#        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
-#        "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
-#        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs."
-#        "samp{size}.uniprot_kunitz_negative.filter.swissProt.gz"
-#    output:
-#        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
-#        "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
-#        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs."
-#        "samp{size}.uniprot_kunitz_negative.filter.swissProt.pdf"
-#    params:
-#        S="{S}",
-#        L="{L}",
-#        aln="{aligner}",
-#        n="{size}"
-#    shell:
-#        "Rscript ../src/roc.R {input} {output} {params.aln} {params.L}"
-#        " {params.S} {params.n}"
+rule plot_roc_R:
+    input:
+        "corrconflst."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "samp{size}.uniprot_kunitz_negative.filter.swissProt.gz"
+    output:
+        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "samp{size}.uniprot_kunitz_negative.filter.swissProt.pdf"
+    params:
+        S="{S}",
+        L="{L}",
+        aln="{aligner}",
+        n="{size}"
+    shell:
+        "Rscript ../src/roc.R {input} {output} {params.aln} {params.L}"
+        " {params.S} {params.n}"
 
-### TODO integrate muscle MSA in the workflow
+### TODO integrate muscle MSA in the workflow                               ###     
 # =========================================================================== #
 ###                                                                         ###
 

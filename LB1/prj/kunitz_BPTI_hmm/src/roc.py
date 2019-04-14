@@ -22,7 +22,25 @@ def compute_roc(group, scores):
     return(fpr, tpr, thresholds)
 
 def compute_auc(group, scores):
+    group = group[::-1]
+    
     auc = roc_auc_score(group, scores)
+
+    return(auc)
+
+def handcrafted_auc(fpr,tpr):
+    auc = 0
+    x = fpr[0]
+    y = tpr[0]
+    for i in range(1, len(fpr)):
+        
+        dx = fpr[i] - x
+        h = (tpr[i] + y) / 2
+        x = fpr[i]
+        y = tpr[i]
+
+        auc += h * dx
+        print(h, dx, auc)
 
     return(auc)
 
@@ -41,8 +59,8 @@ if __name__ == '__main__':
     print(tpr)
     print(thresholds)
 
-    group = group[::-1]
-    auc = compute_auc(group, scores)
+    #auc = compute_auc(group, scores)
+    auc = handcrafted_auc(fpr,tpr)
 
     print("auc = ", auc)
 
