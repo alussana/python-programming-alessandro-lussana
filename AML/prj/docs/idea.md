@@ -10,7 +10,7 @@
 
 #### Differential gene expression 
 
-The differential level of expression of the genes in a cell, determined by molecular mechanisms that regulate the activation, the inactivation, and the regulation of the <u>gene transcription from DNA to RNA</u>, are known to be at the the very basis of basically all biological processes in living systems.
+The differential level of expression of the genes in a cell, determined by molecular mechanisms that regulate the activation, the inactivation, and the regulation of the <u>gene transcription from DNA to RNA</u>, are known to be at the very basis of basically all biological processes in living systems.
 
 Differential gene expression is critical in determining cellular differentiation, cellular response to stress and environmental stimuli, cellular matabolism, apoptosis (programmed cellular death), immune response, cellular proliferation, cancer, ... etc.
 
