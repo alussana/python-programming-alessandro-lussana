@@ -31,11 +31,11 @@
 #
 # e.g.
 #
-# snakemake -p S99_L0.95_mustang_samp400.done
-# snakemake -p S99_L0.95_pdbefold_samp400.done
-# snakemake -p S99_L0.95_mustang_samp500000.done
-# snakemake -p S99_L0.90_mustang_samp400.done
-# snakemake -p S99_L0.90_mustang_samp500000.done 
+# snakemake -p makeall/S99_L0.95_mustang_samp400.done
+# snakemake -p makeall/S99_L0.95_pdbefold_samp400.done
+# snakemake -p makeall/S99_L0.95_mustang_samp500000.done
+# snakemake -p makeall/S99_L0.90_mustang_samp400.done
+# snakemake -p makeall/S99_L0.90_mustang_samp500000.done 
 
 #########
 # Rules #
@@ -47,14 +47,25 @@
 # run complete analysis (in prog)
 # temporarily this rule creates the confusion matrix with fixed parameters
 # try:
-# snakemake -p S99_L0.95_mustang_samp400.done
-rule ALL:
+# snakemake -p makeall/S99_L0.95_mustang_samp400.done
+rule PLOT:
     input:
         "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.pdf"
+        ""
     output:
-        "S{S}_L{L}_{aligner}_samp{size}.done"
+        "makeall/plot_S{S}_L{L}_{aligner}_samp{size}.done",
     shell:
-        "touch {output}"
+        "touch {output};"
+        "evince {input} &"
+
+rule CONFMAT:
+    input:
+        "confmat_th{th}.of.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt"
+    output:
+        "makeall/confmat_th{th}_S{S}_L{L}_{aligner}_samp{size}.done"
+    shell:
+        "touch {output};"
+        "cat {input}"
 
 ##################################
 # create datasets symbolic links #

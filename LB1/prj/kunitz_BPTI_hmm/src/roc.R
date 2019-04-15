@@ -17,8 +17,8 @@ roc_obj <- roc(t$class, t$score)
 auc <- auc(roc_obj)
 
 # TODO fix x axis: by default plot.roc does not plot the FPR and the axis orientation is from 1 to 0
-plot.roc(t$class, t$score, main="ROC", print.thres='best', print.auc=T, grid=T, legacy.axes=T, auc.polygon=T)
-legend('bottomright', inset=.05, legend=c(paste("Aln:",aln), paste("L:",L),paste("S:",S),paste("n:",n),paste("auc =",auc)))
+plot.roc(t$class, t$score, main="ROC", print.thres='best', print.auc=F, grid=T, legacy.axes=T, auc.polygon=T)
+legend('bottomright', inset=.05, legend=c(paste("Aln:",aln), paste("L:",L),paste("S:",S),paste("n:",n),paste("AUC =",auc)))
 
 dev.off()
 
