@@ -18,36 +18,43 @@
 # Run the workflow #
 ####################
 
-# Generate analysis of results and all intermediate files using customized parameters:
-# run:
-#
-# snakemake -p S<S>_L<L>_<aligner>_samp<size>.done
-#
-# where the parameters are:
-# <S>           sequence identity parameter for clustblast to remove redundancy in the training set 
-# <L>           coverage parameter for clustblast to remove redundancy in the training set
-# <aligner>     which structural alignment method to use in generating the seed MSA for building the HMM
-# <size>        number of sequences in the negative testing set
-#
-# e.g.
-#
-# snakemake -p makeall/S99_L0.95_mustang_samp400.done
-# snakemake -p makeall/S99_L0.95_pdbefold_samp400.done
-# snakemake -p makeall/S99_L0.95_mustang_samp500000.done
-# snakemake -p makeall/S99_L0.90_mustang_samp400.done
-# snakemake -p makeall/S99_L0.90_mustang_samp500000.done 
+##########################################################################################################
+# Generate analysis of results and all intermediate files using customized parameters:                   #
+# run:                                                                                                   #
+#                                                                                                        #
+# snakemake -p S<S>_L<L>_<aligner>_samp<size>.done                                                       #
+#                                                                                                        #
+# where the parameters are:                                                                              #
+# <S>           sequence identity parameter for clustblast to remove redundancy in the training set      #
+# <L>           coverage parameter for clustblast to remove redundancy in the training set               #
+# <aligner>     which structural alignment method to use in generating the seed MSA for building the HMM #
+# <size>        number of sequences in the negative testing set                                          #
+#                                                                                                        #
+# e.g.                                                                                                   #
+# plot roc:                                                                                              #
+#                                                                                                        #
+# snakemake -p makeall/plot_S99_L0.95_mustang_samp500000.done                                            #
+# snakemake -p makeall/plot_S99_L0.95_pdbefold_samp500000.done                                           #
+#                                                                                                        #
+# print confusion matrix:                                                                                #
+#                                                                                                        #
+# snakemake -p makeall/confmat_th0.01_S99_L0.95_mustang_samp500000.done                                  #
+# snakemake -p makeall/confmat_th0.01_S99_L0.95_pdbefold_samp500000.done                                 #
+##########################################################################################################
 
 #########
 # Rules #
 #########
 
+###
 # final ouputs pattern:
 # roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.txt
+###
 
 # run complete analysis (in prog)
 # temporarily this rule creates the confusion matrix with fixed parameters
 # try:
-# snakemake -p makeall/S99_L0.95_mustang_samp400.done
+# snakemake -p makeall/plot_S99_L0.95_mustang_samp400.done
 rule PLOT:
     input:
         "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.pdf"
@@ -58,6 +65,8 @@ rule PLOT:
         "touch {output};"
         "evince {input} &"
 
+# try:
+# snakemake -p makeall/confmat_th0.01_S99_L0.95_mustang_samp500000.done
 rule CONFMAT:
     input:
         "confmat_th{th}.of.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt"
@@ -416,8 +425,8 @@ rule correct_e_values:
         "N=$(zcat {input} | awk '$3==0{{print $0}}' | wc -l);"
         " P=$(zcat {input} | awk '$3==1{{print $0}}' | wc -l);"
         " zcat {input} | awk -v P=$P -v N=$N"
-        " '{{if($2 != 1.0 && $3 == 1){{print $1\"\\t\"$2*P\"\\t\"$3}}"
-        "else if($2 != 1.0 && $3 == 0){{print $1\"\\t\"$2*N\"\\t\"$3}}"
+        " '{{if($2 != 1.0 && $3 == 1){{print $1\"\\t\"$2/P\"\\t\"$3}}"
+        "else if($2 != 1.0 && $3 == 0){{print $1\"\\t\"$2/N\"\\t\"$3}}"
         " else{{print $0}}}}' | gzip > {output}"
 
 # compute confusion matrix and print analysis results
