@@ -35,7 +35,7 @@ def get_dssp_info(dsspfile, ch):
                 racc = acc / Norm_Acc[r]
                 if racc > 1:
                     racc = 1.0
-                v = [pos, r, ss, racc, phi, psi]
+                v = [pos, r, ss, racc, acc, phi, psi]
                 dssp.append(v)
 
     return(dssp)
@@ -45,4 +45,6 @@ if __name__ == '__main__':
     ch = sys.argv[2]
     dssp = get_dssp_info(dsspfile, ch)
     for i in dssp:
-        print(i)
+        for y in range(0, len(i) - 1):
+            print("{0}\t".format(str(i[y])), end="")
+        print(i[len(i) - 1])

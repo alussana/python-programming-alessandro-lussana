@@ -33,13 +33,13 @@
 # e.g.                                                                                                   #
 # plot roc:                                                                                              #
 #                                                                                                        #
-# snakemake -p makeall/plot_S99_L0.95_mustang_samp500000.done                                            #
-# snakemake -p makeall/plot_S99_L0.95_pdbefold_samp500000.done                                           #
+# snakemake -p makeall/plot_S99_L0.95_mustang_samp442129.done                                            #
+# snakemake -p makeall/plot_S99_L0.95_pdbefold_samp442129.done                                           #
 #                                                                                                        #
 # print confusion matrix:                                                                                #
 #                                                                                                        #
-# snakemake -p makeall/confmat_th0.01_S99_L0.95_mustang_samp500000.done                                  #
-# snakemake -p makeall/confmat_th0.01_S99_L0.95_pdbefold_samp500000.done                                 #
+# snakemake -p makeall/confmat_th0.01_S99_L0.95_mustang_samp442129.done                                  #
+# snakemake -p makeall/confmat_th0.01_S99_L0.95_pdbefold_samp442129.done                                 #
 ##########################################################################################################
 
 #########
