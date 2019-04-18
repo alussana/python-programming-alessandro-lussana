@@ -1,1 +1,0 @@
-zcat intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz | awk '{print ">"$1"\n"$4}' > intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.fasta

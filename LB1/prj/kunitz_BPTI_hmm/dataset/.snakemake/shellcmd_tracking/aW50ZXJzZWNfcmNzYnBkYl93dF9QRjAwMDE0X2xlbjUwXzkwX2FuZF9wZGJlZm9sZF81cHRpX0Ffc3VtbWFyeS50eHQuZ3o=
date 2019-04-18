@@ -1,1 +1,0 @@
-join -j 1 <(zcat rcsbpdb_wt_PF00014_len50_90.txt.gz | sort) <(zcat pdbefold_5pti_A_summary.txt.gz | fgrep -f <(zcat rcsbpdb_wt_PF00014_len50_90.txt.gz | cut -f1) | sort ) | sed 's/ /	/g' | gzip > intersec_rcsbpdb_wt_PF00014_len50_90_and_pdbefold_5pti_A_summary.txt.gz

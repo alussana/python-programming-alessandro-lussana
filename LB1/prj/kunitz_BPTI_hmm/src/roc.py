@@ -53,7 +53,7 @@ def show_roc_plot(tpr, fpr, auc, s, l, n, aln, bestTh):
     #    'aln = %s' % (aln),
     #    'n = %i' % (n),
     #    'auc = %f' % (area)))
-    text = ('AUC = %f' % (area))
+    text = ('AUC = {0}'.format(area))
     props = dict(boxstyle='round', facecolor='lightblue', alpha=0.5)
     #plt.text(1, 0, text, bbox=props, fontsize=11, horizontalalignment='right', verticalalignment='bottom')
     plt.text(0.5, 0.5, text, bbox=props, horizontalalignment='center', verticalalignment='center', fontsize=15, color='red')

@@ -1,1 +1,0 @@
-cat rcsbpdb_wt_PF00014_len50_90.csv | sed 's/,/	/g' | sed 's/"//g' | sed 's/ /_/g' | sed '1d' | sed 's/	/_/' | gzip > rcsbpdb_wt_PF00014_len50_90.txt.gz

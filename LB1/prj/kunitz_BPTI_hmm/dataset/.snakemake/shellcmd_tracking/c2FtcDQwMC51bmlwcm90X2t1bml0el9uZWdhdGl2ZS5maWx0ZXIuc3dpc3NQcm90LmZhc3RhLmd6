@@ -1,1 +1,0 @@
-python ../src/fastafilter.py swissProt.fasta.gz samp400.uniprot_kunitz_negative | gzip > samp400.uniprot_kunitz_negative.filter.swissProt.fasta.gz

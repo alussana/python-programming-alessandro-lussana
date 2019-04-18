@@ -1,1 +1,0 @@
-zcat uniprot_kunitz_negative.gz | cut -f1 > filtered_uniprot_kunitz_negative.txt
