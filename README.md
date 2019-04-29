@@ -17,6 +17,8 @@ Personal storage of miscellaneous projects for Bologna Bioinformatics Master Cou
       - [Heap Sort](#heap-sort)
       - [Quick Sort](#quick-sort)
       - [Counting Sort](#counting-sort)
+      - [Iterative Fibonacci](#iterative-fibonacci)
+      - [Recursive Fibonacci](#recursive-fibonacci)
   * [/snektools](#-snektools)
       - [Needleman-Wunsch](#needleman-wunsch)
       - [Smith-Waterman](#smith-waterman)
@@ -64,9 +66,11 @@ Includes a set of functions to analyze the alignment profile
 Implementations of algorithms and programs for Algorithms and Data Structures for Computational Biology
 
 #### Insertion Sort
+
 DONE
 
 #### Merge Sort
+
 DONE
 
 #### Selection Sort
@@ -88,6 +92,14 @@ DONE
 #### Counting Sort
 
 DONE
+
+#### Iterative Fibonacci
+
+DONE
+
+#### Recursive Fibonacci
+
+TODO
 
 ## /snektools
 Suite of general workflows for the implementation of algorithms  

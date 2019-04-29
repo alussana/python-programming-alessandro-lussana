@@ -1,3 +1,7 @@
+import sys
+import gzip
+import numpy as np
+
 #   Confusion matrix:
 #   __________________________________________
 #                  | 0:non-kunits  |  1:kunitz
@@ -50,9 +54,6 @@ def print_performance(cm):
     print("acc\t%f\ntpr\t%f\nppv\t%f\nmcc\t%f" %(acc, tpr, ppv, mcc))
 
 if __name__ == '__main__':
-    import sys
-    import gzip
-    import numpy as np
     filename = sys.argv[1]
     th = float(sys.argv[2])
 
