@@ -1,0 +1,119 @@
+
+
+This is RAxML version 8.2.9 released by Alexandros Stamatakis on July 20 2016.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Sarah Lutteropp   (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+Charlie Taylor    (UF)
+
+
+Alignment has 671 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 2.60%
+
+RAxML Model Optimization up to an accuracy of 1.000000 log likelihood units
+
+Using 3 distinct models/data partitions with joint branch length optimization
+
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heteorgeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 1.0000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 183
+Name: Subset1
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+Partition: 1
+Alignment Patterns: 284
+Name: Subset2
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+Partition: 2
+Alignment Patterns: 204
+Name: Subset3
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+
+RAxML was called as follows:
+
+/usr/local/src/partitionfinder-2.1.1/programs/raxml_pthreads.linux -f e -s ./analysis/start_tree/filtered_source.phy -t ./analysis/start_tree/RAxML_fastTree.fastTREE -m GTRGAMMA -O -n BLTREE -p 123456789 -q ./analysis/start_tree/partitions.txt -w /home/alessandro/Dropbox/MP_2019/practicalLectures/exercise/dataset/analysis/start_tree -e 1 -T 4 
+
+
+
+Model parameters (binary file format) written to: /home/alessandro/Dropbox/MP_2019/practicalLectures/exercise/dataset/analysis/start_tree/RAxML_binaryModelParameters.BLTREE
+
+
+Overall Time for Tree Evaluation 0.598262
+Final GAMMA  likelihood: -13335.296204
+
+Number of free parameters for AIC-TEST(BR-LEN): 54
+Number of free parameters for AIC-TEST(NO-BR-LEN): 27
+
+
+Model Parameters of Partition 0, Name: Subset1, Type of Data: DNA
+alpha: 0.153043
+Tree-Length: 4.460436
+rate A <-> C: 0.336555
+rate A <-> G: 16.255204
+rate A <-> T: 0.765339
+rate C <-> G: 0.203981
+rate C <-> T: 17.317840
+rate G <-> T: 1.000000
+
+freq pi(A): 0.312086
+freq pi(C): 0.262671
+freq pi(G): 0.150975
+freq pi(T): 0.274269
+
+Model Parameters of Partition 1, Name: Subset2, Type of Data: DNA
+alpha: 0.137997
+Tree-Length: 4.460436
+rate A <-> C: 0.954486
+rate A <-> G: 20.135395
+rate A <-> T: 0.400760
+rate C <-> G: 0.512788
+rate C <-> T: 19.062459
+rate G <-> T: 1.000000
+
+freq pi(A): 0.283401
+freq pi(C): 0.306204
+freq pi(G): 0.138806
+freq pi(T): 0.271590
+
+Model Parameters of Partition 2, Name: Subset3, Type of Data: DNA
+alpha: 0.212386
+Tree-Length: 4.460436
+rate A <-> C: 0.870654
+rate A <-> G: 4.828279
+rate A <-> T: 2.066953
+rate C <-> G: 0.149795
+rate C <-> T: 34.851717
+rate G <-> T: 1.000000
+
+freq pi(A): 0.364618
+freq pi(C): 0.219516
+freq pi(G): 0.181949
+freq pi(T): 0.233916
+
+Final tree written to:                 /home/alessandro/Dropbox/MP_2019/practicalLectures/exercise/dataset/analysis/start_tree/RAxML_result.BLTREE
+Execution Log File written to:         /home/alessandro/Dropbox/MP_2019/practicalLectures/exercise/dataset/analysis/start_tree/RAxML_log.BLTREE

@@ -1,0 +1,10 @@
+Model selection results for subset: 0a89949a3fa92b68d9c7b8d6d0a4610c
+Subset alignment stored here: ./analysis/phylofiles/0a89949a3fa92b68d9c7b8d6d0a4610c.phy
+This subset contains the following data_blocks: cox2
+Number of columns in subset: 687
+Models are organised according to their AICc scores
+
+Model           | Parameters      | lnL             | AICc             | AIC             | BIC            
+GTR+G           | 9               | -2969.4456      | 5957.157         | 5956.891        | 5997.682       
+GTR+I+G         | 10              | -2969.345       | 5959.0156        | 5958.69         | 6004.013       
+GTR             | 8               | -3180.1465      | 6376.5054        | 6376.293        | 6412.552       

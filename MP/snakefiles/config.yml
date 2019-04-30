@@ -1,0 +1,13 @@
+afa:
+    16s:
+        "handmade/16s.afa"
+    cox2:
+        "handmade/cox2.afa"
+    cytb:
+        "handmade/cytb.afa"
+
+format:
+    afa:
+        "fasta"
+    aln:
+        "clustal"

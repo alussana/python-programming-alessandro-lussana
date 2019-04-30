@@ -1,0 +1,72 @@
+configfile: "../snakefiles/config.yml"
+
+rule t_coffee_alignment:
+    input:
+        "{seq}.fasta"
+    output:
+        "{seq}.{format,afa|aln}"
+    params:
+        lambda wildcards: config["format"][wildcards.format]
+    shell:
+        "t_coffee -in={input},Mmafft_msa,Mmuscle_msa,Mprobcons_msa"
+        " -outfile={output} -output={params}"
+
+# W! Snakemake complains with the integrity of the Gblocks output
+rule gblocks_masking:
+    input:
+        "{seq}.afa"
+    output:
+        "{seq}.{type,p|d}.afa-gb"
+    params:
+        t="{type}",
+        s="{seq}"
+    shell:
+        "Gblocks {input} -t={params.t} -b1=11 -b2=11 -b3=8 -b4=5 -b5=a -v=80;"
+        " mv {params.s}.afa-gb {output};"
+        " mv {params.s}.afa-gb.htm {params.s}.{params.t}.afa-gb.htm"
+
+rule force_one_line_fasta:
+    input:
+        "{seq}.{type,p|d}.afa-gb"
+    output:
+        "{seq}.{type,p|d}.afa-gb.corrected"
+    shell:
+        "awk '{{ if(NR==1) {{print $0}} else {{ if($0~/^>/)"
+        " {{print \"\\n\"$0}} else {{printf $i}} }} }}' {input}"
+        " | tr -d \" \" > {output}"
+
+# try:
+# snakemake -p cox2.p_and_cytb.p_and_16s.d.nex
+rule phyutils_concat:
+    input:
+        f1="{seq1}.{type1}.afa-gb",
+        f2="{seq2}.{type2}.afa-gb",
+        f3="{seq3}.{type3}.afa-gb"
+    output:
+        "{seq1}.{type1,p|d}_and_{seq2}.{type2,p|d}_and_{seq3}.{type3,p|d}.nxs"
+    shell:
+        "phyutility -concat -aa -in {input.f1} {input.f2} {input.f3} -out {output}"
+
+rule convert_nxs_to_phy:
+    input:
+        "{seq1}.{type1,p|d}_and_{seq2}.{type2,p|d}_and_{seq3}.{type3,p|d}.nxs"
+    output:
+        "{seq1}.{type1,p|d}_and_{seq2}.{type2,p|d}_and_{seq3}.{type3,p|d}.phy"
+    shell:
+        "ntax=$(grep \"DIMENSIONS\" {input} | awk -F \"=\" '{{print $2}}'"
+        " | awk '{{print $1}}');"
+        " nchar=$(grep \"DIMENSIONS\" {input} | awk -F \"=\" '{{print $3}}'"
+        " | awk -F \";\" '{{print $1}}');"
+        " ntax6=$(echo \"$ntax + 6\" | bc);"
+        " cat cox2.p_and_cytb.p_and_16s.d.nxs | sed -n \"1,${{ntax6}}p\""
+        " | tail -$ntax > {output}.tmp;"
+        " echo -e \"$ntax $nchar \n$(cat {output}.tmp)\" > {output};"
+        " rm {output}.tmp"
+
+# W! to be completed
+# W! partitionfinder need a configuration file in dataset/ to run; the config template is to be edited 
+rule find_partitions:
+    input:
+        "cox2.p_and_cytb.p_and_16s.d.phy"
+    shell:
+        "partitionfinder ."

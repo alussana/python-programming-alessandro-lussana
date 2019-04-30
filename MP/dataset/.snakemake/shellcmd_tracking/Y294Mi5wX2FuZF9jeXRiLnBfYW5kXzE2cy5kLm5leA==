@@ -1,0 +1,1 @@
+phyutility -concat -aa -in cox2.p.afa-gb cytb.p.afa-gb 16s.d.afa-gb -out cox2.p_and_cytb.p_and_16s.d.nex

@@ -1,0 +1,1 @@
+t_coffee -in=cox2.fasta,Mmafft_msa,Mmuscle_msa,Mprobcons_msa -outfile=cox2.afa -output=fasta

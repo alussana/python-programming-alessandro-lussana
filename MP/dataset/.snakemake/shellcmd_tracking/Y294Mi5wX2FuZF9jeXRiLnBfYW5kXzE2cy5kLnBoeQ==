@@ -1,0 +1,2 @@
+ntax=$(grep "DIMENSIONS" cox2.p_and_cytb.p_and_16s.d.nxs | awk -F "=" '{print $2}' | awk '{print $1}'); nchar=$(grep "DIMENSIONS" cox2.p_and_cytb.p_and_16s.d.nxs | awk -F "=" '{print $3}' | awk -F ";" '{print $1}'); ntax6=$(echo "$ntax + 6" | bc); cat cox2.p_and_cytb.p_and_16s.d.nxs | sed -n "1,${ntax6}p" | tail -$ntax > cox2.p_and_cytb.p_and_16s.d.phy.tmp; echo -e "$ntax $nchar 
+$(cat cox2.p_and_cytb.p_and_16s.d.phy.tmp)" > cox2.p_and_cytb.p_and_16s.d.phy; rm cox2.p_and_cytb.p_and_16s.d.phy.tmp

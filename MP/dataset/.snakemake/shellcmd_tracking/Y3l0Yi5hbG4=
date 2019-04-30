@@ -1,0 +1,1 @@
+t_coffee -in=cytb.fasta,Mmafft_msa,Mmuscle_msa,Mprobcons_msa -outfile=cytb.aln -output=clustal
