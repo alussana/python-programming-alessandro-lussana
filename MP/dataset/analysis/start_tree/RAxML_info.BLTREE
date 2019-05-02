@@ -56,14 +56,14 @@ Substitution Matrix: GTR
 
 RAxML was called as follows:
 
-/usr/local/src/partitionfinder-2.1.1/programs/raxml_pthreads.linux -f e -s ./analysis/start_tree/filtered_source.phy -t ./analysis/start_tree/RAxML_fastTree.fastTREE -m GTRGAMMA -O -n BLTREE -p 123456789 -q ./analysis/start_tree/partitions.txt -w /home/alessandro/Dropbox/MP_2019/practicalLectures/exercise/dataset/analysis/start_tree -e 1 -T 4 
+/usr/local/src/partitionfinder-2.1.1/programs/raxml_pthreads.linux -f e -s ./analysis/start_tree/filtered_source.phy -t ./analysis/start_tree/RAxML_fastTree.fastTREE -m GTRGAMMA -O -n BLTREE -p 123456789 -q ./analysis/start_tree/partitions.txt -w /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/analysis/start_tree -e 1 -T 4 
 
 
 
-Model parameters (binary file format) written to: /home/alessandro/Dropbox/MP_2019/practicalLectures/exercise/dataset/analysis/start_tree/RAxML_binaryModelParameters.BLTREE
+Model parameters (binary file format) written to: /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/analysis/start_tree/RAxML_binaryModelParameters.BLTREE
 
 
-Overall Time for Tree Evaluation 0.598262
+Overall Time for Tree Evaluation 0.459612
 Final GAMMA  likelihood: -13335.296204
 
 Number of free parameters for AIC-TEST(BR-LEN): 54
@@ -115,5 +115,5 @@ freq pi(C): 0.219516
 freq pi(G): 0.181949
 freq pi(T): 0.233916
 
-Final tree written to:                 /home/alessandro/Dropbox/MP_2019/practicalLectures/exercise/dataset/analysis/start_tree/RAxML_result.BLTREE
-Execution Log File written to:         /home/alessandro/Dropbox/MP_2019/practicalLectures/exercise/dataset/analysis/start_tree/RAxML_log.BLTREE
+Final tree written to:                 /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/analysis/start_tree/RAxML_result.BLTREE
+Execution Log File written to:         /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/analysis/start_tree/RAxML_log.BLTREE

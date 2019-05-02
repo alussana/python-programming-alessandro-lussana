@@ -1,0 +1,90 @@
+
+
+This is RAxML version 8.2.12 released by Alexandros Stamatakis on May 2018.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Sarah Lutteropp   (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+Charlie Taylor    (UF)
+
+
+Alignment has 671 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 2.60%
+
+RAxML rapid hill-climbing mode
+
+Using 3 distinct models/data partitions with joint branch length optimization
+
+
+Executing 1 inferences on the original alignment using 1 distinct randomized MP trees
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heterogeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 0.1000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 183
+Name: Subset1
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+Partition: 1
+Alignment Patterns: 284
+Name: Subset2
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+Partition: 2
+Alignment Patterns: 204
+Name: Subset3
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+
+RAxML was called as follows:
+
+raxmlHPC -s cox2.p_and_cytb.p_and_16s.d.phy -n nucleotide_codonpart_best_tree -m GTRGAMMA -p 11235813 -q partition_positions.prt 
+
+
+Partition: 0 with name: Subset1
+Base frequencies: 0.312 0.263 0.151 0.274 
+
+Partition: 1 with name: Subset2
+Base frequencies: 0.283 0.306 0.139 0.272 
+
+Partition: 2 with name: Subset3
+Base frequencies: 0.365 0.220 0.182 0.234 
+
+Inference[0]: Time 4.680721 GAMMA-based likelihood -13335.296947, best rearrangement setting 5
+alpha[0]: 0.153092 rates[0] ac ag at cg ct gt: 0.337646 16.303321 0.767857 0.204712 17.368252 1.000000 alpha[1]: 0.138066 rates[1] ac ag at cg ct gt: 0.953734 20.117214 0.400416 0.512363 19.045293 1.000000 alpha[2]: 0.212339 rates[2] ac ag at cg ct gt: 0.869156 4.820538 2.063545 0.149197 34.811033 1.000000 
+
+
+Conducting final model optimizations on all 1 trees under GAMMA-based models ....
+
+Inference[0] final GAMMA-based Likelihood: -13328.002784 tree written to file /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/RAxML_result.nucleotide_codonpart_best_tree
+
+
+Starting final GAMMA-based thorough Optimization on tree 0 likelihood -13328.002784 .... 
+
+Final GAMMA-based Score of best tree -13328.002784
+
+Program execution info written to /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/RAxML_info.nucleotide_codonpart_best_tree
+Best-scoring ML tree written to: /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/RAxML_bestTree.nucleotide_codonpart_best_tree
+
+Overall execution time: 6.962617 secs or 0.001934 hours or 0.000081 days
+

@@ -36,7 +36,7 @@ rule force_one_line_fasta:
         " | tr -d \" \" > {output}"
 
 # try:
-# snakemake -p cox2.p_and_cytb.p_and_16s.d.nex
+# snakemake -p cox2.p_and_cytb.p_and_16s.d.nxs
 rule phyutils_concat:
     input:
         f1="{seq1}.{type1}.afa-gb",
@@ -49,7 +49,7 @@ rule phyutils_concat:
 
 rule convert_nxs_to_phy:
     input:
-        "{seq1}.{type1,p|d}_and_{seq2}.{type2,p|d}_and_{seq3}.{type3,p|d}.nxs"
+        "{seq1}.{type1}_and_{seq2}.{type2}_and_{seq3}.{type3}.nxs"
     output:
         "{seq1}.{type1,p|d}_and_{seq2}.{type2,p|d}_and_{seq3}.{type3,p|d}.phy"
     shell:
@@ -63,10 +63,11 @@ rule convert_nxs_to_phy:
         " echo -e \"$ntax $nchar \n$(cat {output}.tmp)\" > {output};"
         " rm {output}.tmp"
 
-# W! to be completed
 # W! partitionfinder need a configuration file in dataset/ to run; the config template is to be edited 
 rule find_partitions:
     input:
         "cox2.p_and_cytb.p_and_16s.d.phy"
     shell:
         "partitionfinder ."
+
+# NOTE For subsequent analysis, see markdown notes on DropBox, 2019_05_02

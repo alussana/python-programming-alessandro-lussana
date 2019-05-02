@@ -1,0 +1,47 @@
+
+
+WARNING: RAxML is not checking sequences for duplicate seqs and sites with missing data!
+
+
+
+This is RAxML version 8.2.12 released by Alexandros Stamatakis on May 2018.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Sarah Lutteropp   (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+Charlie Taylor    (UF)
+
+
+RAxML Bipartition Computation: Drawing support values from trees in file RAxML_bootstrap.nucleotide_codonpart_bootstrap onto tree in file RAxML_bestTree.nucleotide_codonpart_best_tree
+
+
+RAxML was called as follows:
+
+raxmlHPC -m GTRGAMMA -p 11235813 -f b -t RAxML_bestTree.nucleotide_codonpart_best_tree -z RAxML_bootstrap.nucleotide_codonpart_bootstrap -n anotation 
+
+
+
+
+Found 1 tree in File RAxML_bestTree.nucleotide_codonpart_best_tree
+
+
+
+Found 100 trees in File RAxML_bootstrap.nucleotide_codonpart_bootstrap
+
+
+
+Found 1 tree in File RAxML_bestTree.nucleotide_codonpart_best_tree
+
+
+
+Time for Computation of Bipartitions 0.012117
+Tree with bipartitions written to file:  /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/RAxML_bipartitions.anotation
+Tree with bipartitions as branch labels written to file:  /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/RAxML_bipartitionsBranchLabels.anotation
+Execution information file written to :  /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/RAxML_info.anotation

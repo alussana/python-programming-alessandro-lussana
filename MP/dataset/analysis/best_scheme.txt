@@ -10,7 +10,7 @@ search            : greedy
 Best partitioning scheme
 
 Scheme Name       : start_scheme
-Scheme lnL        : -13188.398681640625
+Scheme lnL        : -13188.3986816
 Scheme AICc       : 26601.8941375
 Number of params  : 109
 Number of sites   : 3489

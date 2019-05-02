@@ -60,19 +60,19 @@ Substitution Matrix: GTR
 
 RAxML was called as follows:
 
-/usr/local/src/partitionfinder-2.1.1/programs/raxml_pthreads.linux -f E -s ./analysis/start_tree/filtered_source.phy -m GTRGAMMA -O -n fastTREE -# 1 -p 123456789 -q ./analysis/start_tree/partitions.txt -e 10 -w /home/alessandro/Dropbox/MP_2019/practicalLectures/exercise/dataset/analysis/start_tree -T 4 
+/usr/local/src/partitionfinder-2.1.1/programs/raxml_pthreads.linux -f E -s ./analysis/start_tree/filtered_source.phy -m GTRGAMMA -O -n fastTREE -# 1 -p 123456789 -q ./analysis/start_tree/partitions.txt -e 10 -w /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/analysis/start_tree -T 4 
 
 
-Time after init : 0.018563
-Time after init and starting tree: 0.043236
-Time after init, starting tree, mod opt: 0.342710
+Time after init : 0.017377
+Time after init and starting tree: 0.074944
+Time after init, starting tree, mod opt: 0.283442
 Partion 0 number of Cats: 1
 Partion 1 number of Cats: 1
 Partion 2 number of Cats: 1
 LH after SPRs -13357.123313, after NNI -13357.105607
 LH after SPRs -13357.102949, after NNI -13357.100683
-RAxML fast tree written to file: /home/alessandro/Dropbox/MP_2019/practicalLectures/exercise/dataset/analysis/start_tree/RAxML_fastTree.fastTREE
+RAxML fast tree written to file: /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/analysis/start_tree/RAxML_fastTree.fastTREE
 
-Model parameters (binary file format) written to: /home/alessandro/Dropbox/MP_2019/practicalLectures/exercise/dataset/analysis/start_tree/RAxML_binaryModelParameters.fastTREE
-Total execution time: 0.757866
+Model parameters (binary file format) written to: /home/alessandro/Unibo/python-programming-alessandro-lussana/MP/dataset/analysis/start_tree/RAxML_binaryModelParameters.fastTREE
+Total execution time: 0.625352
 Good bye ... 

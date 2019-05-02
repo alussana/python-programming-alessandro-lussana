@@ -5,6 +5,6 @@ Number of columns in subset: 1656
 Models are organised according to their AICc scores
 
 Model           | Parameters      | lnL             | AICc             | AIC             | BIC            
-GTR+I+G         | 10              | -5119.0234      | 10258.181        | 10258.047       | 10312.169      
-GTR+G           | 9               | -5125.57        | 10269.249        | 10269.14        | 10317.849      
-GTR             | 8               | -5280.613       | 10577.313        | 10577.226       | 10620.522      
+GTR+I+G         | 10              | -5119.02        | 10258.2          | 10258.0         | 10312.2        
+GTR+G           | 9               | -5125.57        | 10269.2          | 10269.1         | 10317.8        
+GTR             | 8               | -5280.61        | 10577.3          | 10577.2         | 10620.5        
