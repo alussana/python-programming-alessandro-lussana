@@ -2,7 +2,21 @@
 # Set of rules to perform protein sequences analysis and modeling #
 ###################################################################
 
-# TODO add rule to download swissprot
+# create needed symbolic links in dataset/ pointing to handmade/ files
+# try:
+# snakemake -p create_links
+rule create_links:
+    shell:
+        "ln -s ../handmade/sprot_non_pf00014_global_id.txt"
+        " sprot_non_pf00014_global_id.txt;"
+        " ln -s ../handmade/sprot_pf00014_global_id.txt"
+        " sprot_pf00014_global_id.txt;"
+        " ln -s ../handmade/sprot_pf00014_human_id.txt"
+        " sprot_pf00014_human_id.txt;"
+        " ln -s ../handmade/sprot_pf00014_non_human_id.txt"
+        " prot_pf00014_non_human_id.txt;"
+        " ln -s ../../kunitz_BPTI_hmm/dataset/swissProt.fasta.gz"
+        " swissprot.fasta.gz"
 
 # index a protein database in fasta format
 # try:
@@ -20,7 +34,7 @@ rule index_protein_database:
         "{db}"
     shell:
         "zcat {input} > {params}.fasta;"
-        " formatdb -i {params}.fasta -p T"
+        " makeblastdb -in {params}.fasta -out {params}.fasta -dbtype prot"
 
 # run blast on local database; the output is in tabular format
 # try:
@@ -52,8 +66,8 @@ rule blast_run:
     output:
         "{query}_vs_{database}_blast_run.gz"
     shell:
-        "blastpgp -i {input.query} -d {input.db} -e 1000000000 -m 8 "
-        "| gzip > {output}"
+        "psiblast -query {input.query} -db {input.db} -evalue 1000000000 -outfmt 6 -out {output}.tmp;"
+        "cat {output}.tmp | gzip > {output}; rm {output}.tmp"
 
 # fetch the sequences from uniprot given a list of uniprot IDs
 # try:
