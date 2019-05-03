@@ -39,7 +39,7 @@ def compute_roc_auc(group, scores):
 def show_roc_plot(tpr, fpr, auc, s, l, n, aln, bestTh):
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    plt.plot(tpr, fpr)
+    plt.plot(fpr, tpr)
     x = np.linspace(0,1,100)
     plt.plot(x,x,'gray')
     plt.xlabel('False Positive Rate')

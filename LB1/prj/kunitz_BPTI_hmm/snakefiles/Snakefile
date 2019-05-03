@@ -33,13 +33,13 @@
 # e.g.                                                                                                   #
 # plot roc:                                                                                              #
 #                                                                                                        #
-# snakemake -p makeall/plot_S99_L0.95_mustang_samp442129.done                                            #
-# snakemake -p makeall/plot_S99_L0.95_pdbefold_samp442129.done                                           #
+# snakemake -p makeall/plot_S99_L0.95_mustang_samp559276.done                                            #
+# snakemake -p makeall/plot_S99_L0.95_pdbefold_samp559276.done                                           #
 #                                                                                                        #
 # print confusion matrix:                                                                                #
 #                                                                                                        #
-# snakemake -p makeall/confmat_th0.01_S99_L0.95_mustang_samp442129.done                                  #
-# snakemake -p makeall/confmat_th0.01_S99_L0.95_pdbefold_samp442129.done                                 #
+# snakemake -p makeall/confmat_th0.01_S99_L0.95_mustang_samp559276.done                                  #
+# snakemake -p makeall/confmat_th0.01_S99_L0.95_pdbefold_samp559276.done                                 #
 ##########################################################################################################
 
 #########
@@ -310,6 +310,43 @@ rule hmm_db_search:
         "hmmsearch --tblout {output} --max --noali --domE 100000000"
         " -E 100000000 {input.md} <(zcat {input.fa}) > /dev/null"
 
+################
+# Run PsiBlast #
+################
+
+# index the database
+rule index_protein_database:
+    input:
+        "{db}.fasta.gz"
+    output:
+        phr="{db}.fasta.phr"
+    params:
+        "{db}"
+    shell:
+        "zcat {input} > {params}.fasta;"
+        " makeblastdb -in {params}.fasta -out {params}.fasta -dbtype prot"
+
+# perform database search iwith psiblast and
+# list the target identifiers with their lowest e-value
+# positives: nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.search_out
+# negatives: nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.samp559276.uniprot_kunitz_negative.filter.swissProt.search_out
+rule run_psiblast:
+    input:
+        db="{database}.fasta.gz",
+        query="{query}.fasta",
+        phr="{database}.fasta.phr"
+    output:
+        "{query}.psiblast.vs.{database}.search_out"
+    params:
+        db="{database}",
+        q="{query}"
+    shell:
+        "zcat {input.db} > {params.db}.fasta;"
+        " psiblast -query {input.query} -db {params.db}.fasta -evalue 1000000000 -outfmt 6 -out {params.q}.psiblast.vs.{params.db}.search_raw;"
+        " for id in $(cat {params.q}.psiblast.vs.{params.db}.search_raw | cut -f2 | sort | uniq); do"
+        " cat {params.q}.psiblast.vs.{params.db}.search_raw | grep $id | cut -f2,11 | LC_ALL=c sort -gk2 | sed -n '1p' | gawk '{{print $1\" - - - - - - \"$2}}';"
+        " done > {output};"
+
 ###############################
 # Refine positive testing set #
 ###############################
@@ -369,6 +406,7 @@ rule filterfasta:
 # generate list of examples to then feed a confusion matrix
 # try:
 # snakemake -p conflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
+# psiblast: conflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
 rule compute_confusion_matrix_feed_file:
     input:
         p="{p}.search_out",
@@ -445,6 +483,7 @@ rule compute_confusion_matrix:
 # compute points and auc of roc + plot (python based)
 # try:
 # snakemake -p roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.txt
+# psiblast: roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.samp400.uniprot_kunitz_negative.filter.swissProt.txt
 rule compute_roc_py:
     input:
         "corrconflst."
