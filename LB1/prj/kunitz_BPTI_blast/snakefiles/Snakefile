@@ -1,3 +1,26 @@
+#######################################################################
+### BPTI_Kunitz/non-BPTI_Kunitz psiblast-based binary classificator ###
+#######################################################################
+
+###############################################################################
+##### Run complete analysis ###################################################
+#                                                                             #
+# ### Roc Curve ###                                                           #
+#                                                                             #
+# roc/sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.\                #
+# sprot_pf00014_non_human_id_filter_on_swissprot.and.\                        #
+# sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.\                    #
+# sprot_non_pf00014_global_id_samp559276_filter_on_swissprot.txt              #
+#                                                                             #
+# ### Confusion Matrix ###                                                    #
+#                                                                             #
+# confmat/th.{th}.of.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.\ #
+# sprot_pf00014_non_human_id_filter_on_swissprot.and.\                        #
+# sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.\                    #
+# sprot_non_pf00014_global_id_samp559276_filter_on_swissprot                  #
+#                                                                             #
+###############################################################################
+
 # create needed symbolic links in dataset/ pointing to handmade/ files
 # try:
 # snakemake -p create_links
@@ -208,7 +231,7 @@ rule compute_roc_py:
 # compute confusion matrix at a given threshold and print analysis results +
 # show confusion matrix in a plot
 # try:
-# snakemake -p confmat/th.000001.of.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_pf00014_non_human_id_filter_on_swissprot.and.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_non_pf00014_global_id_samp500_filter_on_swissprot
+# snakemake -p confmat/th0.00001.of.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_pf00014_non_human_id_filter_on_swissprot.and.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_non_pf00014_global_id_samp500_filter_on_swissprot
 rule compute_confusion_matrix:
     input:
         "analysis/corrconflst.{p}.and.{n}.gz"
