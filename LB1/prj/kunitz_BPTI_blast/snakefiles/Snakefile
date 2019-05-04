@@ -1,7 +1,3 @@
-###################################################################
-# Set of rules to perform protein sequences analysis and modeling #
-###################################################################
-
 # create needed symbolic links in dataset/ pointing to handmade/ files
 # try:
 # snakemake -p create_links
@@ -36,38 +32,29 @@ rule index_protein_database:
         "zcat {input} > {params}.fasta;"
         " makeblastdb -in {params}.fasta -out {params}.fasta -dbtype prot"
 
-# run blast on local database; the output is in tabular format
+# run blast on local database; the output is in tabular format and
+# list the target identifiers with their lowest e-value
 # try:
-# alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
-# snakemake -p query_vs_uniprot_sprot_e0.001_blast_out.gz
-rule homology_search:
-    input:
-        db="{database}.fasta",
-        query="{query}.fasta",
-        phr="{database}.fasta.phr"
-    output:
-        "{query}_vs_{database}_e{evalue}_blast_out.gz"
-    params:
-        "{evalue}"
-    shell:
-        "blastpgp -i {input.query} -d {input.db} -e {params} -m 8"
-        "| gzip > {output}"
-
-# run blast on local database; the output is in tabular format
-# try:
-# [...]
-# MEMO: e-value is stored in 11th column
-# MEMO -e option is hard-coded: basically you want to get printed every score
+# positives: db_searches/sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_pf00014_non_human_id_filter_on_swissprot.search_out
+# negatives: db_searches/sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_non_pf00014_global_id_samp500_filter_on_swissprot.search_out
+# MEMO: e-value is stored in 11th column in the raw output
+# MEMO -evalue option is hard-coded: basically you want to get printed every score
 rule blast_run:
     input:
-        db="{database}.fasta",
+        db="{database}.fasta.gz",
         query="{query}.fasta",
         phr="{database}.fasta.phr"
     output:
-        "{query}_vs_{database}_blast_run.gz"
+        "db_searches/{query}.psiblast.vs.{database}.search_out"
+    params:
+        db="{database}",
+        q="{query}"
     shell:
-        "psiblast -query {input.query} -db {input.db} -evalue 1000000000 -outfmt 6 -out {output}.tmp;"
-        "cat {output}.tmp | gzip > {output}; rm {output}.tmp"
+        "zcat {input.db} > {params.db}.fasta;"
+        " psiblast -query {input.query} -db {params.db}.fasta -evalue 1000000000 -outfmt 6 -out db_searches/{params.q}.psiblast.vs.{params.db}.search_raw;"
+        " for id in $(cat db_searches/{params.q}.psiblast.vs.{params.db}.search_raw | cut -f2 | sort | uniq); do"
+        " cat db_searches/{params.q}.psiblast.vs.{params.db}.search_raw | grep $id | cut -f2,11 | LC_ALL=c sort -gk2 | sed -n '1p' | gawk '{{print $1\" - - - - - - \"$2}}';"
+        " done > {output};"
 
 # fetch the sequences from uniprot given a list of uniprot IDs
 # try:
@@ -85,19 +72,6 @@ rule fetch_fasta_from_uniprot:
         " cat tmp/*.fasta | gzip > {output};"
         " rm -fr tmp/"
 
-# perform MSA with muscle using default parameters
-# try:
-# alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
-# snakemake -p id_for_MSA_muscle_out.aln.gz
-# TODO add params to tune the muscle's parameters
-rule muscle_align:
-    input:
-        "{sequences}.fasta.gz"
-    output:
-        "{sequences}_muscle_out.aln.gz"
-    shell:
-        "muscle -in <(zcat {input}) | gzip > {output}"
-
 # filter a multifasta given a list of identifiers
 # try:
 # snakemake -p idlist_filter_on_uniprot_sprot.fasta.gz
@@ -112,59 +86,141 @@ rule filterfasta:
 
 # sample N items from a list
 # try:
-# snakemake -p sprot_pf00014_non_human_id_sampled18.txt
+# snakemake -p sprot_non_pf00014_global_id_samp500.txt
 rule random_sampling:
     input:
         "{list}.txt"
     output:
-        "{list}_sampled{N}.txt"
+        "{list}_samp{N}.txt"
     params:
         "{N}"
     shell:
         "cat {input} | sort -R | sed -n '1,{params}p' > {output}"
 
-# list the target identifiers with their lowest e-value computed in a blast search
-# try:
-# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj/dataset$ \
-# snakemake -p sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot_blast_min_eval.gz
-rule list_min_evalues:
-    input:
-        "{blast_run}_blast_run.gz"
-    output:
-        "{blast_run}_blast_min_eval.gz"
-    shell:
-        "for id in $(zcat {input} | cut -f2 | sort | uniq); do"
-        " zcat {input} | grep $id | cut -f2,11 | LC_ALL=c sort -gk2 | sed -n '1p';"
-        " done | gzip > {output}"
+########################
+# Performance analysis #
+########################
 
 # generate list of examples to then feed a confusion matrix
 # try:
-# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj/dataset$ \
-# snakemake -p conf_list_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot.gz
+# snakemake -p analysis/conflst.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_pf00014_non_human_id_filter_on_swissprot.and.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_non_pf00014_global_id_samp500_filter_on_swissprot.gz
 rule compute_confusion_matrix_feed_file:
     input:
-        p="{p}_blast_min_eval.gz",
-        n="{n}_blast_min_eval.gz"
+        p="db_searches/{p}.search_out",
+        n="db_searches/{n}.search_out"
     output:
-        "conf_list_of_{p}_and_{n}.gz"
+        "analysis/conflst.{p}.and.{n}.gz"
     shell:
         "cat"
-        " <(zcat {input.p} | awk '{{print $0\"\t\"1}}')"
-        " <(zcat {input.n} | awk '{{print $0\"\t\"0}}')"
+        " <(cat {input.p} | grep ^sp | tr -s \" \" \"\\t\" | cut -f1,8"
+        " | awk '{{print $0\"\\t1\"}}')"
+        " <(cat {input.n} | grep ^sp | tr -s \" \" \"\\t\" | cut -f1,8"
+        " | awk '{{print $0\"\\t0\"}}')"
         " | gzip > {output}"
 
-# compute confusion matrix and print analysis results
+# add the non-hits sequences to the conflist file assigning e-value=1
 # try:
-# snakemake -p conf_mat_th0.001_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot
+# snakemake -p analysis/filledconflst.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_pf00014_non_human_id_filter_on_swissprot.and.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_non_pf00014_global_id_samp500_filter_on_swissprot.gz
+rule add_missing_id_to_conf_list:
+    input:
+        cl="analysis/conflst."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_pf00014_non_human_id_filter_on_swissprot.and."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_non_pf00014_global_id_samp{size}_filter_on_swissprot.gz",
+        id="sprot_non_pf00014_global_id_samp{size}.txt"
+    output:
+        "analysis/filledconflst."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_pf00014_non_human_id_filter_on_swissprot.and."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_non_pf00014_global_id_samp{size}_filter_on_swissprot.gz"
+    shell:
+        "cat <(zcat {input.cl}) <(cat {input.id} | cut -f1"
+        " | grep -v -f <(zcat {input.cl} | cut -d '|' -f2)"
+        " | awk '{{print $0\"\\t1.0\\t0\"}}') | gzip > {output}"
+
+# divide e-values by the database size in filled.conflist files
+# try:
+# snakemake -p analysis/corrconflst.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_pf00014_non_human_id_filter_on_swissprot.and.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_non_pf00014_global_id_samp500_filter_on_swissprot.gz
+rule correct_e_values:
+    input:
+        "analysis/filledconflst."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_pf00014_non_human_id_filter_on_swissprot.and."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_non_pf00014_global_id_samp{size}_filter_on_swissprot.gz" 
+    output:
+        "analysis/corrconflst."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_pf00014_non_human_id_filter_on_swissprot.and."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_non_pf00014_global_id_samp{size}_filter_on_swissprot.gz" 
+    shell:
+        "N=$(zcat {input} | awk '$3==0{{print $0}}' | wc -l);"
+        " P=$(zcat {input} | awk '$3==1{{print $0}}' | wc -l);"
+        " zcat {input} | awk -v P=$P -v N=$N"
+        " '{{if($2 != 1.0 && $3 == 1){{print $1\"\\t\"$2/P\"\\t\"$3}}"
+        "else if($2 != 1.0 && $3 == 0){{print $1\"\\t\"$2/N\"\\t\"$3}}"
+        " else{{print $0}}}}' | gzip > {output}"
+
+# compute points and auc of roc + plot (python based)
+# try:
+# snakemake -p roc/sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_pf00014_non_human_id_filter_on_swissprot.and.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_non_pf00014_global_id_samp500_filter_on_swissprot.txt
+rule compute_roc_py:
+    input:
+        "analysis/corrconflst."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_pf00014_non_human_id_filter_on_swissprot.and."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_non_pf00014_global_id_samp{size}_filter_on_swissprot.gz"
+    output:
+        "roc/sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_pf00014_non_human_id_filter_on_swissprot.and."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_non_pf00014_global_id_samp{size}_filter_on_swissprot.txt"
+    params:
+        n="{size}"
+    shell:
+        "python ../src/roc.py {input} {params.n} > {output}"
+
+# show confusion matrix at a given threshold
+# try:
+# snakemake -p roc/sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_pf00014_non_human_id_filter_on_swissprot.and.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_non_pf00014_global_id_samp500_filter_on_swissprot.th0.000001
+#rule show_confusion_matrix:
+#    input:
+#        "analysis/corrconflst."
+ #       "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+#        "sprot_pf00014_non_human_id_filter_on_swissprot.and."
+#        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+#        "sprot_non_pf00014_global_id_samp{size}_filter_on_swissprot.gz"
+#    output:
+#        "roc/sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+#        "sprot_pf00014_non_human_id_filter_on_swissprot.and."
+#        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+#        "sprot_non_pf00014_global_id_samp{size}_filter_on_swissprot."
+#        "th{th}"
+#    params:
+#        "{th}"
+#    shell:
+#        "python ../src/confMatPrettyPrint.py {input} {params}"
+
+# compute confusion matrix at a given threshold and print analysis results +
+# show confusion matrix in a plot
+# try:
+# snakemake -p confmat/th.000001.of.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_pf00014_non_human_id_filter_on_swissprot.and.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_non_pf00014_global_id_samp500_filter_on_swissprot
 rule compute_confusion_matrix:
     input:
-        "conf_list_of_{p}_and_{n}.gz"
+        "analysis/corrconflst.{p}.and.{n}.gz"
     output:
-        "conf_mat_th{th}_of_{p}_and_{n}"
+        "confmat/th{th}.of.{p}.and.{n}"
     params:
         "{th}"
     shell:
-        "python ../src/buildConfMatrix.py {input} {params} > {output}"
+        "python ../src/buildConfMatrix.py {input} {params} > {output};"
+        "python ../src/confMatPrettyPrint.py {input} {params}"
+
+# ----------------------------------------------------------------------------#
 
 #############################
 # HMM rules - not used here #
@@ -244,6 +300,23 @@ rule hmm_db_scan:
     shell:
         "hmmscan {params} <(zcat {input}) | gzip > {output}"
 
+#######################################
+# Run MSA with Muscle - not used here #
+#######################################
+
+# perform MSA with muscle using default parameters
+# try:
+# alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
+# snakemake -p id_for_MSA_muscle_out.aln.gz
+# TODO add params to tune the muscle's parameters
+rule muscle_align:
+    input:
+        "{sequences}.fasta.gz"
+    output:
+        "{sequences}_muscle_out.aln.gz"
+    shell:
+        "muscle -in <(zcat {input}) | gzip > {output}"
+
 ####################
 # deprecated rules #
 ####################
@@ -266,3 +339,20 @@ rule hmm_db_scan:
 #        " '{{ if($0~entry){{print $0; getline; while($0 !~ /^>/)"
 #        " {{print $0; getline}}; exit }} }}'; done"
 #        " | gzip > {output}"
+#
+# run blast on local database; the output is in tabular format
+# try:
+# alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/db$ \
+# snakemake -p query_vs_uniprot_sprot_e0.001_blast_out.gz
+#rule homology_search:
+#    input:
+#        db="{database}.fasta",
+#        query="{query}.fasta",
+#        phr="{database}.fasta.phr"
+#    output:
+#        "{query}_vs_{database}_e{evalue}_blast_out.gz"
+#    params:
+#        "{evalue}"
+#    shell:
+#        "blastpgp -i {input.query} -d {input.db} -e {params} -m 8"
+#        "| gzip > {output}"

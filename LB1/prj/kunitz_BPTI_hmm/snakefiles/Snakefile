@@ -469,9 +469,11 @@ rule correct_e_values:
         "else if($2 != 1.0 && $3 == 0){{print $1\"\\t\"$2/N\"\\t\"$3}}"
         " else{{print $0}}}}' | gzip > {output}"
 
-# compute confusion matrix and print analysis results
+# compute confusion matrix at a given threshold and print analysis results +
+# show confusion matrix in a plot
 # try:
-# snakemake -p confmat/th0.001.of.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt
+# snakemake -p confmat/th0.000001.of.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt
+# psiblast: confmat/th0.000001.of.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.samp400.uniprot_kunitz_negative.filter.swissProt
 rule compute_confusion_matrix:
     input:
         "analysis/corrconflst.{conflist}.gz"
@@ -480,7 +482,8 @@ rule compute_confusion_matrix:
     params:
         "{th}"
     shell:
-        "python ../src/buildConfMatrix.py {input} {params} > {output}"
+        "python ../src/buildConfMatrix.py {input} {params} > {output};"
+        " python ../src/confMatPrettyPrint.py {input} {params}" 
 
 # compute points and auc of roc + plot (python based)
 # try:
@@ -530,7 +533,7 @@ rule plot_roc_R:
         "Rscript ../src/roc.R {input} {output} {params.aln} {params.L}"
         " {params.S} {params.n}"
 
-### TODO integrate muscle MSA in the workflow                               ###     
+###                                                                         ###     
 # =========================================================================== #
 ###                                                                         ###
 
