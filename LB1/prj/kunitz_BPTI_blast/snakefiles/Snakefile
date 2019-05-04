@@ -98,6 +98,78 @@ rule muscle_align:
     shell:
         "muscle -in <(zcat {input}) | gzip > {output}"
 
+# filter a multifasta given a list of identifiers
+# try:
+# snakemake -p idlist_filter_on_uniprot_sprot.fasta.gz
+rule filterfasta:
+    input:
+        db = "{db}.fasta.gz",
+        fl = "{filter}.txt"
+    output:
+        "{filter}_filter_on_{db}.fasta.gz"
+    shell:
+        "python ../src/fastafilter.py {input.db} {input.fl} | gzip > {output}"
+
+# sample N items from a list
+# try:
+# snakemake -p sprot_pf00014_non_human_id_sampled18.txt
+rule random_sampling:
+    input:
+        "{list}.txt"
+    output:
+        "{list}_sampled{N}.txt"
+    params:
+        "{N}"
+    shell:
+        "cat {input} | sort -R | sed -n '1,{params}p' > {output}"
+
+# list the target identifiers with their lowest e-value computed in a blast search
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj/dataset$ \
+# snakemake -p sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot_blast_min_eval.gz
+rule list_min_evalues:
+    input:
+        "{blast_run}_blast_run.gz"
+    output:
+        "{blast_run}_blast_min_eval.gz"
+    shell:
+        "for id in $(zcat {input} | cut -f2 | sort | uniq); do"
+        " zcat {input} | grep $id | cut -f2,11 | LC_ALL=c sort -gk2 | sed -n '1p';"
+        " done | gzip > {output}"
+
+# generate list of examples to then feed a confusion matrix
+# try:
+# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj/dataset$ \
+# snakemake -p conf_list_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot.gz
+rule compute_confusion_matrix_feed_file:
+    input:
+        p="{p}_blast_min_eval.gz",
+        n="{n}_blast_min_eval.gz"
+    output:
+        "conf_list_of_{p}_and_{n}.gz"
+    shell:
+        "cat"
+        " <(zcat {input.p} | awk '{{print $0\"\t\"1}}')"
+        " <(zcat {input.n} | awk '{{print $0\"\t\"0}}')"
+        " | gzip > {output}"
+
+# compute confusion matrix and print analysis results
+# try:
+# snakemake -p conf_mat_th0.001_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot
+rule compute_confusion_matrix:
+    input:
+        "conf_list_of_{p}_and_{n}.gz"
+    output:
+        "conf_mat_th{th}_of_{p}_and_{n}"
+    params:
+        "{th}"
+    shell:
+        "python ../src/buildConfMatrix.py {input} {params} > {output}"
+
+#############################
+# HMM rules - not used here #
+#############################
+
 # train a hidden markov model with hmmer from an alignment in stockholm format
 # try:
 # (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1$ \
@@ -171,74 +243,6 @@ rule hmm_db_scan:
         "{models}.hmm"
     shell:
         "hmmscan {params} <(zcat {input}) | gzip > {output}"
-
-# filter a multifasta given a list of identifiers
-# try:
-# snakemake -p idlist_filter_on_uniprot_sprot.fasta.gz
-rule filterfasta:
-    input:
-        db = "{db}.fasta.gz",
-        fl = "{filter}.txt"
-    output:
-        "{filter}_filter_on_{db}.fasta.gz"
-    shell:
-        "python ../src/fastafilter.py {input.db} {input.fl} | gzip > {output}"
-
-# sample N items from a list
-# try:
-# snakemake -p sprot_pf00014_non_human_id_sampled18.txt
-rule random_sampling:
-    input:
-        "{list}.txt"
-    output:
-        "{list}_sampled{N}.txt"
-    params:
-        "{N}"
-    shell:
-        "cat {input} | sort -R | sed -n '1,{params}p' > {output}"
-
-# list the target identifiers with their lowest e-value computed in a blast search
-# try:
-# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj/dataset$ \
-# snakemake -p sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot_blast_min_eval.gz
-rule list_min_evalues:
-    input:
-        "{blast_run}_blast_run.gz"
-    output:
-        "{blast_run}_blast_min_eval.gz"
-    shell:
-        "for id in $(zcat {input} | cut -f2 | sort | uniq); do"
-        " zcat {input} | grep $id | cut -f2,11 | LC_ALL=c sort -gk2 | sed -n '1p';"
-        " done | gzip > {output}"
-
-# generate list of examples to then feed a confusion matrix
-# try:
-# (base) alessandro@MULE:~/Unibo/python-programming-alessandro-lussana/LB1/prj/dataset$ \
-# snakemake -p conf_list_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot.gz
-rule compute_confusion_matrix_feed_file:
-    input:
-        p="{p}_blast_min_eval.gz",
-        n="{n}_blast_min_eval.gz"
-    output:
-        "conf_list_of_{p}_and_{n}.gz"
-    shell:
-        "cat"
-        " <(zcat {input.p} | awk '{{print $0\"\t\"1}}')"
-        " <(zcat {input.n} | awk '{{print $0\"\t\"0}}')"
-        " | gzip > {output}"
-
-# compute confusion matrix and print analysis results
-# try:
-# snakemake -p conf_mat_th0.001_of_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_pf00014_non_human_id_filter_on_swissprot_and_sprot_pf00014_human_id_filter_on_swissprot_vs_sprot_non_pf00014_global_id_sampled500_filter_on_swissprot
-rule compute_confusion_matrix:
-    input:
-        "conf_list_of_{p}_and_{n}.gz"
-    output:
-        "conf_mat_th{th}_of_{p}_and_{n}"
-    params:
-        "{th}"
-    shell:
-        "python ../src/buildConfMatrix.py {input} {params} > {output}"
 
 ####################
 # deprecated rules #

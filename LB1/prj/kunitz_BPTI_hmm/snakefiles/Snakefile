@@ -35,11 +35,13 @@
 #                                                                                                        #
 # snakemake -p makeall/plot_S99_L0.95_mustang_samp559276.done                                            #
 # snakemake -p makeall/plot_S99_L0.95_pdbefold_samp559276.done                                           #
+# snakemake -p makeall/plot_S99_L0.95_psiblast_samp559276.done                                           #
 #                                                                                                        #
 # print confusion matrix:                                                                                #
 #                                                                                                        #
 # snakemake -p makeall/confmat_th0.01_S99_L0.95_mustang_samp559276.done                                  #
 # snakemake -p makeall/confmat_th0.01_S99_L0.95_pdbefold_samp559276.done                                 #
+# snakemake -p makeall/confmat_th0.01_S99_L0.95_psiblast_samp559276.done                                 #
 ##########################################################################################################
 
 #########
@@ -48,7 +50,7 @@
 
 ###
 # final ouputs pattern:
-# roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.txt
+# roc/nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.pdbefold.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.txt
 ###
 
 # run complete analysis (in prog)
@@ -57,7 +59,7 @@
 # snakemake -p makeall/plot_S99_L0.95_mustang_samp400.done
 rule PLOT:
     input:
-        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.txt"
+        "roc/nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt.txt"
         ""
     output:
         "makeall/plot_S{S}_L{L}_{aligner}_samp{size}.done",
@@ -69,7 +71,7 @@ rule PLOT:
 # snakemake -p makeall/confmat_th0.01_S99_L0.95_mustang_samp500000.done
 rule CONFMAT:
     input:
-        "confmat_th{th}.of.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt"
+        "confmat/th{th}.of.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs.samp{size}.uniprot_kunitz_negative.filter.swissProt"
     output:
         "makeall/confmat_th{th}_S{S}_L{L}_{aligner}_samp{size}.done"
     shell:
@@ -305,7 +307,7 @@ rule hmm_db_search:
         fa="{db}.fasta.gz",
         md="{model}.hmm"
     output:
-        "{model}.vs.{db}.search_out"
+        "db_searches/{model}.vs.{db}.search_out"
     shell:
         "hmmsearch --tblout {output} --max --noali --domE 100000000"
         " -E 100000000 {input.md} <(zcat {input.fa}) > /dev/null"
@@ -328,23 +330,23 @@ rule index_protein_database:
 
 # perform database search iwith psiblast and
 # list the target identifiers with their lowest e-value
-# positives: nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.search_out
-# negatives: nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.samp559276.uniprot_kunitz_negative.filter.swissProt.search_out
+# positives: db_searches/nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.search_out
+# negatives: db_searches/nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.samp559276.uniprot_kunitz_negative.filter.swissProt.search_out
 rule run_psiblast:
     input:
         db="{database}.fasta.gz",
         query="{query}.fasta",
         phr="{database}.fasta.phr"
     output:
-        "{query}.psiblast.vs.{database}.search_out"
+        "db_searches/{query}.psiblast.vs.{database}.search_out"
     params:
         db="{database}",
         q="{query}"
     shell:
         "zcat {input.db} > {params.db}.fasta;"
-        " psiblast -query {input.query} -db {params.db}.fasta -evalue 1000000000 -outfmt 6 -out {params.q}.psiblast.vs.{params.db}.search_raw;"
-        " for id in $(cat {params.q}.psiblast.vs.{params.db}.search_raw | cut -f2 | sort | uniq); do"
-        " cat {params.q}.psiblast.vs.{params.db}.search_raw | grep $id | cut -f2,11 | LC_ALL=c sort -gk2 | sed -n '1p' | gawk '{{print $1\" - - - - - - \"$2}}';"
+        " psiblast -query {input.query} -db {params.db}.fasta -evalue 1000000000 -outfmt 6 -out db_searches/{params.q}.psiblast.vs.{params.db}.search_raw;"
+        " for id in $(cat db_searches/{params.q}.psiblast.vs.{params.db}.search_raw | cut -f2 | sort | uniq); do"
+        " cat db_searches/{params.q}.psiblast.vs.{params.db}.search_raw | grep $id | cut -f2,11 | LC_ALL=c sort -gk2 | sed -n '1p' | gawk '{{print $1\" - - - - - - \"$2}}';"
         " done > {output};"
 
 ###############################
@@ -405,14 +407,14 @@ rule filterfasta:
 
 # generate list of examples to then feed a confusion matrix
 # try:
-# snakemake -p conflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
-# psiblast: conflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
+# snakemake -p analysis/conflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
+# psiblast: analysis/conflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
 rule compute_confusion_matrix_feed_file:
     input:
-        p="{p}.search_out",
-        n="{n}.search_out"
+        p="db_searches/{p}.search_out",
+        n="db_searches/{n}.search_out"
     output:
-        "conflst.{p}.and.{n}.gz"
+        "analysis/conflst.{p}.and.{n}.gz"
     shell:
         "cat"
         " <(cat {input.p} | grep ^sp | tr -s \" \" \"\\t\" | cut -f1,8"
@@ -423,17 +425,17 @@ rule compute_confusion_matrix_feed_file:
 
 # add the non-hits sequences to the conflist file assigning e-value=1
 # try:
-# snakemake -p filledconflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
+# snakemake -p analysis/filledconflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.mustang.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
 rule add_missing_id_to_conf_list:
     input:
-        cl="conflst."
+        cl="analysis/conflst."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "samp{size}.uniprot_kunitz_negative.filter.swissProt.gz",
         id="samp{size}.uniprot_kunitz_negative"
     output:
-        "filledconflst."
+        "analysis/filledconflst."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
@@ -445,16 +447,16 @@ rule add_missing_id_to_conf_list:
 
 # divide e-values by the database size in filled.conflist files
 # try:
-# snakemake -p corrconflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
+# snakemake -p analysis/corrconflst.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.gz
 rule correct_e_values:
     input:
-        "filledconflst."
+        "analysis/filledconflst."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "samp{size}.uniprot_kunitz_negative.filter.swissProt.gz"
     output:
-        "corrconflst."
+        "analysis/corrconflst."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
@@ -469,12 +471,12 @@ rule correct_e_values:
 
 # compute confusion matrix and print analysis results
 # try:
-# snakemake -p confmat_th0.001.of.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt
+# snakemake -p confmat/th0.001.of.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt
 rule compute_confusion_matrix:
     input:
-        "corrconflst.{conflist}.gz"
+        "analysis/corrconflst.{conflist}.gz"
     output:
-        "confmat_th{th}.of.{conflist}"
+        "confmat/th{th}.of.{conflist}"
     params:
         "{th}"
     shell:
@@ -482,17 +484,17 @@ rule compute_confusion_matrix:
 
 # compute points and auc of roc + plot (python based)
 # try:
-# snakemake -p roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.txt
-# psiblast: roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.samp400.uniprot_kunitz_negative.filter.swissProt.txt
+# snakemake -p roc/nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.txt
+# psiblast: roc/nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.samp400.uniprot_kunitz_negative.filter.swissProt.txt
 rule compute_roc_py:
     input:
-        "corrconflst."
+        "analysis/corrconflst."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "samp{size}.uniprot_kunitz_negative.filter.swissProt.gz"
     output:
-        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "roc/nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "samp{size}.uniprot_kunitz_negative.filter.swissProt.txt"
@@ -506,16 +508,16 @@ rule compute_roc_py:
 
 # compute points and auc of roc + plot (R based)
 # try:
-# snakemake -p roc.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf
+# snakemake -p roc/nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.pdbefold.vs.samp400.uniprot_kunitz_negative.filter.swissProt.pdf
 rule plot_roc_R:
     input:
-        "corrconflst."
+        "analysis/corrconflst."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "samp{size}.uniprot_kunitz_negative.filter.swissProt.gz"
     output:
-        "roc.nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "roc/nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
         "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
         "samp{size}.uniprot_kunitz_negative.filter.swissProt.pdf"
