@@ -36,15 +36,15 @@ def compute_roc_auc(group, scores):
 
     return(area)
 
-def show_roc_plot(tpr, fpr, auc, s, l, n, aln, bestTh):
-    fig = plt.figure()
+def show_roc_plot(tpr, fpr, auc, s, l, n, aln, bestTh, figname):
+    fig = plt.figure(figsize=(4,3),dpi=96)
     ax = fig.add_subplot(111)
     plt.plot(fpr, tpr)
     x = np.linspace(0,1,100)
     plt.plot(x,x,'gray')
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    plt.title('ROC')
+    plt.title('(struct.) PDBeFold ROC curve')
     plt.grid()
     #text = '\n'.join((
     #    # todo round does not work as expected
@@ -56,7 +56,9 @@ def show_roc_plot(tpr, fpr, auc, s, l, n, aln, bestTh):
     text = ('AUC = {0}'.format(area))
     props = dict(boxstyle='round', facecolor='lightblue', alpha=0.5)
     #plt.text(1, 0, text, bbox=props, fontsize=11, horizontalalignment='right', verticalalignment='bottom')
-    plt.text(0.5, 0.5, text, bbox=props, horizontalalignment='center', verticalalignment='center', fontsize=15, color='red')
+    plt.text(0.5, 0.5, text, bbox=props, horizontalalignment='center', verticalalignment='center', fontsize=12, color='black')
+    plt.tight_layout()
+    plt.savefig(figname, type="png", dpi=96)
     plt.show()
 
 def computeBestThresholds(fpr, tpr, thresholds):
@@ -87,10 +89,11 @@ def printRocResults(fpr, tpr, thresholds, bestTh):
 
 if __name__ == '__main__':
     file = str(sys.argv[1])
-    S = round(float(sys.argv[2]),2)
-    L = round(float(sys.argv[3]),2)
+    S = round(float(sys.argv[2]),0)
+    L = round(float(sys.argv[3]),0)
     aln = str(sys.argv[4])
     n = int(sys.argv[5])
+    figname = str(sys.argv[6])
 
     group, scores = get_examples(file)
 
@@ -102,4 +105,4 @@ if __name__ == '__main__':
 
     printRocResults(fpr, tpr, thresholds, bestTh)
 
-    show_roc_plot(tpr, fpr, auc, S, L, n, aln, bestTh)
+    show_roc_plot(tpr, fpr, auc, S, L, n, aln, bestTh, figname)

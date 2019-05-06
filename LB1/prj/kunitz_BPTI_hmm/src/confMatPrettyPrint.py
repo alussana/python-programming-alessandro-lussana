@@ -25,7 +25,7 @@ def feed_confusion_matrix(filename, th, sp = -2, cp = -1):
 
     return(y_true, y_pred)
 
-def print_confusion_matrix(confusion_matrix, class_names, figsize = (10,7), fontsize=14):
+def print_confusion_matrix(confusion_matrix, class_names, figsize = (4,3), fontsize=14):
     """Prints a confusion matrix, as returned by sklearn.metrics.confusion_matrix, as a heatmap.
     
     Arguments
@@ -58,11 +58,13 @@ def print_confusion_matrix(confusion_matrix, class_names, figsize = (10,7), font
     heatmap.xaxis.set_ticklabels(heatmap.xaxis.get_ticklabels(), rotation=45, ha='right', fontsize=fontsize)
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
+    plt.tight_layout()
     return(fig)
 
 if __name__ == '__main__':
     filename = sys.argv[1]
     th = float(sys.argv[2])
+    figname = sys.argv[3]
     class_names = ["non-Kunitz", "Kunitz"]
 
     y_true, y_pred = feed_confusion_matrix(filename, th)
@@ -74,7 +76,7 @@ if __name__ == '__main__':
     # test
     #print(confMat)
 
-    fig = print_confusion_matrix(confMat, class_names, fontsize=12)
+    fig = print_confusion_matrix(confMat, class_names, fontsize=10)
 
-    #fig.show()
+    plt.savefig(figname, type="png", dpi=96)
     plt.show()

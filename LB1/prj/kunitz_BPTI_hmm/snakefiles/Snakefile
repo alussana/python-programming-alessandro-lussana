@@ -442,7 +442,7 @@ rule add_missing_id_to_conf_list:
         "samp{size}.uniprot_kunitz_negative.filter.swissProt.gz"
     shell:
         "cat <(zcat {input.cl}) <(cat {input.id} | cut -f1"
-        " | grep -v -f <(zcat {input.cl} | cut -d '|' -f2)"
+        " | grep -v -f <(zcat {input.cl} | cut -f1 | cut -d '|' -f2)"
         " | awk '{{print $0\"\\t1.0\\t0\"}}') | gzip > {output}"
 
 # divide e-values by the database size in filled.conflist files
@@ -476,14 +476,24 @@ rule correct_e_values:
 # psiblast: confmat/th0.000001.of.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.filtered_S99_L0.95_kunitz_positive.txt.filter.swissProt.and.nonredund_PF00014_pdb.5pti_pdbefold_S99_L0.95.psiblast.vs.samp400.uniprot_kunitz_negative.filter.swissProt
 rule compute_confusion_matrix:
     input:
-        "analysis/corrconflst.{conflist}.gz"
+        "analysis/corrconflst."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "samp{size}.uniprot_kunitz_negative.filter.swissProt"
+        ".gz"
     output:
-        "confmat/th{th}.of.{conflist}"
+        "confmat/th{th}.of."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "filtered_S{S}_L{L}_kunitz_positive.txt.filter.swissProt.and."
+        "nonredund_PF00014_pdb.5pti_pdbefold_S{S}_L{L}.{aligner}.vs."
+        "samp{size}.uniprot_kunitz_negative.filter.swissProt"
     params:
-        "{th}"
+        th="{th}",
+        imgname="confmat/hmm_{aligner}__th{th}_S{S}_L{L}_sampN{size}.png"
     shell:
         "python ../src/buildConfMatrix.py {input} {params} > {output};"
-        " python ../src/confMatPrettyPrint.py {input} {params}" 
+        " python ../src/confMatPrettyPrint.py {input} {params.th} {params.imgname}" 
 
 # compute points and auc of roc + plot (python based)
 # try:
@@ -505,9 +515,10 @@ rule compute_roc_py:
         S="{S}",
         L="{L}",
         aln="{aligner}",
-        n="{size}"       
+        n="{size}",
+        fig="roc/hmm_{aligner}_S{S}_L{L}_sampN{size}.png"       
     shell:
-        "python ../src/roc.py {input} {params.S} {params.L} {params.aln} {params.n} > {output}"
+        "python ../src/roc.py {input} {params.S} {params.L} {params.aln} {params.n} {params.fig} > {output}"
 
 # compute points and auc of roc + plot (R based)
 # try:

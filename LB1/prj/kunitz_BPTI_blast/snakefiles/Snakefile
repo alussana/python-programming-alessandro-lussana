@@ -203,9 +203,10 @@ rule compute_roc_py:
         "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
         "sprot_non_pf00014_global_id_samp{size}_filter_on_swissprot.txt"
     params:
-        n="{size}"
+        n="{size}",
+        fig="roc/psiblast_sampN{size}.png"
     shell:
-        "python ../src/roc.py {input} {params.n} > {output}"
+        "python ../src/roc.py {input} {params.n} {params.fig} > {output}"
 
 # show confusion matrix at a given threshold
 # try:
@@ -234,14 +235,24 @@ rule compute_roc_py:
 # snakemake -p confmat/th0.00001.of.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_pf00014_non_human_id_filter_on_swissprot.and.sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs.sprot_non_pf00014_global_id_samp500_filter_on_swissprot
 rule compute_confusion_matrix:
     input:
-        "analysis/corrconflst.{p}.and.{n}.gz"
+        "analysis/corrconflst."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_pf00014_non_human_id_filter_on_swissprot.and."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_non_pf00014_global_id_samp{size}_filter_on_swissprot"
+        ".gz"
     output:
-        "confmat/th{th}.of.{p}.and.{n}"
+        "confmat/th{th}.of."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_pf00014_non_human_id_filter_on_swissprot.and."
+        "sprot_pf00014_human_id_filter_on_swissprot.psiblast.vs."
+        "sprot_non_pf00014_global_id_samp{size}_filter_on_swissprot"
     params:
-        "{th}"
+        th="{th}",
+        imgname="confmat/psiblast_th{th}_samp{size}.png"
     shell:
-        "python ../src/buildConfMatrix.py {input} {params} > {output};"
-        "python ../src/confMatPrettyPrint.py {input} {params}"
+        "python ../src/buildConfMatrix.py {input} {params.th} > {output};"
+        "python ../src/confMatPrettyPrint.py {input} {params.th} {params.imgname}"
 
 # ----------------------------------------------------------------------------#
 
