@@ -1,14 +1,7 @@
 # python-programming-alessandro-lussana
-Personal storage of miscellaneous projects for Bologna Bioinformatics Master Course  
+Personal storage of miscellaneous projects for Bologna Bioinformatics Master Course
 
 - [python-programming-alessandro-lussana](#python-programming-alessandro-lussana)
-  * [/AML](#-aml)
-      - [Gradient Descent](#gradient-descent)
-  * [/formiche](#-formiche)
-  * [/LB1](#-lb1)
-      - [roto](#roto)
-      - [superimposer](#superimposer)
-      - [MSA\_assistant](#msa--assistant)
   * [/ADS](#-ads)
       - [Insertion Sort](#insertion-sort)
       - [Merge Sort](#merge-sort)
@@ -26,41 +19,21 @@ Personal storage of miscellaneous projects for Bologna Bioinformatics Master Cou
       - [Farward Algorithm](#farward-algorithm)
       - [Backward Algorithm](#backward-algorithm)
       - [Baum-Welch](#baum-welch)
+  * [/AML](#-aml)
+      - [Gradient Descent](#gradient-descent)
+  * [/formiche](#-formiche)
+  * [/LB1](#-lb1)
+      - [roto](#roto)
+      - [superimposer](#superimposer)
+      - [MSA\_assistant](#msa--assistant)
+  * [/string_matching_krogh](#-string-matching-krogh)
+      - [Barrows-Wheeler Transform](#barrows-wheeler-transform)
   * [/exam](#-exam)
       - [/mid-term](#-mid-term)
       - [/REDO\_midterm\_exam\_2019\_02\_11](#-redo--midterm--exam--2019--02--11)
       - [/bioinfo\_basics\_implementations](#-bioinfo--basics--implementations)
   * [/notes](#-notes)
   * [/misc\_fun](#-misc--fun)
-
-## /AML
-
-Implementations of algorithms for Applied Machine Learning
-
-#### Gradient Descent
-
-DONE
-
-## /formiche
-
-Random entities evolving in a two dimensional space; to be started
-
-## /LB1
-Implementations of algorithms and programs for Laboratory of Bioinformatics I  
-
-#### roto
-**ROtation TOol**  
-Status: just started; xStructure object can be build from a PDB file  
-Usage: [...]  
-
-#### superimposer
-
-Perform pairwise structural superimposition between sets of atoms in pdb format
-
-#### MSA\_assistant
-
-Merge together the aligned sequences that have the same identifier from a clustalw aln file  
-Includes a set of functions to analyze the alignment profile
 
 ## /ADS
 Implementations of algorithms and programs for Algorithms and Data Structures for Computational Biology
@@ -143,7 +116,47 @@ Usage: [...]
 Status: in progress, not yet implemented with pandas  
 Usage: [...]
 
+## /AML
+
+Implementations of algorithms for Applied Machine Learning
+
+#### Gradient Descent
+
+DONE
+
+## /formiche
+
+Random entities evolving in a two dimensional space; to be started
+
+## /LB1
+
+Implementations of algorithms and programs for Laboratory of Bioinformatics I  
+
+#### roto
+
+**ROtation TOol**  
+Status: just started; xStructure object can be build from a PDB file  
+Usage: [...]  
+
+#### superimposer
+
+Perform pairwise structural superimposition between sets of atoms in pdb format
+
+#### MSA\_assistant
+
+Merge together the aligned sequences that have the same identifier from a clustalw aln file  
+Includes a set of functions to analyze the alignment profile
+
+## /string_matching_krogh
+
+Implementation of algorithms discussed during the advanced course in exact string matching by Prof. Anders Krogh
+
+#### Barrows-Wheeler Transform
+
+In progress.
+
 ## /exam
+
 Exams directory
 
 #### /mid-term
