@@ -7,6 +7,10 @@
 #   1:kunitz       |      FN       |    TP
 #   __________________________________________
 
+import sys
+import gzip
+import numpy as np
+
 def conf_mat(filename, th, sp = -2, cp = -1):
     cm = [[0.0, 0.0],[0.0, 0.0]]
     f = gzip.open(filename)
@@ -50,9 +54,6 @@ def print_performance(cm):
     print("acc\t%f\ntpr\t%f\nppv\t%f\nmcc\t%f" %(acc, tpr, ppv, mcc))
 
 if __name__ == '__main__':
-    import sys
-    import gzip
-    import numpy as np
     filename = sys.argv[1]
     th = float(sys.argv[2])
 

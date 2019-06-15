@@ -79,4 +79,4 @@ if __name__ == '__main__':
     fig = print_confusion_matrix(confMat, class_names, fontsize=10)
 
     plt.savefig(figname, type="png", dpi=96)
-    plt.show()
+    #plt.show()
