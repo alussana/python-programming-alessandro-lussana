@@ -34,12 +34,61 @@ def bwt(s):
 
     return(transformed_s)
 
-def twb(s):
-    # retrive the original string from the BWT
-    pass
+def twb(b):
+    # count characters occurence and fm_index
+    char = []
+    occ = []
+    fm_index = []
+    for c in b:
+        if c not in char:
+            char.append(c)
+            occ.append(1)
+            fm_index.append(1)
+        else:
+            i = char.index(c)
+            occ[i] += 1
+            fm_index.append(occ[i])
+    char_count = dict(zip(char, occ))
+    #del char_count['$']
+
+    # sort the char_count dictonary
+    sorted_char = sorted(char_count)
+    sorted_count = []
+    for v in sorted_char:
+        sorted_count.append(char_count[v])
+    char_count = dict(zip(sorted_char, sorted_count))
+
+    # retrieve the original sequence
+    t = 0
+    s = []
+    for i in range(0, len(b) - 1):
+        s.append(b[t])
+        b_index = -1
+        x = 0
+        while b[t] != sorted_char[x]:
+            b_index += char_count[sorted_char[x]]
+            x += 1
+        b_index += fm_index[t]
+        t = b_index
+
+    # translate _ with \s
+    translated_s = []
+    for i in range(0, len(s)):
+        if s[i] != '_':
+            translated_s.append(s[i])
+        else:
+            translated_s.append(' ')
+
+    s= translated_s[::-1]
+    s = ''.join(s)
+
+    return(s)
 
 if __name__ == '__main__':
     s = 'All work and no play makes Jack a dull boy'
+    #s = 'ACTGTC'
     print(s)
     transformed_s = bwt(s)
     print(transformed_s)
+    s = twb(transformed_s)
+    print(s)
