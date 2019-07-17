@@ -1,4 +1,4 @@
-# NOTE this implementation of pattern matchin is case sensitive
+# NOTE this implementation of pattern matching is case sensitive
 # Every count is zero-based
 
 def bwt(s):
@@ -49,7 +49,6 @@ def twb(b):
             occ[i] += 1
             fm_index.append(occ[i])
     char_count = dict(zip(char, occ))
-    #del char_count['$']
 
     # sort the char_count dictonary
     sorted_char = sorted(char_count)
@@ -85,10 +84,12 @@ def twb(b):
     return(s)
 
 if __name__ == '__main__':
-    s = 'All work and no play makes Jack a dull boy'
-    #s = 'ACTGTC'
-    print(s)
+    s = input('Insert string: ')
     transformed_s = bwt(s)
-    print(transformed_s)
+    print('BWT:', transformed_s)
+    print('Deleting input string.')
+    s = []
+    print('Retrieving input string from the BWT.')
     s = twb(transformed_s)
-    print(s)
+    print('Recoded string:', s)
+
