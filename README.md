@@ -10,6 +10,7 @@ Personal storage of miscellaneous projects for Bologna Bioinformatics Master Cou
       - [Heap Sort](#heap-sort)
       - [Quick Sort](#quick-sort)
       - [Counting Sort](#counting-sort)
+      - [Shell Sort](#shell-sort)
       - [Iterative Fibonacci](#iterative-fibonacci)
       - [Recursive Fibonacci](#recursive-fibonacci)
   * [/snektools](#-snektools)
@@ -63,6 +64,10 @@ DONE
 DONE
 
 #### Counting Sort
+
+DONE
+
+#### Shell Sort
 
 DONE
 
