@@ -8,7 +8,7 @@ def FibIter(n):
     else:
 
         f = [0,1,1]
-        for i in range(2, n):
+        for i in range(3, n + 1):
             
             f[0] = f[1]
             f[1] = f[2]

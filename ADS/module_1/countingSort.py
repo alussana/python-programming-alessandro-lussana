@@ -11,7 +11,7 @@ def cs(A, k):
     for i in range(1, k + 1):
         C[i] = C[i] + C[i - 1] # C contains the # of elements <= i
 
-    for j in range(len(A) - 1, -1, -1):
+    for j in range(len(A) - 1, -1, -1): # reverse order makes the sorting stable
         B[C[A[j]] - 1] = A[j]
         C[A[j]] = C[A[j]] - 1
     

@@ -12,7 +12,8 @@ def getRightChild(tree, key):
     else:
         return(r)
 
-def getLeftTree(tree, key):
-    l = getLeftChild(tree, key)
-    if l == 'NULL':
-        return(l:)
+# in prog
+#def getLeftTree(tree, key):
+#    l = getLeftChild(tree, key)
+#    if l == 'NULL':
+#        return(l:)
