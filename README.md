@@ -77,7 +77,7 @@ DONE
 
 #### Recursive Fibonacci
 
-TODO
+DONE
 
 ## /snektools
 Suite of general workflows for the implementation of algorithms  
