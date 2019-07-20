@@ -13,6 +13,7 @@ Personal storage of miscellaneous projects for Bologna Bioinformatics Master Cou
       - [Shell Sort](#shell-sort)
       - [Iterative Fibonacci](#iterative-fibonacci)
       - [Recursive Fibonacci](#recursive-fibonacci)
+      - [Stack Implementation](#stack-implementation)
   * [/snektools](#-snektools)
       - [Needleman-Wunsch](#needleman-wunsch)
       - [Smith-Waterman](#smith-waterman)
@@ -78,6 +79,10 @@ DONE
 #### Recursive Fibonacci
 
 DONE
+
+#### Stack Implementation
+
+Implemented using singly linked list data structure
 
 ## /snektools
 Suite of general workflows for the implementation of algorithms  
