@@ -70,4 +70,4 @@ rule find_partitions:
     shell:
         "partitionfinder ."
 
-# NOTE For subsequent analysis, see markdown notes on DropBox, 2019_05_02
+# NOTE For subsequent analysis, see markdown notes on DropBox, 2019_05_02 and following

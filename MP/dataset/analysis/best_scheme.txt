@@ -2,7 +2,7 @@ Settings used
 
 alignment         : ./cox2.p_and_cytb.p_and_16s.d.phy
 branchlengths     : unlinked
-models            : GTR, GTR+G, GTR+I+G
+models            : JC, K80, TRNEF, SYM, HKY, TRN, GTR, HKY+X, TRN+X, GTR+X, JC+G, K80+G, TRNEF+G, SYM+G, HKY+G, TRN+G, GTR+G, HKY+G+X, TRN+G+X, GTR+G+X, JC+I, K80+I, TRNEF+I, SYM+I, HKY+I, TRN+I, GTR+I, HKY+I+X, TRN+I+X, GTR+I+X, JC+I+G, K80+I+G, TRNEF+I+G, SYM+I+G, HKY+I+G, TRN+I+G, GTR+I+G, HKY+I+G+X, TRN+I+G+X, GTR+I+G+X
 model_selection   : aicc
 search            : greedy
 
@@ -10,16 +10,16 @@ search            : greedy
 Best partitioning scheme
 
 Scheme Name       : start_scheme
-Scheme lnL        : -13188.3986816
-Scheme AICc       : 26601.8941375
-Number of params  : 109
+Scheme lnL        : -13119.828125
+Scheme AICc       : 26451.985349
+Number of params  : 103
 Number of sites   : 3489
 Number of subsets : 3
 
 Subset | Best Model | # sites    | subset id                        | Partition names                                                                                     
-1      | GTR+G      | 687        | 0a89949a3fa92b68d9c7b8d6d0a4610c | cox2                                                                                                
-2      | GTR+G      | 1146       | 5a15170cf07bfc6aa50ac86af528c892 | cytb                                                                                                
-3      | GTR+I+G    | 1656       | c00a42e321e8e47406002a49339fa12e | 16s                                                                                                 
+1      | HKY+I+X    | 687        | 0a89949a3fa92b68d9c7b8d6d0a4610c | cox2                                                                                                
+2      | TRN+I+G+X  | 1146       | 5a15170cf07bfc6aa50ac86af528c892 | cytb                                                                                                
+3      | GTR+I+G+X  | 1656       | c00a42e321e8e47406002a49339fa12e | 16s                                                                                                 
 
 
 Scheme Description in PartitionFinder format
@@ -42,7 +42,7 @@ begin sets;
 	charset Subset1 = 1-687;
 	charset Subset2 = 688-1833;
 	charset Subset3 = 1834-3489;
-	charpartition PartitionFinder = GTR+G:Subset1, GTR+G:Subset2, GTR+I+G:Subset3;
+	charpartition PartitionFinder = HKY+I+X:Subset1, TRN+I+G+X:Subset2, GTR+I+G+X:Subset3;
 end;
 
 
@@ -66,8 +66,8 @@ begin mrbayes;
 	partition PartitionFinder = 3:Subset1, Subset2, Subset3;
 	set partition=PartitionFinder;
 
-	lset applyto=(1) nst=6 rates=gamma;
-	lset applyto=(2) nst=6 rates=gamma;
+	lset applyto=(1) nst=2 rates=propinv;
+	lset applyto=(2) nst=6 rates=invgamma;
 	lset applyto=(3) nst=6 rates=invgamma;
 
 	prset applyto=(all) ratepr=variable;
