@@ -1,3 +1,5 @@
+import datetime
+
 def getLog(cluedata):
     '''
     Read the complete log from cluedata file
@@ -31,17 +33,30 @@ def getDayPeriodPain(log):
         for info in infolist:
             values = info.split(':')
             if values[0] == '"period"':
-                #period.append(values[1])
                 period[i] = values[1]
             elif values[0] == '"day"':
                 date = values[1].split('T')
-                #day.append(date[0][1:])
                 day[i] = date[0][1:]
             elif values[0] == '"pain"':
-                #pain.append(values[1])
                 pain[i] = values[1]
 
     return(day, period, pain)
+
+def countDays(date1, date2):
+    """
+    Count the number of days between two dates in the form "yy-mm-dd"
+    """
+    date1 = date1.split("-")
+    date2 = date2.split("-")
+    day1 = datetime.datetime(year = int(date1[0]), \
+        month = int(date1[1]), day = int(date1[2]))
+    day2 = datetime.datetime(year = int(date2[0]), \
+        month = int(date2[1]), day = int(date2[2]))
+    num_of_days = abs(day2 - day1)
+    num_of_days = str(num_of_days)
+    num_of_days = num_of_days.split(" ")
+    num_of_days = num_of_days[0]
+    return(num_of_days)
 
 if __name__ == '__main__':
     import sys
@@ -57,6 +72,9 @@ if __name__ == '__main__':
     print(len(log.split('},{')))
     for i in range(len(day)):
         print(day[i], period[i], pain[i])
+    date1 = "2019-07-13"
+    date2 = "2019-07-17"
+    print(countDays(date2, date1))
 
 ## TODO
 ## o   Pain day predictor
